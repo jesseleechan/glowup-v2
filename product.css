@@ -1,0 +1,263 @@
+/* ==========================================================
+   GLOWUP ONLINE — PRODUCT DETAIL PAGE CUSTOM CSS
+   Paste this into: Design > Custom CSS
+   (alongside your existing shop.css)
+========================================================== */
+
+
+/* ==========================================================
+   Only apply on the live site — NOT in the Squarespace editor
+   so you can still see and edit #my-description normally.
+========================================================== */
+body:not(.sqs-edit-mode-active) {
+
+
+  /* ==========================================================
+     1. PRODUCT LAYOUT — Remove gaps, zero out padding
+  ========================================================== */
+  .product-detail>[data-product-detail-layout=simple] {
+    padding: 0 !important;
+    margin-top: -1px;
+  }
+
+  .product-detail>[data-product-detail-layout=simple] .product-content-wrapper {
+    gap: 0 !important;
+  }
+
+
+  /* ==========================================================
+     2. PRODUCT META — Left side (scrollable details)
+  ========================================================== */
+  .product-meta {
+    padding: 4vw 3vw;
+  }
+
+
+  /* ==========================================================
+     3. PRODUCT GALLERY — Right side (sticky dark panel)
+     The gallery is a flex container with one child:
+     .product-gallery-slides. We override its layout to
+     create a full-viewport dark panel with the image centered.
+  ========================================================== */
+  .product-gallery {
+    position: sticky !important;
+    top: 66px !important;               /* clear the fixed header */
+    align-self: flex-start !important;
+    height: ~"calc(100vh - 67px)" !important; /* fill remaining viewport */
+    background: #1a1a1a !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+
+    /* Center the slides container within the gallery */
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 80px !important;
+  }
+
+  /* The slides wrapper — let it fill the available space and center its content */
+  .product-gallery-slides {
+    position: relative !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+  }
+
+  /* Each slide — fill the container, center the image */
+  .product-gallery-slides-item {
+    position: absolute !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* The actual product image — scale to fit, never crop */
+  .product-gallery-slides-item-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important;
+  }
+
+
+  /* ==========================================================
+     4. HIDE & RELOCATE #my-description
+  ========================================================== */
+  #my-description {
+    display: none !important;
+  }
+
+  .relocated-description {
+    display: block !important;
+    margin-top: 24px;
+    width: 100%;
+  }
+
+  .relocated-description .content-wrapper {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .relocated-description .content {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  @media screen and (min-width: 768px) {
+    .relocated-description .content {
+      margin-inline: -11px !important;
+      width: ~"calc(100% + 22px)" !important;
+    }
+  }
+
+  /* Collapses the outer grid gutters of the Fluid Engine layout so content is perfectly aligned */
+  .relocated-description .fluid-engine {
+    --grid-gutter: 0px !important;
+    grid-template-columns: 0 repeat(8, minmax(0, 1fr)) 0 !important;
+  }
+
+  @media screen and (min-width: 768px) {
+    .relocated-description .fluid-engine {
+      grid-template-columns: 0 repeat(24, minmax(0, 1fr)) 0 !important;
+    }
+  }
+
+  /* ==========================================================
+     5. BUTTON STACK STYLE (Add to Cart + Live Demo)
+     Styles the grouped buttons to look like a single pill container
+  ========================================================== */
+
+  /* Center the stack vertically inside the fluid engine block content */
+  .relocated-description .fe-block:has(.sqs-stack-container) .sqs-block-content {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+  }
+
+  /* The outer pill container wrapping both buttons */
+  .relocated-description .sqs-stack-container:has(.product-block) {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 8px !important;
+
+    border: 1.5px solid #000000 !important;
+    border-radius: 100px !important;
+    padding: 3px !important;
+    background-color: #ebe7e4 !important; /* Light cream/beige background */
+    height: auto !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    position: relative !important; /* Positioning context for the cover block */
+  }
+
+  /* Cover block to hide scrolling text underneath the button stack */
+  .relocated-description .fe-block:has(.sqs-stack-container)::before {
+    content: "" !important;
+    position: absolute !important;
+    top: 50% !important; /* Starts in the middle of the pill, behind its solid background */
+    left: -24px !important;
+    right: -24px !important;
+    bottom: 0 !important; /* Ends exactly at the bottom of the sticky block, preventing footer overflow */
+    background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
+    z-index: -1 !important; /* Sits behind the pill, but in front of the scrolling text */
+    pointer-events: none !important; /* Ensures it doesn't block clicks to elements behind it */
+  }
+
+  /* Reset the stack child container widths to allow horizontal flex layout */
+  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container {
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+  }
+
+  /* Width distribution: Add to Cart is wider (about 60%), Live Demo is narrower (about 40%) */
+  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:first-child {
+    flex: 1.6 !important;
+  }
+  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:last-child {
+    flex: 1 !important;
+  }
+
+  /* Reset intermediate wrappers inside child containers */
+  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-wrapper,
+  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container .fe-block,
+  .relocated-description .sqs-stack-container:has(.product-block) .product-block,
+  .relocated-description .sqs-stack-container:has(.product-block) .productDetails,
+  .relocated-description .sqs-stack-container:has(.product-block) .product-purchase-controls-wrapper,
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button-wrapper,
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-container,
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-content {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Left Button: Add to Cart (Solid black pill) */
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border-radius: 100px !important;
+    border: none !important;
+    width: 100% !important;
+    height: 53px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    padding: 0 24px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button:hover {
+    background-color: #333333 !important;
+  }
+
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
+    color: #ffffff !important;
+    font-size: 1.6rem !important;
+  }
+
+  /* Right Button: Live Demo (Transparent/outline pill) */
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-element {
+    background-color: transparent !important;
+    color: #000000 !important;
+    border-radius: 100px !important;
+    border: 1px solid #000000 !important;
+    width: 100% !important;
+    height: 53px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-weight: 500 !important;
+    font-size: 1.6rem !important;
+    cursor: pointer !important;
+    padding: 0 24px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    transition: background-color 0.2s ease !important;
+  }
+
+  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-element:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+  }
+
+  .product-block .productDetails .product-purchase-controls-wrapper {
+    margin-top: 0 !important;
+  }
+  
+   .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner  {
+    font-size: 1.6rem !important;
+  }
+}

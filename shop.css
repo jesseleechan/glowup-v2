@@ -1,0 +1,304 @@
+/* ==========================================================
+   GLOWUP ONLINE — SHOP TEMPLATES CUSTOM CSS
+   Paste this entire file into: Design > Custom CSS
+========================================================== */
+
+
+/* ==========================================================
+   1. MAIN LAYOUT (Sidebar + Grid Framework)
+========================================================== */
+.product-list {
+  display: flex !important;
+  flex-wrap: nowrap;
+  border-bottom: 1px solid #1a1a1a;
+  padding: 0 !important;
+  gap: 0 !important;
+}
+
+
+/* ==========================================================
+   2. SIDEBAR — Structure
+========================================================== */
+.product-list-nav-and-filters {
+  border-right: 1px solid #1a1a1a !important;
+  width: 250px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 30px 24px !important;
+}
+
+/* Hide native filter UI to prevent FOUC before JS runs */
+.product-list-filters-drawer-open-button-container,
+.product-list-nav,
+.product-list-filters,
+.product-list-filters-drawer-overlay {
+  display: none !important;
+}
+
+
+/* ==========================================================
+   2b. SIDEBAR — Custom Sections (built by JS)
+========================================================== */
+.custom-sidebar-section {
+  padding-bottom: 28px;
+  margin-bottom: 28px;
+}
+.custom-sidebar-section:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* Section headings */
+.custom-sidebar-heading {
+  font-family: sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #222;
+  margin: 0 0 12px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Link lists */
+.custom-sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.custom-sidebar-list li {
+  margin-bottom: 4px;
+}
+.custom-sidebar-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* Individual links */
+.custom-sidebar-link {
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  color: #666;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+.custom-sidebar-link:hover {
+  color: #222;
+}
+.custom-sidebar-link.active {
+  font-weight: 700;
+  color: #222;
+}
+
+/* Superscript counts */
+.custom-sidebar-link sup {
+  font-size: 0.6rem;
+  color: #999;
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+
+/* ==========================================================
+   3. PRODUCT GRID SETUP
+========================================================== */
+.product-list-container {
+  flex-grow: 1;
+}
+.product-list-layout-container {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  grid-gap: 0 !important;
+  margin-bottom: -1px;
+}
+
+
+/* ==========================================================
+   4. PRODUCT ITEM — Borders & Card Layout
+========================================================== */
+.product-list-item {
+  border-right: 1px solid #1a1a1a !important;
+  border-bottom: 1px solid #1a1a1a !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
+  padding: 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0 !important;
+}
+
+/* Remove right border on the last column */
+.product-list-item:nth-child(3n) {
+  border-right: none !important;
+}
+/* Remove bottom border on the last row */
+.product-list-item:nth-last-child(-n+3) {
+  border-bottom: none !important;
+}
+
+/* Make the inner link a flex column so tags stick to the bottom */
+.product-list-item-link {
+  display: flex !important;
+  flex-direction: column;
+  flex-grow: 1;
+  text-decoration: none !important;
+  gap: 0 !important;
+}
+
+
+/* ==========================================================
+   5. PRODUCT IMAGE AREA
+========================================================== */
+.product-list-image-wrapper {
+  background-color: #eae8e3;
+  padding: 20px;
+  margin-bottom: 12px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  overflow: visible;
+}
+.product-list-item-image {
+  margin: 0 !important;
+  width: 100%;
+}
+.product-list-item-image img {
+  border-radius: 2px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+/* ==========================================================
+   6. PRODUCT META — Title & Price Row
+========================================================== */
+.product-list-item-meta {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.product-list-title-price {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: baseline;
+  margin-bottom: 8px;
+  gap: 16px;
+  width: 100%;
+}
+.product-list-item-title {
+  font-size: 1.4rem;
+  color: #1a1a1a;
+  margin: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.product-list-item-price {
+  font-family: sans-serif;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-left: auto !important; /* push price to far right */
+  text-align: right;
+}
+
+
+/* ==========================================================
+   7. HIDE BADGES (for now)
+========================================================== */
+.product-list-item-status {
+  display: none !important;
+}
+
+
+/* ==========================================================
+   8. INJECTED ELEMENTS — Excerpt & Tag Pills (built by JS)
+========================================================== */
+
+/* Product description / excerpt */
+.custom-product-excerpt {
+  font-family: sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: #666;
+  margin: 0 0 18px 0;
+  flex-grow: 1; /* pushes tags to the bottom of the card */
+}
+
+/* Tag pill container */
+.custom-product-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto; /* stick to bottom */
+}
+
+/* Individual tag pill */
+.custom-tag-pill {
+  border: 1px solid #bbb;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-family: sans-serif;
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: #555;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.custom-tag-pill:hover {
+  border-color: #333;
+  color: #222;
+}
+
+
+/* ==========================================================
+   9. RESPONSIVE
+========================================================== */
+
+/* Tablet — 2 columns */
+@media (max-width: 1024px) {
+  .product-list-layout-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .product-list-item:nth-child(3n) {
+    border-right: 1px solid #1a1a1a !important;
+  }
+  .product-list-item:nth-child(2n) {
+    border-right: none !important;
+  }
+  .product-list-item:nth-last-child(-n+3) {
+    border-bottom: 1px solid #1a1a1a !important;
+  }
+  .product-list-item:nth-last-child(-n+2) {
+    border-bottom: none !important;
+  }
+}
+
+/* Mobile — stacked */
+@media (max-width: 768px) {
+  .product-list {
+    flex-direction: column !important;
+  }
+  .product-list-nav-and-filters {
+    width: 100%;
+    border-right: none !important;
+    border-bottom: 1px solid #1a1a1a !important;
+    padding: 20px !important;
+  }
+  .product-list-layout-container {
+    grid-template-columns: 1fr !important;
+  }
+  .product-list-item {
+    border-right: none !important;
+  }
+  .product-list-item:nth-last-child(-n+2) {
+    border-bottom: 1px solid #1a1a1a !important;
+  }
+  .product-list-item:last-child {
+    border-bottom: none !important;
+  }
+}
