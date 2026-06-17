@@ -43,7 +43,7 @@ body:not(.sqs-edit-mode-active) {
     position: sticky !important;
     top: 66px !important;               /* clear the fixed header */
     align-self: flex-start !important;
-    height: ~"calc(100vh - 67px)" !important; /* fill remaining viewport */
+    height: calc(100vh - 67px) !important; /* fill remaining viewport */
     background: #1a1a1a !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
@@ -112,7 +112,7 @@ body:not(.sqs-edit-mode-active) {
   @media screen and (min-width: 768px) {
     .relocated-description .content {
       margin-inline: -11px !important;
-      width: ~"calc(100% + 22px)" !important;
+      width: calc(100% + 22px) !important;
     }
   }
 
