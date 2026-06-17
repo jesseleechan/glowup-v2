@@ -4,20 +4,22 @@
    00. VARIABLES & SETUP
 ====================================== */
 
-/* --- Colors --- */
-@white: ~"hsl(var(--white-hsl))";
-@light: ~"hsl(var(--lightAccent-hsl))";
-@accent: ~"hsl(var(--accent-hsl))";
-@dark: ~"hsl(var(--darkAccent-hsl))";
-@black: ~"hsl(var(--black-hsl))";
-@black-10: ~"hsla(var(--black-hsl), 0.1)";
+:root {
+  /* --- Colors --- */
+  --white: hsl(var(--white-hsl));
+  --light: hsl(var(--lightAccent-hsl));
+  --accent: hsl(var(--accent-hsl));
+  --dark: hsl(var(--darkAccent-hsl));
+  --black: hsl(var(--black-hsl));
+  --black-10: hsla(var(--black-hsl), 0.1);
 
-@dividerColor: var(--section-divider-stroke-color);
-@borderColor: var(--tweak-form-block-field-border-color);
+  --dividerColor: var(--section-divider-stroke-color);
+  --borderColor: var(--tweak-form-block-field-border-color);
 
-/* --- Layout --- */
-@site-max-width: 1440px;
-@vertLineThickness: 1px;
+  /* --- Layout --- */
+  --site-max-width: 1440px;
+  --vertLineThickness: 1px;
+}
 
 
 /* ====================================== 
@@ -31,7 +33,7 @@ body:not(.sqs-edit-mode-active) #siteWrapper {
 
 /* --- Body Layout & Max Width --- */
 body:not(.sqs-edit-mode-active) {
-  background: @accent;
+  background: var(--accent);
   display: flex;
   justify-content: center;
 
@@ -47,10 +49,10 @@ body:not(.sqs-edit-mode-active) {
 }
 
 /* --- Site Wrapper Border --- */
-@media screen and (min-width: @site-max-width) {
+@media screen and (min-width: 1440px) {
   body:not(.sqs-edit-mode-active) {
     .site-wrapper {
-      border: 1px solid @dark;
+      border: 1px solid var(--dark);
       margin: 0px 100px !important;
     }
 
@@ -59,8 +61,8 @@ body:not(.sqs-edit-mode-active) {
       left: 100px;
       right: 100px;
       width: auto !important;
-      border-left: 1px solid @dark;
-      border-right: 1px solid @dark;
+      border-left: 1px solid var(--dark);
+      border-right: 1px solid var(--dark);
     }
   }
 }
@@ -71,7 +73,7 @@ body:not(.sqs-edit-mode-active) {
 ====================================== */
 
 .header-nav-folder-content {
-  border: 1px solid @dark;
+  border: 1px solid var(--dark);
   padding: 4px 8px !important;
 }
 
@@ -118,8 +120,8 @@ body:not(.sqs-edit-mode-active) {
       transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
       outline: none;
       border-radius: 1000px;
-      color: @white;
-      border: 1px solid ~"hsla(var(--white-hsl), 0.2)";
+      color: var(--white);
+      border: 1px solid hsla(var(--white-hsl), 0.2);
 
       svg {
         display: block;
@@ -221,18 +223,18 @@ body:not(.sqs-edit-mode-active) {
   /* --- Carousel: Borders & Styling --- */
   .sqs-gallery-design-carousel {
     order: 1;
-    border-top: 1px solid @black;
+    border-top: 1px solid var(--black);
     border-bottom: none !important;
     margin-top: -2px !important;
     margin-bottom: 0 !important;
 
     .summary-item {
-      border-right: 1px solid @black;
+      border-right: 1px solid var(--black);
       box-sizing: border-box;
       padding: 2% !important;
 
       &:first-child {
-        border-left: 1px solid @black;
+        border-left: 1px solid var(--black);
       }
     }
   }
@@ -245,7 +247,7 @@ body:not(.sqs-edit-mode-active) {
     justify-content: center !important;
     align-items: center !important;
     padding: 11px 0 !important;
-    border-top: 1px solid @black;
+    border-top: 1px solid var(--black);
 
     .summary-heading {
       display: none !important;
@@ -273,7 +275,7 @@ body:not(.sqs-edit-mode-active) {
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer;
-    color: @black;
+    color: var(--black);
     background: transparent !important;
     flex-shrink: 0;
 
@@ -282,7 +284,7 @@ body:not(.sqs-edit-mode-active) {
     }
 
     svg path {
-      stroke: @black;
+      stroke: var(--black);
       transition: opacity 0.2s ease;
     }
 
@@ -307,7 +309,7 @@ body:not(.sqs-edit-mode-active) {
     font-family: var(--body-font-font-family);
     font-size: 0.85rem;
     letter-spacing: 0.05em;
-    color: @black;
+    color: var(--black);
     min-width: 40px;
     text-align: center;
     position: relative;
@@ -320,7 +322,7 @@ body:not(.sqs-edit-mode-active) {
     .summary-thumbnail-outer-container {
       border-radius: 10px;
       padding: 12% 10%;
-      background: @accent;
+      background: var(--accent);
       margin-bottom: 20px;
       overflow: hidden;
       isolation: isolate;
@@ -367,11 +369,11 @@ body:not(.sqs-edit-mode-active) {
 
       a {
         font-size: 0.7rem !important;
-        color: @black !important;
+        color: var(--black) !important;
         display: inline-block;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        border: 1.5px solid @black;
+        border: 1.5px solid var(--black);
         border-radius: 30px;
         padding: 10px 15px;
         margin-right: 4px;
@@ -380,8 +382,8 @@ body:not(.sqs-edit-mode-active) {
         transition: all 0.2s ease;
 
         &:hover {
-          background-color: @black;
-          color: @white !important;
+          background-color: var(--black);
+          color: var(--white) !important;
         }
       }
     }
@@ -416,12 +418,12 @@ body:not(.sqs-edit-mode-active) {
 #platforms-supported {
   .user-items-list-item-container {
     grid-gap: 0 !important;
-    border-top: 1px solid @black;
-    border-bottom: 1px solid @black;
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
   }
 
   .list-item {
-    border-right: 1px solid @black;
+    border-right: 1px solid var(--black);
     padding: 4% 2% !important;
     display: flex;
     align-items: center;
@@ -664,7 +666,7 @@ body:not(.sqs-edit-mode-active) {
     align-items: center !important;
     text-align: center !important;
     height: 100% !important;
-    border-right: 1px solid black;
+    border-right: 1px solid var(--black);
     padding: 12% 0;
     box-sizing: border-box;
 
@@ -694,7 +696,7 @@ body:not(.sqs-edit-mode-active) {
       content: '★★★★★';
       display: block;
       font-size: 1.75rem;
-      color: #000;
+      color: var(--black);
       letter-spacing: 5px;
       margin-bottom: 25px;
     }
@@ -715,7 +717,7 @@ body:not(.sqs-edit-mode-active) {
   }
 
   .list-item-media-inner {
-    border: 1px solid #000 !important;
+    border: 1px solid var(--black) !important;
     border-radius: 50% !important;
     overflow: hidden;
     box-sizing: border-box;
