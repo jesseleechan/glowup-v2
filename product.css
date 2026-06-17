@@ -241,7 +241,7 @@ body:not(.sqs-edit-mode-active) {
     align-items: center !important;
     justify-content: center !important;
     font-weight: 500 !important;
-    font-size: 1.6rem !important;
+    font-size: 1.2rem !important;
     cursor: pointer !important;
     padding: 0 24px !important;
     margin: 0 !important;
@@ -258,7 +258,7 @@ body:not(.sqs-edit-mode-active) {
   }
   
    .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner  {
-    font-size: 1.6rem !important;
+    font-size: 1.2rem !important;
   }
     #main-product-price, .product-description.hidden-down-md, .product-add-to-cart-layout-wrapper {
     display: none !important;
