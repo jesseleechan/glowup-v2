@@ -260,4 +260,7 @@ body:not(.sqs-edit-mode-active) {
    .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner  {
     font-size: 1.6rem !important;
   }
+    #main-product-price, .product-description.hidden-down-md, .product-add-to-cart-layout-wrapper {
+    display: none !important;
+  }
 }
