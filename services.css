@@ -43,16 +43,16 @@
   /* ==========================================================
      2. DOCK BUTTON OVERRIDES (White Outline for Black Background)
      Styles the button block to be legible inside the black container
-     without hardcoding. Inherits colors from Squarespace theme vars.
+     without hardcoding. Targets only the second (black) stack block.
   ========================================================== */
-  [data-definition-name="website.components.stack"] .sqs-block-button-element {
+  :nth-child(2 of [data-definition-name="website.components.stack"]) .sqs-block-button-element {
     color: var(--siteBackgroundColor, #ffffff) !important;
     border-color: var(--siteBackgroundColor, #ffffff) !important;
     background-color: transparent !important;
     transition: background-color 0.2s ease, color 0.2s ease !important;
   }
 
-  [data-definition-name="website.components.stack"] .sqs-block-button-element:hover {
+  :nth-child(2 of [data-definition-name="website.components.stack"]) .sqs-block-button-element:hover {
     color: #000000 !important; /* Contrast color on hover */
     background-color: var(--siteBackgroundColor, #ffffff) !important;
   }
