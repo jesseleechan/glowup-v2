@@ -258,8 +258,63 @@ body:not(.sqs-edit-mode-active) {
   }
   
    .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner  {
-    font-size: 1.2rem !important;
+    font-size: 1.6rem !important;
   }
+
+  /* ==========================================================
+     6. SHOP GALLERY CAROUSEL — Full Bleed Alignment
+     Removes side gutters and stretches active slides flush to edges
+  ========================================================== */
+  #shop-gallery .user-items-list-carousel__gutter {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Force the grid track to size each column to exactly 50% of the viewport width */
+  #shop-gallery .user-items-list-carousel__slides {
+    grid-auto-columns: 50% !important;
+    grid-template-columns: repeat(2, 50%) !important;
+  }
+
+  /* Let the individual slides fill the 50% width of their grid cells */
+  #shop-gallery .user-items-list-carousel__slide {
+    width: 100% !important;
+  }
+
+  @media screen and (max-width: 767px) {
+    #shop-gallery .user-items-list-carousel__slides {
+      grid-auto-columns: 100% !important;
+      grid-template-columns: repeat(1, 100%) !important;
+    }
+    #shop-gallery .user-items-list-carousel__slide {
+      width: 100% !important;
+    }
+  }
+
+  /* Remove vertical gap at the bottom of the carousel section */
+  #shop-gallery.page-section,
+  #shop-gallery .content-wrapper,
+  #shop-gallery .user-items-list-item-container {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+
+  /* Hide the empty text content wrappers inside slides so images span full height */
+  #shop-gallery .list-item-content {
+    display: none !important;
+  }
+
+  /* Hide extra spacing reserved for bottom navigation/arrows */
+  #shop-gallery .user-items-list-carousel__space-below {
+    display: none !important;
+  }
+
+  /* Remove the margin-bottom spacing on the image container inside the slides */
+  #shop-gallery .user-items-list-carousel__media-container {
+    margin-bottom: 0 !important;
+  }
+
+
     #main-product-price, .product-description.hidden-down-md, .product-add-to-cart-layout-wrapper {
     display: none !important;
   }

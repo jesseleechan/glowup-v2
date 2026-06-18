@@ -204,7 +204,7 @@ body:not(.sqs-edit-mode-active) {
   .summary-title,
   .product-price {
     font-family: var(--heading-font-font-family);
-    font-size: var(--heading-3-size) !important;
+    font-size: var(--heading-4-size) !important;
   }
 
   /* --- Layout Settings: Position Metadata Below Content --- */
