@@ -45,14 +45,14 @@
      Styles the button block to be legible inside the black container
      without hardcoding. Inherits colors from Squarespace theme vars.
   ========================================================== */
-  .fe-block-c4a8343352391b0731a6 .sqs-block-button-element {
+  [data-definition-name="website.components.stack"] .sqs-block-button-element {
     color: var(--siteBackgroundColor, #ffffff) !important;
     border-color: var(--siteBackgroundColor, #ffffff) !important;
     background-color: transparent !important;
     transition: background-color 0.2s ease, color 0.2s ease !important;
   }
 
-  .fe-block-c4a8343352391b0731a6 .sqs-block-button-element:hover {
+  [data-definition-name="website.components.stack"] .sqs-block-button-element:hover {
     color: #000000 !important; /* Contrast color on hover */
     background-color: var(--siteBackgroundColor, #ffffff) !important;
   }
