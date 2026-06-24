@@ -1,16 +1,8 @@
 /* ==========================================================
    GLOWUP ONLINE — PRODUCT DETAIL PAGE CUSTOM CSS
-   Paste this into: Design > Custom CSS
-   (alongside your existing shop.css)
 ========================================================== */
 
-
-/* ==========================================================
-   Only apply on the live site — NOT in the Squarespace editor
-   so you can still see and edit #my-description normally.
-========================================================== */
 body:not(.sqs-edit-mode-active) {
-
 
   /* ==========================================================
      1. PRODUCT LAYOUT — Remove gaps, zero out padding
@@ -30,25 +22,21 @@ body:not(.sqs-edit-mode-active) {
   ========================================================== */
   .product-meta {
     padding: 4vw 3vw;
+    padding-bottom: 0 !important;
   }
 
 
   /* ==========================================================
      3. PRODUCT GALLERY — Right side (sticky dark panel)
-     The gallery is a flex container with one child:
-     .product-gallery-slides. We override its layout to
-     create a full-viewport dark panel with the image centered.
   ========================================================== */
   .product-gallery {
     position: sticky !important;
-    top: 66px !important;               /* clear the fixed header */
+    top: 66px !important;
     align-self: flex-start !important;
-    height: calc(100vh - 67px) !important; /* fill remaining viewport */
+    height: calc(100vh - 67px) !important;
     background: #1a1a1a !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
-
-    /* Center the slides container within the gallery */
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -56,7 +44,6 @@ body:not(.sqs-edit-mode-active) {
     padding: 80px !important;
   }
 
-  /* The slides wrapper — let it fill the available space and center its content */
   .product-gallery-slides {
     position: relative !important;
     width: 100% !important;
@@ -67,7 +54,6 @@ body:not(.sqs-edit-mode-active) {
     overflow: visible !important;
   }
 
-  /* Each slide — fill the container, center the image */
   .product-gallery-slides-item {
     position: absolute !important;
     width: 100% !important;
@@ -77,7 +63,6 @@ body:not(.sqs-edit-mode-active) {
     justify-content: center !important;
   }
 
-  /* The actual product image — scale to fit, never crop */
   .product-gallery-slides-item-image {
     width: 100% !important;
     height: 100% !important;
@@ -116,7 +101,6 @@ body:not(.sqs-edit-mode-active) {
     }
   }
 
-  /* Collapses the outer grid gutters of the Fluid Engine layout so content is perfectly aligned */
   .relocated-description .fluid-engine {
     --grid-gutter: 0px !important;
     grid-template-columns: 0 repeat(8, minmax(0, 1fr)) 0 !important;
@@ -128,9 +112,23 @@ body:not(.sqs-edit-mode-active) {
     }
   }
 
+  .sqsrte-small {
+    letter-spacing: 0.02em;
+  }
+
+  .relocated-description p {
+    font-size: 0.9rem !important;
+  }
+
+  .relocated-description {
+    .sqs-block.html-block:has(p.sqsrte-small strong) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+
+
   /* ==========================================================
-     4b. CUSTOM BULLET POINTS — 2nd list in .relocated-description (Page Icon)
-     Targets the 2nd list via .stack-child-container:nth-child(3)
+     4b. CUSTOM BULLET POINTS — Page icon (2nd list)
   ========================================================== */
   .relocated-description .sqs-stack-container > .stack-child-container:nth-child(3) ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
@@ -138,28 +136,22 @@ body:not(.sqs-edit-mode-active) {
     height: 14px !important;
     width: 40px !important;
     margin-left: -40px !important;
-
     background-color: currentColor !important;
-
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
     mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-
     -webkit-mask-repeat: no-repeat !important;
     mask-repeat: no-repeat !important;
     -webkit-mask-position: right 10px center !important;
     mask-position: right 10px center !important;
     -webkit-mask-size: 14px 14px !important;
     mask-size: 14px 14px !important;
-
     vertical-align: middle !important;
     margin-top: -2px !important;
   }
 
+
   /* ==========================================================
-     4c. CHECKMARK BULLET POINTS — 3rd list in .relocated-description
-     Targets the 3rd list via .stack-child-container:nth-child(4)
-     (lists are siblings at this level: 1st=nth-child(2), 2nd=nth-child(3), 3rd=nth-child(4))
-     Uses the same p::before technique as Squarespace's native bullets.
+     4c. CHECKMARK BULLET POINTS (3rd list)
   ========================================================== */
   .relocated-description .sqs-stack-container > .stack-child-container:nth-child(4) ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
@@ -167,68 +159,56 @@ body:not(.sqs-edit-mode-active) {
     height: 14px !important;
     width: 40px !important;
     margin-left: -40px !important;
-
-    /* Inherit the text color dynamically using currentColor */
     background-color: currentColor !important;
-
-    /* CSS mask renders the SVG in the inherited text color */
     -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
     mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-
     -webkit-mask-repeat: no-repeat !important;
     mask-repeat: no-repeat !important;
     -webkit-mask-position: right 10px center !important;
     mask-position: right 10px center !important;
     -webkit-mask-size: 14px 14px !important;
     mask-size: 14px 14px !important;
-
     vertical-align: middle !important;
     margin-top: -2px !important;
   }
 
-  /* ==========================================================
-     5. BUTTON STACK STYLE (Add to Cart + Live Demo)
-     Styles the grouped buttons to look like a single pill container
-  ========================================================== */
 
-  /* Center the stack vertically inside the fluid engine block content */
+  /* ==========================================================
+     5. BUTTON STACK (Add to Cart + Live Demo pill)
+  ========================================================== */
   .relocated-description .fe-block:has(.sqs-stack-container) .sqs-block-content {
     display: flex !important;
     align-items: center !important;
     height: 100% !important;
   }
 
-  /* The outer pill container wrapping both buttons */
   .relocated-description .sqs-stack-container:has(.product-block) {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     gap: 8px !important;
-
     border: 1.5px solid #000000 !important;
     border-radius: 100px !important;
     padding: 3px !important;
-    background-color: #ebe7e4 !important; /* Light cream/beige background */
+    background-color: #ebe7e4 !important;
     height: auto !important;
     box-sizing: border-box !important;
     width: 100% !important;
-    position: relative !important; /* Positioning context for the cover block */
+    position: relative !important;
   }
 
-  /* Cover block to hide scrolling text underneath the button stack */
   .relocated-description .fe-block:has(.sqs-stack-container)::before {
     content: "" !important;
     position: absolute !important;
-    top: 50% !important; /* Starts in the middle of the pill, behind its solid background */
+    top: 50% !important;
     left: -24px !important;
     right: -24px !important;
-    bottom: 0 !important; /* Ends exactly at the bottom of the sticky block, preventing footer overflow */
+    bottom: 0 !important;
     background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
-    z-index: -1 !important; /* Sits behind the pill, but in front of the scrolling text */
-    pointer-events: none !important; /* Ensures it doesn't block clicks to elements behind it */
+    z-index: -1 !important;
+    pointer-events: none !important;
   }
 
-  /* Reset the stack child container widths to allow horizontal flex layout */
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container {
     width: auto !important;
     margin: 0 !important;
@@ -236,7 +216,6 @@ body:not(.sqs-edit-mode-active) {
     height: auto !important;
   }
 
-  /* Width distribution: Add to Cart is wider (about 60%), Live Demo is narrower (about 40%) */
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:first-child {
     flex: 1.6 !important;
   }
@@ -244,7 +223,6 @@ body:not(.sqs-edit-mode-active) {
     flex: 1 !important;
   }
 
-  /* Reset intermediate wrappers inside child containers */
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-wrapper,
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container .fe-block,
   .relocated-description .sqs-stack-container:has(.product-block) .product-block,
@@ -259,7 +237,7 @@ body:not(.sqs-edit-mode-active) {
     height: auto !important;
   }
 
-  /* Left Button: Add to Cart (Solid black pill) */
+  /* Left button: Add to Cart (solid black) */
   .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button {
     background-color: #000000 !important;
     color: #ffffff !important;
@@ -287,7 +265,7 @@ body:not(.sqs-edit-mode-active) {
     font-size: 1.6rem !important;
   }
 
-  /* Right Button: Live Demo (Transparent/outline pill) */
+  /* Right button: Live Demo (outline) */
   .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-element {
     background-color: transparent !important;
     color: #000000 !important;
@@ -314,27 +292,25 @@ body:not(.sqs-edit-mode-active) {
   .product-block .productDetails .product-purchase-controls-wrapper {
     margin-top: 0 !important;
   }
-  
-   .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner  {
+
+  .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
     font-size: 1.6rem !important;
   }
 
+
   /* ==========================================================
-     6. SHOP GALLERY CAROUSEL — Full Bleed Alignment
-     Removes side gutters and stretches active slides flush to edges
+     6. SHOP GALLERY CAROUSEL — Full Bleed
   ========================================================== */
   #shop-gallery .user-items-list-carousel__gutter {
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
 
-  /* Force the grid track to size each column to exactly 50% of the viewport width */
   #shop-gallery .user-items-list-carousel__slides {
     grid-auto-columns: 50% !important;
     grid-template-columns: repeat(2, 50%) !important;
   }
 
-  /* Let the individual slides fill the 50% width of their grid cells */
   #shop-gallery .user-items-list-carousel__slide {
     width: 100% !important;
   }
@@ -349,7 +325,6 @@ body:not(.sqs-edit-mode-active) {
     }
   }
 
-  /* Remove vertical gap at the bottom of the carousel section */
   #shop-gallery.page-section,
   #shop-gallery .content-wrapper,
   #shop-gallery .user-items-list-item-container {
@@ -357,200 +332,43 @@ body:not(.sqs-edit-mode-active) {
     margin-bottom: 0 !important;
   }
 
-  /* Hide the empty text content wrappers inside slides so images span full height */
   #shop-gallery .list-item-content {
     display: none !important;
   }
 
-  /* Hide extra spacing reserved for bottom navigation/arrows */
   #shop-gallery .user-items-list-carousel__space-below {
     display: none !important;
   }
 
-  /* Remove the margin-bottom spacing on the image container inside the slides */
   #shop-gallery .user-items-list-carousel__media-container {
     margin-bottom: 0 !important;
   }
 
 
-    #main-product-price, .product-description.hidden-down-md, .product-add-to-cart-layout-wrapper {
+  /* ==========================================================
+     7. PRODUCT DETAIL MISC
+  ========================================================== */
+  #main-product-price,
+  .product-description.hidden-down-md,
+  .product-add-to-cart-layout-wrapper {
     display: none !important;
   }
-}
 
-.relocated-description .sqs-stack-container > .stack-child-container:nth-child(3) ul[data-rte-list] li > *:first-child::before {
-    content: "" !important;
-    display: inline-block !important;
-    height: 14px !important;
-    width: 40px !important;
-    margin-left: -40px !important;
-    background-color: currentColor !important;
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: right 10px center !important;
-    mask-position: right 10px center !important;
-    -webkit-mask-size: 14px 14px !important;
-    mask-size: 14px 14px !important;
-    vertical-align: middle !important;
-    margin-top: -2px !important;
+  h2, h3, h4 {
+    line-height: 1.1em !important;
   }
 
-
-.relocated-description .sqs-stack-container > .stack-child-container:nth-child(4) ul[data-rte-list] li > *:first-child::before {
-    content: "" !important;
-    display: inline-block !important;
-    height: 14px !important;
-    width: 40px !important;
-    margin-left: -40px !important;
-    /* Inherit the text color dynamically using currentColor */
-    background-color: currentColor !important;
-    /* CSS mask renders the SVG in the inherited text color */
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    -webkit-mask-position: right 10px center !important;
-    mask-position: right 10px center !important;
-    -webkit-mask-size: 14px 14px !important;
-    mask-size: 14px 14px !important;
-    vertical-align: middle !important;
-    margin-top: -2px !important;
+  body.view-item.collection-type-products .product-detail-section {
+    border-bottom: 1px solid black;
   }
 
-
-
-.sqsrte-small {
-  letter-spacing: 0.02em;
 }
-
-.relocated-description p {
-  font-size: 0.9rem !important;
-}
-
-.relocated-description {
-.sqs-block.html-block:has(p.sqsrte-small strong) {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-}
-
-/* Scope strictly to the Setup Packages section */
-#setup-packages {
-
-  /* Overrides Squarespace's pseudo-element on list items */
-  ul[data-rte-list] li > *:first-child::before {
-    content: "" !important; /* Clear the native bullet character */
-    display: inline-block !important;
-    height: 14px !important; /* Force height so the browser doesn't collapse it to 0px */
-    width: 40px !important;  /* Keep native Squarespace box width */
-    margin-left: -40px !important; /* Offset it back into the gutter */
-    
-    /* Inherit the text color dynamically using currentColor */
-    background-color: currentColor !important;
-    
-    /* Use CSS Masking to clip the color to the SVG checkmark shapes */
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    
-    /* Position the checkmark close to the text (10px spacing) */
-    -webkit-mask-position: right 10px center !important;
-    mask-position: right 10px center !important;
-    
-    -webkit-mask-size: 14px 14px !important;
-    mask-size: 14px 14px !important;
-    
-    /* Vertically align the checkmark icon nicely with the text */
-    vertical-align: middle !important;
-    margin-top: -2px !important; 
-  }
-  
-  
-    /* ==========================================================
-     2. DOCK BUTTON OVERRIDES (White Outline for Black Background)
-     Styles the button block to be legible inside the black container
-     without hardcoding. Inherits colors from Squarespace theme vars.
-  ========================================================== */
-  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element {
-    color: var(--siteBackgroundColor, #ffffff) !important;
-    border-color: var(--siteBackgroundColor, #ffffff) !important;
-    background-color: transparent !important;
-    transition: background-color 0.2s ease, color 0.2s ease !important;
-  }
-  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element:hover {
-    color: #000000 !important; /* Contrast color on hover */
-    background-color: var(--siteBackgroundColor, #ffffff) !important;
-  }
-}
-
 
 
 /* ==========================================================
-     6. SHOP GALLERY CAROUSEL — Full Bleed Alignment
-     Removes side gutters and stretches active slides flush to edges
-  ========================================================== */
-  #shop-gallery .user-items-list-carousel__gutter {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-  }
-  /* Force the grid track to size each column to exactly 50% of the viewport width */
-  #shop-gallery .user-items-list-carousel__slides {
-    grid-auto-columns: 50% !important;
-    grid-template-columns: repeat(2, 50%) !important;
-  }
-  /* Let the individual slides fill the 50% width of their grid cells */
-  #shop-gallery .user-items-list-carousel__slide {
-    width: 100% !important;
-  }
-  @media screen and (max-width: 767px) {
-    #shop-gallery .user-items-list-carousel__slides {
-      grid-auto-columns: 100% !important;
-      grid-template-columns: repeat(1, 100%) !important;
-    }
-    #shop-gallery .user-items-list-carousel__slide {
-      width: 100% !important;
-    }
-  }
-  /* Remove vertical gap at the bottom of the carousel section */
-  #shop-gallery.page-section,
-  #shop-gallery .content-wrapper,
-  #shop-gallery .user-items-list-item-container {
-    padding-bottom: 0 !important;
-    margin-bottom: 0 !important;
-  }
-  /* Hide the empty text content wrappers inside slides so images span full height */
-  #shop-gallery .list-item-content {
-    display: none !important;
-  }
-  /* Hide extra spacing reserved for bottom navigation/arrows */
-  #shop-gallery .user-items-list-carousel__space-below {
-    display: none !important;
-  }
-
-  /* Remove the margin-bottom spacing on the image container inside the slides */
-  #shop-gallery .user-items-list-carousel__media-container {
-    margin-bottom: 0 !important;
-  }
-
-h2, h3, h4 {
-  line-height: 1.1em !important;
-}
-
-body.view-item.collection-type-products .product-detail-section {
-  border-bottom: 1px solid black;
-}
-
-.product-meta {
-  padding-bottom: 0 !important;
-}
-
-/* ====================================== 
-    PRODUCT ITEM BENEFITS
-====================================== */
-
+   8. PRODUCT ITEM BENEFITS — Homepage product overview bar
+   (Outside body:not — safe, scoped to code block marker ID)
+========================================================== */
 
 #product-item-benefits {
   .user-items-list-item-container {
@@ -571,8 +389,9 @@ body.view-item.collection-type-products .product-detail-section {
       border-right: 0;
     }
   }
+
   .user-items-list-simple[data-layout-width="full"] {
     padding-left: 0vw;
     padding-right: 0vw;
-}
+  }
 }
