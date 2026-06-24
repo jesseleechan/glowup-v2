@@ -377,3 +377,202 @@ body:not(.sqs-edit-mode-active) {
     display: none !important;
   }
 }
+
+.relocated-description .sqs-stack-container > .stack-child-container:nth-child(3) ul[data-rte-list] li > *:first-child::before {
+    content: "" !important;
+    display: inline-block !important;
+    height: 14px !important;
+    width: 40px !important;
+    margin-left: -40px !important;
+    background-color: currentColor !important;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M12.25%205.25C12.2505%205.06515%2012.2143%204.88204%2012.1436%204.71123C12.0729%204.54043%2011.9691%204.38531%2011.8382%204.25484L9.74517%202.16184C9.61469%202.03089%209.45958%201.92708%209.28877%201.85639C9.11797%201.78571%208.93485%201.74955%208.75%201.75H2.91667C2.60725%201.75%202.3105%201.87292%202.09171%202.09171C1.87292%202.31051%201.75%202.60725%201.75%202.91667V11.0833C1.75%2011.3928%201.87292%2011.6895%202.09171%2011.9083C2.3105%2012.1271%202.60725%2012.25%202.91667%2012.25H11.0833C11.3928%2012.25%2011.6895%2012.1271%2011.9083%2011.9083C12.1271%2011.6895%2012.25%2011.3928%2012.25%2011.0833V5.25Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M8.75%201.75V4.66667C8.75%204.82138%208.81146%204.96975%208.92085%205.07915C9.03025%205.18854%209.17862%205.25%209.33333%205.25H12.25%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: right 10px center !important;
+    mask-position: right 10px center !important;
+    -webkit-mask-size: 14px 14px !important;
+    mask-size: 14px 14px !important;
+    vertical-align: middle !important;
+    margin-top: -2px !important;
+  }
+
+
+.relocated-description .sqs-stack-container > .stack-child-container:nth-child(4) ul[data-rte-list] li > *:first-child::before {
+    content: "" !important;
+    display: inline-block !important;
+    height: 14px !important;
+    width: 40px !important;
+    margin-left: -40px !important;
+    /* Inherit the text color dynamically using currentColor */
+    background-color: currentColor !important;
+    /* CSS mask renders the SVG in the inherited text color */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    -webkit-mask-position: right 10px center !important;
+    mask-position: right 10px center !important;
+    -webkit-mask-size: 14px 14px !important;
+    mask-size: 14px 14px !important;
+    vertical-align: middle !important;
+    margin-top: -2px !important;
+  }
+
+
+
+.sqsrte-small {
+  letter-spacing: 0.02em;
+}
+
+.relocated-description p {
+  font-size: 0.9rem !important;
+}
+
+.relocated-description {
+.sqs-block.html-block:has(p.sqsrte-small strong) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+}
+
+/* Scope strictly to the Setup Packages section */
+#setup-packages {
+
+  /* Overrides Squarespace's pseudo-element on list items */
+  ul[data-rte-list] li > *:first-child::before {
+    content: "" !important; /* Clear the native bullet character */
+    display: inline-block !important;
+    height: 14px !important; /* Force height so the browser doesn't collapse it to 0px */
+    width: 40px !important;  /* Keep native Squarespace box width */
+    margin-left: -40px !important; /* Offset it back into the gutter */
+    
+    /* Inherit the text color dynamically using currentColor */
+    background-color: currentColor !important;
+    
+    /* Use CSS Masking to clip the color to the SVG checkmark shapes */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    
+    -webkit-mask-repeat: no-repeat !important;
+    mask-repeat: no-repeat !important;
+    
+    /* Position the checkmark close to the text (10px spacing) */
+    -webkit-mask-position: right 10px center !important;
+    mask-position: right 10px center !important;
+    
+    -webkit-mask-size: 14px 14px !important;
+    mask-size: 14px 14px !important;
+    
+    /* Vertically align the checkmark icon nicely with the text */
+    vertical-align: middle !important;
+    margin-top: -2px !important; 
+  }
+  
+  
+    /* ==========================================================
+     2. DOCK BUTTON OVERRIDES (White Outline for Black Background)
+     Styles the button block to be legible inside the black container
+     without hardcoding. Inherits colors from Squarespace theme vars.
+  ========================================================== */
+  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element {
+    color: var(--siteBackgroundColor, #ffffff) !important;
+    border-color: var(--siteBackgroundColor, #ffffff) !important;
+    background-color: transparent !important;
+    transition: background-color 0.2s ease, color 0.2s ease !important;
+  }
+  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element:hover {
+    color: #000000 !important; /* Contrast color on hover */
+    background-color: var(--siteBackgroundColor, #ffffff) !important;
+  }
+}
+
+
+
+/* ==========================================================
+     6. SHOP GALLERY CAROUSEL — Full Bleed Alignment
+     Removes side gutters and stretches active slides flush to edges
+  ========================================================== */
+  #shop-gallery .user-items-list-carousel__gutter {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  /* Force the grid track to size each column to exactly 50% of the viewport width */
+  #shop-gallery .user-items-list-carousel__slides {
+    grid-auto-columns: 50% !important;
+    grid-template-columns: repeat(2, 50%) !important;
+  }
+  /* Let the individual slides fill the 50% width of their grid cells */
+  #shop-gallery .user-items-list-carousel__slide {
+    width: 100% !important;
+  }
+  @media screen and (max-width: 767px) {
+    #shop-gallery .user-items-list-carousel__slides {
+      grid-auto-columns: 100% !important;
+      grid-template-columns: repeat(1, 100%) !important;
+    }
+    #shop-gallery .user-items-list-carousel__slide {
+      width: 100% !important;
+    }
+  }
+  /* Remove vertical gap at the bottom of the carousel section */
+  #shop-gallery.page-section,
+  #shop-gallery .content-wrapper,
+  #shop-gallery .user-items-list-item-container {
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  /* Hide the empty text content wrappers inside slides so images span full height */
+  #shop-gallery .list-item-content {
+    display: none !important;
+  }
+  /* Hide extra spacing reserved for bottom navigation/arrows */
+  #shop-gallery .user-items-list-carousel__space-below {
+    display: none !important;
+  }
+
+  /* Remove the margin-bottom spacing on the image container inside the slides */
+  #shop-gallery .user-items-list-carousel__media-container {
+    margin-bottom: 0 !important;
+  }
+
+h2, h3, h4 {
+  line-height: 1.1em !important;
+}
+
+body.view-item.collection-type-products .product-detail-section {
+  border-bottom: 1px solid black;
+}
+
+.product-meta {
+  padding-bottom: 0 !important;
+}
+
+/* ====================================== 
+    PRODUCT ITEM BENEFITS
+====================================== */
+
+
+#product-item-benefits {
+  .user-items-list-item-container {
+    grid-gap: 0 !important;
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+  }
+
+  .list-item {
+    border-right: 1px solid var(--black);
+    padding: 12% 14% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+
+    &:last-child {
+      border-right: 0;
+    }
+  }
+  .user-items-list-simple[data-layout-width="full"] {
+    padding-left: 0vw;
+    padding-right: 0vw;
+}
+}

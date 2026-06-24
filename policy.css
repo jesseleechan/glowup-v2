@@ -1,0 +1,34 @@
+#legal-copy .sqs-block-html h4 {
+    scroll-margin-top: 72px;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+.toc-list li {
+    margin-bottom: 16px;
+}
+
+.toc-list a {
+    display: inline-block;
+    text-decoration: none;
+    color: #888888;
+    font-size: 1rem;
+    transition: all 0.3s ease; /* Animates both the color change and the movement */
+}
+
+/* Hover State */
+.toc-list a:hover {
+    color: black; 
+}
+
+/* Active State (When section is in view) */
+.toc-list a.active {
+    color: black; /* Matches your heading color */
+    font-weight: bold; /* Makes it slightly bolder */
+    transform: translateX(12px); /* Pushes the text 12 pixels to the right */
+}
