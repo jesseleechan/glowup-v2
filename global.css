@@ -1,0 +1,108 @@
+/* ======================================
+   00. VARIABLES & SETUP
+====================================== */
+
+:root {
+  /* --- Colors --- */
+  --white: hsl(var(--white-hsl));
+  --light: hsl(var(--lightAccent-hsl));
+  --accent: hsl(var(--accent-hsl));
+  --dark: hsl(var(--darkAccent-hsl));
+  --black: hsl(var(--black-hsl));
+  --black-10: hsla(var(--black-hsl), 0.1);
+
+  --dividerColor: var(--section-divider-stroke-color);
+  --borderColor: var(--tweak-form-block-field-border-color);
+
+  /* --- Layout --- */
+  --site-max-width: 1440px;
+  --vertLineThickness: 1px;
+}
+
+
+/* ======================================
+   01. GLOBAL SITE STYLING
+====================================== */
+
+/* Allow site-wrapper to shrink on mobile when body is flex */
+body:not(.sqs-edit-mode-active) #siteWrapper {
+  min-width: 0;
+}
+
+/* --- Body Layout & Max Width --- */
+body:not(.sqs-edit-mode-active) {
+  background: var(--accent);
+  display: flex;
+  justify-content: center;
+
+  header {
+    max-width: var(--sqs-site-max-width) !important;
+    margin: 0 auto;
+  }
+
+  .sections,
+  .page-regions {
+    max-width: var(--sqs-site-max-width) !important;
+  }
+}
+
+/* --- Site Wrapper Border (wide viewports only) --- */
+@media screen and (min-width: 1440px) {
+  body:not(.sqs-edit-mode-active) {
+    .site-wrapper {
+      border: 1px solid var(--dark);
+      margin: 0px 100px !important;
+    }
+
+    .header {
+      position: fixed;
+      left: 100px;
+      right: 100px;
+      width: auto !important;
+      border-left: 1px solid var(--dark);
+      border-right: 1px solid var(--dark);
+    }
+  }
+}
+
+
+/* ======================================
+   02. HEADER & NAVIGATION
+====================================== */
+
+.header-nav-folder-content {
+  border: 1px solid var(--dark);
+  padding: 4px 8px !important;
+}
+
+.header-nav-folder-item a {
+  padding: 2px 0px !important;
+}
+
+
+/* ======================================
+   SECONDARY BUTTON ARROW ICON
+====================================== */
+
+.sqs-button-element--secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  &::after {
+    content: '';
+    display: block;
+    width: 22px;
+    height: 24px;
+    background-color: currentColor;
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='22' height='24' viewBox='0 0 22 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.4165 6.7373H15.5832V16.3623' stroke='black' stroke-width='1.925' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.4165 16.3623L15.5832 6.7373' stroke='black' stroke-width='1.925' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    -webkit-mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='22' height='24' viewBox='0 0 22 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.4165 6.7373H15.5832V16.3623' stroke='black' stroke-width='1.925' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M6.4165 16.3623L15.5832 6.7373' stroke='black' stroke-width='1.925' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+}
