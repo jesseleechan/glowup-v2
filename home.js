@@ -1,8 +1,48 @@
 /* ==========================================================
    GLOWUP ONLINE — HOME PAGE JAVASCRIPT
-   Hero slider (Swiper) + summary block carousel pager.
+   Hero slider (Swiper) + summary block carousel pager
+   + products-overview full-card links.
    Requires: swiper-bundle.min.js loaded before this file.
 ========================================================== */
+
+
+/* ========================================================
+   PRODUCTS OVERVIEW — FULL-CARD LINKS
+   Injects an invisible overlay <a> into each accordion card
+   pointing at its (hidden) button's URL. Styled by home.css
+   (.glowup-card-link). Skipped in the editor so cards stay
+   editable.
+======================================================== */
+
+document.addEventListener('DOMContentLoaded', function () {
+  function isActivelyEditing() {
+    try {
+      if (window.self !== window.top) return true;
+    } catch (e) {
+      return true;
+    }
+    var body = document.body;
+    if (!body) return false;
+    return (
+      body.classList.contains('sqs-edit-mode-active') ||
+      body.classList.contains('sqs-is-page-editing') ||
+      body.classList.contains('sqs-hide-overlay-widgets')
+    );
+  }
+  if (isActivelyEditing()) return;
+
+  document.querySelectorAll('#products-overview .list-item').forEach(function (li) {
+    if (li.querySelector('.glowup-card-link')) return;
+    var btn = li.querySelector('.list-item-content__button-container a');
+    if (!btn || !btn.getAttribute('href')) return;
+    var a = document.createElement('a');
+    a.className = 'glowup-card-link';
+    a.href = btn.getAttribute('href');
+    var title = li.querySelector('.list-item-content__title');
+    a.setAttribute('aria-label', title ? title.textContent.trim() : 'View');
+    li.appendChild(a);
+  });
+});
 
 
 /* ========================================================

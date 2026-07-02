@@ -456,7 +456,7 @@
 
 
 /* ======================================
-   07. SERVICES LIST BLOCK (HORIZONTAL ACCORDION)
+   07. PRODUCTS OVERVIEW (HORIZONTAL ACCORDION)
 ====================================== */
 
 #products-overview {
@@ -578,26 +578,62 @@
     }
   }
 
-  /* --- Full-card Link (Button Container Moved via JS) --- */
+  /* --- Full-card Link --- */
+  /* The visible button is hidden; home.js injects an invisible
+     .glowup-card-link overlay <a> into each .list-item pointing at
+     the button's URL, so the whole card is clickable. */
   .list-item-content__button-wrapper {
     display: none !important;
   }
 
-  .list-item > .list-item-content__button-container {
-    position: absolute !important;
-    inset: 0 !important;
-    max-width: none !important;
-    margin: 0 !important;
+  .list-item .glowup-card-link {
+    position: absolute;
+    inset: 0;
     z-index: 10;
-    pointer-events: all;
+  }
 
-    a {
-      display: block !important;
-      width: 100% !important;
-      height: 100% !important;
-      opacity: 0 !important;
-      font-size: 0 !important;
-      pointer-events: all !important;
+  /* --- Tablet: keep the 3-col accordion, stack title over count
+     and relax spacing for the narrower columns --- */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .user-items-list-item-container {
+      height: 60vh !important;
+    }
+
+    .list-item-content {
+      padding: 28px 24px !important;
+    }
+
+    .list-item-content__text-wrapper {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 6px !important;
+    }
+
+    .list-item-content__title {
+      white-space: normal;
+      font-size: 2rem !important;
+    }
+
+    .list-item-content__description {
+      font-size: 0.9rem !important;
+    }
+  }
+
+  /* --- Mobile: stack the three cards full-width. Hover accordion
+     doesn't exist on touch; cards are simple tappable banners --- */
+  @media screen and (max-width: 767px) {
+    .user-items-list-item-container {
+      height: auto !important;
+      grid-template-columns: 1fr !important;
+      grid-auto-rows: 280px !important;
+    }
+
+    .list-item-content {
+      padding: 20px !important;
+    }
+
+    .list-item-content__title {
+      font-size: 2.4rem !important;
     }
   }
 }
