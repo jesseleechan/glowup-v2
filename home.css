@@ -685,19 +685,6 @@
 }
 
 
-/* ======================================
-   09. FEATURED BANNERS
-====================================== */
-
-#featured-banner-1,
-#featured-banner-2 {
-  .fe-block:has([data-definition-name="website.components.stack"]):not(.stack-child-wrapper .fe-block) {
-    outline: 1.25px solid rgba(255, 255, 255, 0.1);
-    overflow: hidden;
-    border-radius: 10px;
-  }
-}
-
 
 /* ======================================
    10. ANIMATIONS
