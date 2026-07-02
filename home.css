@@ -61,6 +61,23 @@
       }
     }
 
+    /* Tablet: stack the arrows vertically — one button wide instead of two,
+       which frees horizontal space beside slide CTAs and lets the buttons
+       stay at a comfortable tap size */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      flex-direction: column;
+      gap: 8px;
+
+      .nav-btn {
+        width: 64px;
+        height: 48px;
+
+        svg {
+          width: 20px;
+        }
+      }
+    }
+
     @media screen and (max-width: 767px) {
       right: 24px;
       bottom: 24px;
@@ -69,6 +86,10 @@
       .nav-btn {
         width: 64px;
         height: 48px;
+
+        svg {
+          width: 24px;
+        }
       }
     }
   }
