@@ -365,6 +365,9 @@
     grid-gap: 0 !important;
     border-top: 1px solid var(--black);
     border-bottom: 1px solid var(--black);
+    /* Always 6-up on desktop/tablet — overrides Squarespace's responsive
+       column drop (4+2 stragglers). 6 items = one clean row. */
+    grid-template-columns: repeat(6, 1fr) !important;
   }
 
   .list-item {
@@ -402,6 +405,39 @@
 
   .user-items-list-simple[data-layout-width="full"] {
     padding: 0 !important;
+  }
+
+  /* Tablet: keep 6-up but relax the inner padding so logos stay legible
+     in the narrower cells */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .list-item-media .list-item-media-inner {
+      padding: 22% 15% !important;
+    }
+  }
+
+  /* Mobile: 3x2 grid (no stragglers with 6 items), kept compact */
+  @media screen and (max-width: 767px) {
+    .user-items-list-item-container {
+      grid-template-columns: repeat(3, 1fr) !important;
+    }
+
+    .list-item {
+      padding: 6% 4% !important;
+
+      /* row ends: no right border on items 3 and 6 */
+      &:nth-child(3n) {
+        border-right: 0;
+      }
+
+      /* divider between the two rows */
+      &:nth-child(-n+3) {
+        border-bottom: 1px solid var(--black);
+      }
+    }
+
+    .list-item-media .list-item-media-inner {
+      padding: 16% 18% !important;
+    }
   }
 }
 
