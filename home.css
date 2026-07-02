@@ -11,14 +11,19 @@
 
   .custom-nav-cluster {
     position: absolute;
-    right: 48px;
-    bottom: 48px;
+    /* Fluid offsets/sizes track the Fluid Engine's vw-based grid so the
+       cluster compresses in lockstep with slide content. Reference: 1440px
+       design width (48px = 3.33vw, 80px = 5.56vw, 57px = 3.96vw, 12px = 0.83vw).
+       Design rule: keep the bottom-right area clear at 1440 in the editor
+       and it stays clear at every desktop-layout width down to 768px. */
+    right: clamp(16px, 3.33vw, 48px);
+    bottom: clamp(16px, 3.33vw, 48px);
     z-index: 20;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    gap: 12px;
+    gap: clamp(6px, 0.83vw, 12px);
     box-sizing: border-box;
     pointer-events: auto;
 
@@ -27,8 +32,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 80px;
-      height: 57px;
+      width: clamp(44px, 5.56vw, 80px);
+      height: clamp(31px, 3.96vw, 57px);
       padding: 0;
       margin: 0;
       background: transparent;
@@ -41,6 +46,8 @@
 
       svg {
         display: block;
+        width: clamp(16px, 1.67vw, 24px);
+        height: auto;
       }
 
       &:active {
