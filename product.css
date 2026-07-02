@@ -112,9 +112,7 @@ body:not(.sqs-edit-mode-active) {
     }
   }
 
-  .sqsrte-small {
-    letter-spacing: 0.02em;
-  }
+
 
   .relocated-description p {
     font-size: 0.9rem !important;
@@ -352,10 +350,6 @@ body:not(.sqs-edit-mode-active) {
   .product-description.hidden-down-md,
   .product-add-to-cart-layout-wrapper {
     display: none !important;
-  }
-
-  h2, h3, h4 {
-    line-height: 1.1em !important;
   }
 
   body.view-item.collection-type-products .product-detail-section {

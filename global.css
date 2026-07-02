@@ -65,6 +65,10 @@ body:not(.sqs-edit-mode-active) {
   }
 }
 
+.sqsrte-small {
+  letter-spacing: 0.02em;
+ }
+
 
 /* ======================================
    02. HEADER & NAVIGATION
@@ -79,6 +83,36 @@ body:not(.sqs-edit-mode-active) {
   padding: 2px 0px !important;
 }
 
+/* ======================================
+   03. VERTICAL LINE DIVIDER
+====================================== */
+
+#siteWrapper .code-block .sqs-block-content:has(.vertical-line) {
+  position: unset;
+}
+
+@media (min-width: 768px) {
+  .code-block .vertical-line {
+    height: 1px;
+    width: 1px;
+
+    &:before {
+      content: "";
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      left: 50%;
+      background: var(--tweak-line-block-line-color);
+      transform: translateX(-50%);
+
+      @media screen and (max-width: 767px) {
+        height: 1px;
+        width: 100%;
+        display: none;
+      }
+    }
+  }
+}
 
 /* ======================================
    SECONDARY BUTTON ARROW ICON

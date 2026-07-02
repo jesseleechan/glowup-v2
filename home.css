@@ -353,36 +353,7 @@
 }
 
 
-/* ======================================
-   06. VERTICAL LINE DIVIDER
-====================================== */
 
-#siteWrapper .code-block .sqs-block-content:has(.vertical-line) {
-  position: unset;
-}
-
-@media (min-width: 768px) {
-  .code-block .vertical-line {
-    height: 1px;
-    width: 1px;
-
-    &:before {
-      content: "";
-      position: absolute;
-      height: 100%;
-      width: 1px;
-      left: 50%;
-      background: var(--tweak-line-block-line-color);
-      transform: translateX(-50%);
-
-      @media screen and (max-width: 767px) {
-        height: 1px;
-        width: 100%;
-        display: none;
-      }
-    }
-  }
-}
 
 /* --- FAQs Image Sizing --- */
 #faqs {
@@ -399,7 +370,7 @@
    07. SERVICES LIST BLOCK (HORIZONTAL ACCORDION)
 ====================================== */
 
-[data-section-id="6a2d8169fff36f1c36761dca"] {
+#products-overview {
   /* Fixed height grid with accordion columns */
   .user-items-list-item-container {
     height: 70vh !important;
