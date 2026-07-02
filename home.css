@@ -112,10 +112,10 @@
 
 
 /* ======================================
-   04. PRODUCT SUMMARY BLOCK CUSTOMIZATION
+   04. PRODUCT SUMMARY BLOCK (#collection-grid)
 ====================================== */
 
-.summary-block {
+#collection-grid .summary-block {
   /* Global Summary Block Adjustments */
   .summary-item {
     margin-bottom: 0 !important;
@@ -149,10 +149,21 @@
     margin-top: -2px !important;
     margin-bottom: 0 !important;
 
+    /* Flex row equalizes card heights so separator borders always run
+       the full height (items are inline-block by default and each stops
+       at its own content height). Items keep their JS-set inline widths
+       via flex: 0 0 auto, so Squarespace's paging math is unaffected. */
+    display: flex !important;
+    align-items: stretch !important;
+
     .summary-item {
       border-right: 1px solid var(--black);
       box-sizing: border-box;
       padding: 2% !important;
+      height: auto !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 0 0 auto !important;
 
       &:first-child {
         border-left: 1px solid var(--black);
@@ -257,6 +268,10 @@
         "title price"
         "excerpt excerpt"
         "tags tags";
+      /* 1fr excerpt row + flex-grow pins the tag row to the card bottom,
+         so tag baselines align across cards of different content heights */
+      grid-template-rows: auto 1fr auto;
+      flex-grow: 1;
       row-gap: 15px;
       align-items: baseline;
     }
@@ -285,8 +300,13 @@
     }
 
     .summary-metadata-item--tags {
-      font-size: 0 !important;
+      font-size: 0 !important; /* hides SQS comma separators between tag links */
       color: transparent !important;
+      /* Flex gap spaces pills on both axes — fixes zero vertical
+         spacing when pills wrap to a second line */
+      display: flex !important;
+      flex-wrap: wrap;
+      gap: 6px;
 
       a {
         font-size: 0.7rem !important;
@@ -297,7 +317,6 @@
         border: 1.5px solid var(--black);
         border-radius: 30px;
         padding: 10px 15px;
-        margin-right: 4px;
         font-weight: 500;
         text-decoration: none !important;
         transition: all 0.2s ease;
@@ -326,6 +345,12 @@
         drop-shadow(0px 48px 40px rgba(18, 12, 8, 0.10));
       will-change: filter;
       transform: translateZ(0);
+      /* Same motion as the services accordion images (scale 1.03 / 0.55s) */
+      transition: transform 0.55s ease;
+    }
+
+    &:hover .summary-thumbnail-image {
+      transform: translateZ(0) scale(1.03);
     }
   }
 }
