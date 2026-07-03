@@ -9,6 +9,11 @@
     originalNextSibling: null,
     relocated: null
   };
+  var counterState = {
+    moved: false,
+    originalParent: null,
+    originalNextSibling: null
+  };
   var latestParentEditorState = 'unknown';
   var syncScheduled = false;
 
@@ -106,6 +111,47 @@
     } else {
       relocateDescription();
     }
+
+    syncGalleryCounter(activelyEditing);
+  }
+
+  /* Move the native "1 / N" slide indicator between the prev/next
+     buttons so flexbox centers it inside the pill pager (product.css
+     styles it via .product-gallery-carousel-controls > indicator).
+     Restored to its original spot while editing. */
+  function syncGalleryCounter(activelyEditing) {
+    var controls = document.querySelector('.product-gallery-carousel-controls');
+    var indicator = document.querySelector('.product-gallery-current-slide-indicator');
+    if (!controls || !indicator) return;
+
+    if (activelyEditing) {
+      if (!counterState.moved || !counterState.originalParent) return;
+      if (
+        counterState.originalNextSibling &&
+        counterState.originalNextSibling.parentNode === counterState.originalParent
+      ) {
+        counterState.originalParent.insertBefore(indicator, counterState.originalNextSibling);
+      } else {
+        counterState.originalParent.appendChild(indicator);
+      }
+      counterState.moved = false;
+      return;
+    }
+
+    if (indicator.parentNode === controls) return;
+
+    if (!counterState.moved) {
+      counterState.originalParent = indicator.parentNode;
+      counterState.originalNextSibling = indicator.nextSibling;
+    }
+
+    var nextBtn = controls.querySelector('.product-gallery-next');
+    if (nextBtn) {
+      controls.insertBefore(indicator, nextBtn);
+    } else {
+      controls.appendChild(indicator);
+    }
+    counterState.moved = true;
   }
 
   function updateEditorStateClasses(activelyEditing) {

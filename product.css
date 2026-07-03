@@ -95,7 +95,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     height: auto !important;
     display: flex !important;
     align-items: center !important;
-    gap: 44px;
+    gap: 8px;
     padding: 4px !important;
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -159,8 +159,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     transform: rotate(180deg) !important;
   }
 
-  /* Native "1 / 4" counter — hidden by Squarespace on desktop;
-     shown centered between the chevrons */
+  /* Native "1 / 4" counter — hidden by Squarespace on desktop.
+     product.js moves it between the prev/next buttons so flexbox
+     centers it inside the pill. The absolute rules below are the
+     no-JS fallback (element still in its native spot). */
   .product-gallery-current-slide-indicator {
     display: block !important;
     position: absolute !important;
@@ -179,6 +181,16 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     white-space: nowrap;
   }
 
+  /* In-pill counter (after product.js moves it) — static flex child,
+     no offset math to drift out of alignment */
+  .product-gallery-carousel-controls .product-gallery-current-slide-indicator {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    min-width: 48px;
+    text-align: center;
+  }
+
   /* --- Mobile: gallery becomes a static full-width panel above the
      meta (sticky 100vh overlapped the stacked column layout) --- */
   @media screen and (max-width: 767px) {
@@ -193,7 +205,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
     .product-gallery-carousel-controls {
       bottom: calc(-1 * var(--gallery-pad-bottom) + 28px) !important;
-      gap: 36px;
+      gap: 4px;
     }
 
     .product-gallery-carousel-control {
@@ -209,6 +221,15 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     .product-meta {
       padding: 40px 24px !important;
       padding-bottom: 0 !important;
+    }
+
+    /* Mobile FE grid uses fixed 24px rows sized for the editor's
+       mobile layout, leaving a large dead zone between the end of
+       the description content and the action stack. Auto rows size
+       to content; empty rows collapse to zero. */
+    .relocated-description .fluid-engine {
+      grid-template-rows: none !important;
+      grid-auto-rows: auto !important;
     }
   }
 
@@ -409,7 +430,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
     color: #ffffff !important;
-    font-size: 1.6rem !important;
+    font-size: 1.2rem !important; /* matches the View Demo button */
   }
 
   /* Right button: Live Demo (outline) */
@@ -441,7 +462,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   }
 
   .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
-    font-size: 1.6rem !important;
+    font-size: 1.2rem !important; /* matches the View Demo button */
   }
 
 
@@ -495,8 +516,11 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   /* ==========================================================
      7. PRODUCT DETAIL MISC
   ========================================================== */
+  /* Hide the native description everywhere — desktop AND the mobile
+     variant (.hidden-up-md). It stays in the DOM for crawlers, and
+     the description also ships in the Product JSON-LD + meta tags. */
   #main-product-price,
-  .product-description.hidden-down-md,
+  .product-description,
   .product-add-to-cart-layout-wrapper {
     display: none !important;
   }
