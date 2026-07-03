@@ -547,22 +547,6 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     display: none !important;
   }
 
-  /* The native cart element must stay RENDERED at init — Squarespace's
-     commerce controller may skip binding display:none buy buttons.
-     Zero-footprint hide instead; product.js moves the whole
-     .product-add-to-cart subtree into the action pill (the cart click
-     handler is bound within it), where the pill rules restore it. */
-  .product-meta > .product-add-to-cart {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
   body.view-item.collection-type-products .product-detail-section {
     border-bottom: 1px solid black;
   }
