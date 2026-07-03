@@ -16,10 +16,7 @@
   };
   var pillState = {
     built: false,
-    pill: null,
     cartEl: null,
-    cartParent: null,
-    cartNextSibling: null,
     demoContainer: null,
     demoContent: null
   };
@@ -151,43 +148,41 @@
     syncRelocatedGrids(activelyEditing);
   }
 
-  /* Build the action pill: the ENTIRE native .product-add-to-cart
-     element (moved, not cloned) beside the View Demo button block's
-     anchor, inside a .glowup-action-pill flex wrapper styled by
-     product.css. The whole subtree moves because Squarespace's cart
-     handler is bound within it — moving only the inner button
-     wrapper orphaned the click binding (learned the hard way).
-     Fully reversed while editing. */
+  /* Action pill: the NATIVE .product-add-to-cart element itself
+     becomes the pill — it is NEVER reparented (Squarespace's commerce
+     controller binds the cart handler after our DOMContentLoaded code
+     runs; if the button has been moved by then, the binding silently
+     never happens — learned the hard way). We only add a class and
+     append the View Demo anchor (a plain link) as a child. The
+     description is relocated BEFORE this element (see
+     insertRelocatedDescription) so the pill sits at the bottom;
+     CSS position:sticky replaces the old FE pin. */
   function syncActionPill(activelyEditing) {
     if (activelyEditing) {
       if (!pillState.built) return;
-
-      if (pillState.cartEl && pillState.cartParent) {
-        if (
-          pillState.cartNextSibling &&
-          pillState.cartNextSibling.parentNode === pillState.cartParent
-        ) {
-          pillState.cartParent.insertBefore(pillState.cartEl, pillState.cartNextSibling);
-        } else {
-          pillState.cartParent.appendChild(pillState.cartEl);
-        }
-      }
 
       if (pillState.demoContainer && pillState.demoContent) {
         pillState.demoContent.insertBefore(pillState.demoContainer, pillState.demoContent.firstChild);
       }
 
-      if (pillState.pill && pillState.pill.parentNode) {
-        pillState.pill.parentNode.removeChild(pillState.pill);
+      if (pillState.cartEl) {
+        unstylePillButtons(pillState.cartEl);
+        pillState.cartEl.classList.remove('glowup-action-pill');
       }
 
       pillState.built = false;
-      pillState.pill = null;
       return;
     }
 
     if (pillState.built) {
-      syncPillPinnedClass();
+      // Re-append if Squarespace re-rendered around the demo anchor
+      if (
+        pillState.cartEl &&
+        pillState.demoContainer &&
+        pillState.demoContainer.parentNode !== pillState.cartEl
+      ) {
+        pillState.cartEl.appendChild(pillState.demoContainer);
+      }
       return;
     }
 
@@ -200,34 +195,48 @@
     if (!cartEl || !demoContainer) return;
 
     pillState.cartEl = cartEl;
-    pillState.cartParent = cartEl.parentNode;
-    pillState.cartNextSibling = cartEl.nextSibling;
     pillState.demoContainer = demoContainer;
     pillState.demoContent = demoContent;
 
-    var pill = document.createElement('div');
-    pill.className = 'glowup-action-pill';
-    pill.appendChild(cartEl);
-    pill.appendChild(demoContainer);
-    demoContent.appendChild(pill);
+    cartEl.classList.add('glowup-action-pill');
+    cartEl.appendChild(demoContainer);
+    stylePillButtons(cartEl);
 
-    pillState.pill = pill;
     pillState.built = true;
-
-    syncPillPinnedClass();
   }
 
-  /* The scroll-cover pseudo-element only applies when the button block
-     is actually pinned in the FE editor (desktop-only; computes static
-     on mobile) — toggled every sync so breakpoint flips stay truthful */
-  function syncPillPinnedClass() {
-    if (!pillState.pill) return;
-    var feBlock = pillState.pill.closest('.fe-block');
-    if (!feBlock) return;
-    feBlock.classList.toggle(
-      'glowup-pinned',
-      getComputedStyle(feBlock).position === 'sticky'
-    );
+  /* Squarespace ships its commerce-button sizing in a CSS cascade
+     LAYER using logical properties (block-size/inline-size) with
+     !important — unbeatable from our unlayered stylesheet at any
+     specificity. Inline style importants are the only author-level
+     override that wins. Cleared on editor restore. */
+  function stylePillButtons(cartEl) {
+    var btn = cartEl.querySelector('.sqs-add-to-cart-button');
+    var demo = cartEl.querySelector('.sqs-block-button-element');
+
+    if (btn) {
+      btn.style.setProperty('block-size', '53px', 'important');
+      btn.style.setProperty('padding', '0 24px', 'important');
+    }
+    if (demo) {
+      demo.style.setProperty('block-size', '53px', 'important');
+    }
+  }
+
+  function unstylePillButtons(cartEl) {
+    if (!cartEl) return;
+    var btn = cartEl.querySelector('.sqs-add-to-cart-button');
+    var demo = pillState.demoContainer
+      ? pillState.demoContainer.querySelector('.sqs-block-button-element')
+      : null;
+
+    if (btn) {
+      btn.style.removeProperty('block-size');
+      btn.style.removeProperty('padding');
+    }
+    if (demo) {
+      demo.style.removeProperty('block-size');
+    }
   }
 
   /* Collapse the outer gutter columns of the relocated Fluid Engine
@@ -439,8 +448,10 @@
     }
 
     if (topAnchor.parentNode === productMeta) {
-      // nextSibling may be null — insertBefore(node, null) appends
-      productMeta.insertBefore(relocated, topAnchor.nextSibling);
+      // BEFORE the cart element: the description flows first, and the
+      // native .product-add-to-cart (upgraded to the action pill by
+      // syncActionPill) sits at the bottom as a sticky footer
+      productMeta.insertBefore(relocated, topAnchor);
     } else {
       productMeta.appendChild(relocated);
     }

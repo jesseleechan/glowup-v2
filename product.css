@@ -235,7 +235,16 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     .product-meta {
       --meta-pad-x: 24px;
       padding: 40px var(--meta-pad-x) !important;
-      padding-bottom: 0 !important;
+      padding-bottom: 24px !important;
+    }
+
+    /* Static pill on mobile (matches the old desktop-only FE pin) */
+    .product-add-to-cart.glowup-action-pill {
+      position: static;
+    }
+
+    .product-add-to-cart.glowup-action-pill::before {
+      content: none !important;
     }
 
     /* Mobile FE grid uses fixed 24px rows sized for the editor's
@@ -351,57 +360,69 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   /* ==========================================================
      5. ACTION PILL (native Add to Cart + View Demo)
-     product.js moves the NATIVE .sqs-add-to-cart-button-wrapper
-     (cart listeners + loading/added states intact) into a
-     .glowup-action-pill flex wrapper built inside the View Demo
-     button block. Replaced the old product-block stack July 2026.
+     The NATIVE .product-add-to-cart element ITSELF is the pill:
+     product.js adds .glowup-action-pill to it and appends the
+     View Demo anchor inside. The cart element is never reparented
+     — Squarespace's commerce controller binds its click handler
+     AFTER our DOMContentLoaded code runs, so any reparenting
+     before that point silently kills add-to-cart.
+     Sticky-bottom via CSS replaces the old FE pin.
   ========================================================== */
-  .relocated-description .fe-block:has(.glowup-action-pill) .sqs-block-content {
-    display: flex !important;
-    align-items: center !important;
-    height: 100% !important;
+
+  /* Hidden until product.js upgrades it to the pill (rendered, not
+     display:none, so the commerce controller can always bind) */
+  .product-meta > .product-add-to-cart:not(.glowup-action-pill) {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
-  .relocated-description .glowup-action-pill {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  .product-add-to-cart.glowup-action-pill {
+    display: flex !important;
+    /* Squarespace styles .product-add-to-cart as a COLUMN flex —
+       force row (must be !important) */
+    flex-direction: row !important;
+    align-items: center !important;
     gap: 8px;
     border: 1.5px solid #000000;
     border-radius: 100px;
-    padding: 3px;
+    padding: 3px !important;
     background-color: #ebe7e4;
     box-sizing: border-box;
     width: 100%;
-    position: relative;
+    margin: 24px 0 0 0 !important;
+    position: sticky;
+    bottom: 24px;
+    z-index: 20;
   }
 
-  /* Scroll cover under the pinned button pill. Scoped to .glowup-pinned
-     (set by product.js only when the FE block is actually sticky) and
-     sized from --meta-pad-x so it always spans the meta's full width. */
-  .relocated-description .fe-block.glowup-pinned:has(.glowup-action-pill)::before {
+  /* Scroll cover under the sticky pill — hides content scrolling
+     beneath it; sized from --meta-pad-x (same var as .product-meta
+     padding) so it always spans the meta's full width */
+  .product-add-to-cart.glowup-action-pill::before {
     content: "" !important;
     position: absolute !important;
     top: 50% !important;
     left: calc(-1 * var(--meta-pad-x, 24px)) !important;
     right: calc(-1 * var(--meta-pad-x, 24px)) !important;
-    bottom: 0 !important;
+    bottom: -24px !important;
     background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
     z-index: -1 !important;
     pointer-events: none !important;
   }
 
-  /* Width split: cart ~60% / demo ~40%. The zero-footprint hide above
-     stops matching automatically once the element leaves .product-meta's
-     direct children (it's scoped with >), so no resets are needed here
-     beyond layout. */
-  .glowup-action-pill .product-add-to-cart {
+  /* Width split: cart ~60% / demo ~40% */
+  .glowup-action-pill > .product-add-to-cart-layout-wrapper {
     flex: 1.6;
     margin: 0 !important;
     padding: 0 !important;
   }
 
-  .glowup-action-pill .product-add-to-cart-layout-wrapper,
   .glowup-action-pill .sqs-add-to-cart-button-wrapper {
     display: block !important;
     width: 100% !important;
@@ -409,7 +430,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     padding: 0 !important;
   }
 
-  .glowup-action-pill .sqs-block-button-container {
+  .glowup-action-pill > .sqs-block-button-container {
     flex: 1;
     margin: 0 !important;
     padding: 0 !important;
