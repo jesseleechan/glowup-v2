@@ -351,7 +351,7 @@
 
     cartEl.style.setProperty('display', 'flex', 'important');
     cartEl.style.setProperty('flex-direction', 'row', 'important');
-    cartEl.style.setProperty('align-items', 'center', 'important');
+    cartEl.style.setProperty('align-items', isMobile ? 'stretch' : 'center', 'important');
     cartEl.style.setProperty('position', isMobile ? 'static' : 'sticky', 'important');
     cartEl.style.setProperty('bottom', isMobile ? 'auto' : '24px', 'important');
     cartEl.style.setProperty('width', '100%', 'important');
@@ -365,12 +365,17 @@
     cartEl.style.setProperty('z-index', '20', 'important');
     cartEl.style.setProperty('isolation', 'isolate', 'important');
 
+    var buttonPadding = isMobile ? '0 clamp(12px, 3.5vw, 18px)' : '0 24px';
+
     if (btn) {
       btn.style.setProperty('block-size', '53px', 'important');
-      btn.style.setProperty('padding', '0 24px', 'important');
+      btn.style.setProperty('padding', buttonPadding, 'important');
+      btn.style.setProperty('white-space', 'nowrap', 'important');
     }
     if (demo) {
       demo.style.setProperty('block-size', '53px', 'important');
+      demo.style.setProperty('padding', buttonPadding, 'important');
+      demo.style.setProperty('white-space', 'nowrap', 'important');
     }
   }
 
@@ -404,9 +409,12 @@
     if (btn) {
       btn.style.removeProperty('block-size');
       btn.style.removeProperty('padding');
+      btn.style.removeProperty('white-space');
     }
     if (demo) {
       demo.style.removeProperty('block-size');
+      demo.style.removeProperty('padding');
+      demo.style.removeProperty('white-space');
     }
   }
 
