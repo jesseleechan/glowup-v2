@@ -1,5 +1,12 @@
 /* ==========================================================
    GLOWUP ONLINE — PRODUCT DETAIL PAGE CUSTOM CSS
+
+   IMPORTANT: all live-site rules MUST live inside the body
+   guard wrapper below (specificity 0,3,1 + selector). Rules
+   added outside it — or in another file with a weaker
+   selector — will silently lose the cascade to rules in here.
+   Companion JS: product.js (relocation, gallery counter,
+   --glowup-header-h, grid normalization, .glowup-pinned).
 ========================================================== */
 
 body:not(.sqs-edit-mode-active):not(.glowup-product-active-editing),
@@ -22,7 +29,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
      2. PRODUCT META — Left side (scrollable details)
   ========================================================== */
   .product-meta {
-    padding: 4vw 3vw;
+    /* Single source of truth: the action-stack scroll cover derives its
+       width from this var — change padding here, cover follows */
+    --meta-pad-x: 3vw;
+    padding: 4vw var(--meta-pad-x);
     padding-bottom: 0 !important;
   }
 
@@ -66,9 +76,11 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     align-items: center !important;
     justify-content: center !important;
     /* Clip parked/transitioning slides at the sides but let the pill
-       pager (a child of this box) hang below into the padding zone */
+       pager (a child of this box) hang below into the padding zone.
+       Budget derived from the padding var: the pill's lowest edge is
+       always (--gallery-pad-bottom - 36px) below this box. */
     overflow: visible !important;
-    clip-path: inset(0 0 -160px 0);
+    clip-path: inset(0 0 calc(-1 * var(--gallery-pad-bottom, 160px)) 0);
   }
 
   .product-gallery-slides-item {
@@ -221,7 +233,8 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     }
 
     .product-meta {
-      padding: 40px 24px !important;
+      --meta-pad-x: 24px;
+      padding: 40px var(--meta-pad-x) !important;
       padding-bottom: 0 !important;
     }
 
@@ -267,15 +280,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     }
   }
 
+  /* Outer gutter columns are collapsed by product.js (inline style,
+     derived from the native track count) — no hardcoded 8/24 here */
   .relocated-description .fluid-engine {
     --grid-gutter: 0px !important;
-    grid-template-columns: 0 repeat(8, minmax(0, 1fr)) 0 !important;
-  }
-
-  @media screen and (min-width: 768px) {
-    .relocated-description .fluid-engine {
-      grid-template-columns: 0 repeat(24, minmax(0, 1fr)) 0 !important;
-    }
   }
 
 
@@ -294,8 +302,11 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   /* ==========================================================
      4b. CUSTOM BULLET POINTS — Page icon (2nd list)
   ========================================================== */
-  .relocated-description .glowup-product-list-child--pages ul[data-rte-list] li > *:first-child::before,
-  .relocated-description .sqs-stack-container > .stack-child-container:nth-child(3) ul[data-rte-list] li > *:first-child::before {
+  /* .glowup-product-list-child--* classes are injected by product.js
+     (index over ul-bearing children — survives editor reordering).
+     nth-child fallbacks removed: .relocated-description only exists
+     when the same JS ran, so they could never fire independently. */
+  .relocated-description .glowup-product-list-child--pages ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
     display: inline-block !important;
     height: 14px !important;
@@ -318,8 +329,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   /* ==========================================================
      4c. CHECKMARK BULLET POINTS (3rd list)
   ========================================================== */
-  .relocated-description .glowup-product-list-child--checks ul[data-rte-list] li > *:first-child::before,
-  .relocated-description .sqs-stack-container > .stack-child-container:nth-child(4) ul[data-rte-list] li > *:first-child::before {
+  .relocated-description .glowup-product-list-child--checks ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
     display: inline-block !important;
     height: 14px !important;
@@ -364,12 +374,15 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     position: relative !important;
   }
 
-  .relocated-description .fe-block:has(.sqs-stack-container)::before {
+  /* Scroll cover under the pinned button pill. Scoped to .glowup-pinned
+     (set by product.js only when the FE block is actually sticky) and
+     sized from --meta-pad-x so it always spans the meta's full width. */
+  .relocated-description .fe-block.glowup-pinned:has(.sqs-stack-container)::before {
     content: "" !important;
     position: absolute !important;
     top: 50% !important;
-    left: -24px !important;
-    right: -24px !important;
+    left: calc(-1 * var(--meta-pad-x, 24px)) !important;
+    right: calc(-1 * var(--meta-pad-x, 24px)) !important;
     bottom: 0 !important;
     background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
     z-index: -1 !important;

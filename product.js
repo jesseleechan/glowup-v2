@@ -32,6 +32,9 @@
     trackHeaderHeight();
     observeEditingState(document);
 
+    // Re-derive grid overrides when the FE breakpoint flips (24 <-> 8 cols)
+    window.addEventListener('resize', scheduleDescriptionSync);
+
     try {
       if (window.self !== window.top && window.parent && window.parent.document) {
         observeEditingState(window.parent.document);
@@ -132,6 +135,42 @@
     }
 
     syncGalleryCounter(activelyEditing);
+    syncRelocatedGrids(activelyEditing);
+  }
+
+  /* Collapse the outer gutter columns of the relocated Fluid Engine
+     grids without hardcoding Squarespace's column count. Reads the
+     native track count and rebuilds as: 0 repeat(n-2, minmax(0,1fr)) 0.
+     Adapts if Squarespace ever changes FE from 24/8 columns.
+     Inline overrides are cleared while editing (the content moves back
+     into #my-description and must render natively there). */
+  function syncRelocatedGrids(activelyEditing) {
+    var scope = activelyEditing
+      ? relocationState.contentWrapper || document.querySelector('#my-description')
+      : document.querySelector('.relocated-description');
+
+    if (!scope) return;
+
+    var grids = scope.querySelectorAll('.fluid-engine');
+
+    Array.prototype.forEach.call(grids, function (fe) {
+      if (activelyEditing) {
+        fe.style.removeProperty('grid-template-columns');
+        return;
+      }
+
+      // Clear our previous inline value so the native template is read
+      fe.style.removeProperty('grid-template-columns');
+      var tracks = getComputedStyle(fe).gridTemplateColumns.trim().split(/\s+/);
+      if (tracks.length < 3) return;
+
+      var inner = tracks.length - 2;
+      fe.style.setProperty(
+        'grid-template-columns',
+        '0px repeat(' + inner + ', minmax(0, 1fr)) 0px',
+        'important'
+      );
+    });
   }
 
   /* Move the native "1 / N" slide indicator between the prev/next
@@ -336,6 +375,18 @@
 
       if (children[0]) children[0].classList.add('glowup-product-action-child--cart');
       if (children[1]) children[1].classList.add('glowup-product-action-child--demo');
+
+      // The scroll-cover pseudo-element only makes sense when the block
+      // is actually pinned (FE editor setting — desktop-only; computes
+      // static on mobile). Toggled every sync so breakpoint flips stay
+      // truthful.
+      var feBlock = stack.closest('.fe-block');
+      if (feBlock) {
+        feBlock.classList.toggle(
+          'glowup-pinned',
+          getComputedStyle(feBlock).position === 'sticky'
+        );
+      }
     });
 
     relocated.querySelectorAll('[data-definition-name="website.components.product"] .product-block').forEach(function (block) {
