@@ -2,7 +2,8 @@
    GLOWUP ONLINE — PRODUCT DETAIL PAGE CUSTOM CSS
 ========================================================== */
 
-body:not(.sqs-edit-mode-active) {
+body:not(.sqs-edit-mode-active):not(.glowup-product-active-editing),
+body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   /* ==========================================================
      1. PRODUCT LAYOUT — Remove gaps, zero out padding

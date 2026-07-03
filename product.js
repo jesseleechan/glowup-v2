@@ -9,6 +9,8 @@
     originalNextSibling: null,
     relocated: null
   };
+  var latestParentEditorState = 'unknown';
+  var syncScheduled = false;
 
   function onReady(callback) {
     if (document.readyState === 'loading') {
@@ -32,6 +34,17 @@
   }
 
   function isActivelyEditing() {
+    var parentEditorState = getParentEditorState();
+    latestParentEditorState = parentEditorState;
+
+    if (parentEditorState === 'preview' || parentEditorState === 'live') {
+      return false;
+    }
+
+    if (parentEditorState === 'editing') {
+      return true;
+    }
+
     var body = document.body;
     if (!body) return false;
 
@@ -43,28 +56,64 @@
       return true;
     }
 
-    return getParentEditorState() === 'editing';
+    return false;
   }
 
   function observeEditingState(doc) {
     if (!doc || !doc.body || !window.MutationObserver) return;
 
     var observer = new MutationObserver(function () {
-      syncDescriptionRelocation();
+      scheduleDescriptionSync();
     });
 
-    observer.observe(doc.body, {
-      attributes: true,
-      attributeFilter: ['class']
+    if (doc === document) {
+      observer.observe(doc.body, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+    } else {
+      observer.observe(doc.body, {
+        attributes: true,
+        attributeFilter: ['class', 'aria-label', 'aria-pressed'],
+        childList: true,
+        subtree: true
+      });
+    }
+  }
+
+  function scheduleDescriptionSync() {
+    if (syncScheduled) return;
+
+    syncScheduled = true;
+
+    var schedule = window.requestAnimationFrame || function (callback) {
+      return window.setTimeout(callback, 50);
+    };
+
+    schedule(function () {
+      syncScheduled = false;
+      syncDescriptionRelocation();
     });
   }
 
   function syncDescriptionRelocation() {
-    if (isActivelyEditing()) {
+    var activelyEditing = isActivelyEditing();
+
+    updateEditorStateClasses(activelyEditing);
+
+    if (activelyEditing) {
       restoreDescription();
     } else {
       relocateDescription();
     }
+  }
+
+  function updateEditorStateClasses(activelyEditing) {
+    var body = document.body;
+    if (!body) return;
+
+    body.classList.toggle('glowup-product-active-editing', activelyEditing);
+    body.classList.toggle('glowup-product-previewing', !activelyEditing && latestParentEditorState === 'preview');
   }
 
   function getParentEditorState() {
@@ -87,13 +136,17 @@
           label === 'save' ||
           label === 'add section' ||
           label === 'edit section' ||
-          label === 'open layers panel' ||
-          aria === 'toggle preview mode'
+          label === 'open layers panel'
         ) {
           return 'editing';
         }
 
-        if (label === 'edit' || label === 'preview' || aria === 'preview') {
+        if (
+          label === 'edit' ||
+          label === 'preview' ||
+          aria === 'preview' ||
+          aria === 'toggle preview mode'
+        ) {
           sawPreviewControl = true;
         }
       }
