@@ -643,6 +643,8 @@
    08. TESTIMONIALS BLOCK
 ====================================== */
 
+
+
 #testimonials {
   .user-items-list-simple[data-layout-width="inset"] {
     padding: 0 !important;
@@ -717,6 +719,41 @@
     text-align: center !important;
     margin: 0 auto !important;
     width: 100%;
+  }
+
+  /* --- Grid Layout: 3-up on desktop --- */
+  .user-items-list-item-container {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  /* --- Tablet: 2-up grid --- */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .user-items-list-item-container {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .list-item:nth-child(3) {
+      display: none !important;
+    }
+
+    .list-item:nth-child(2) {
+      border-right: 0 !important;
+    }
+  }
+
+  /* --- Mobile: 1-up (single column) --- */
+  @media screen and (max-width: 767px) {
+    .user-items-list-item-container {
+      grid-template-columns: 1fr !important;
+    }
+
+    .list-item:nth-child(n+2) {
+      display: none !important;
+    }
+
+    .list-item:first-child {
+      border-right: 0 !important;
+    }
   }
 }
 
