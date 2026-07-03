@@ -369,11 +369,17 @@
 
     if (btn) {
       btn.style.setProperty('block-size', '53px', 'important');
+      btn.style.setProperty('height', '53px', 'important');
+      btn.style.setProperty('min-height', '53px', 'important');
+      btn.style.setProperty('max-height', '53px', 'important');
       btn.style.setProperty('padding', buttonPadding, 'important');
       btn.style.setProperty('white-space', 'nowrap', 'important');
     }
     if (demo) {
       demo.style.setProperty('block-size', '53px', 'important');
+      demo.style.setProperty('height', '53px', 'important');
+      demo.style.setProperty('min-height', '53px', 'important');
+      demo.style.setProperty('max-height', '53px', 'important');
       demo.style.setProperty('padding', buttonPadding, 'important');
       demo.style.setProperty('white-space', 'nowrap', 'important');
     }
@@ -408,11 +414,17 @@
 
     if (btn) {
       btn.style.removeProperty('block-size');
+      btn.style.removeProperty('height');
+      btn.style.removeProperty('min-height');
+      btn.style.removeProperty('max-height');
       btn.style.removeProperty('padding');
       btn.style.removeProperty('white-space');
     }
     if (demo) {
       demo.style.removeProperty('block-size');
+      demo.style.removeProperty('height');
+      demo.style.removeProperty('min-height');
+      demo.style.removeProperty('max-height');
       demo.style.removeProperty('padding');
       demo.style.removeProperty('white-space');
     }

@@ -445,6 +445,9 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     border: none !important;
     width: 100% !important;
     height: 53px !important;
+    min-height: 53px !important;
+    max-height: 53px !important;
+    block-size: 53px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -474,6 +477,9 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     border: 1px solid #000000 !important;
     width: 100% !important;
     height: 53px !important;
+    min-height: 53px !important;
+    max-height: 53px !important;
+    block-size: 53px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
