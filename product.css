@@ -38,9 +38,11 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     --gallery-pad-top: clamp(60px, 7vw, 110px);
     --gallery-pad-bottom: 150px;
     position: sticky !important;
-    top: 66px !important;
+    /* --glowup-header-h published by product.js (header is 52px on
+       tablet, 66px on desktop — hardcoding left a dead strip) */
+    top: var(--glowup-header-h, 66px) !important;
     align-self: flex-start !important;
-    height: calc(100vh - 67px) !important;
+    height: calc(100vh - var(--glowup-header-h, 66px) - 1px) !important;
     background: radial-gradient(120% 90% at 50% 38%, #2e2e2e 0%, #1a1a1a 55%, #101010 100%) !important;
     box-sizing: border-box !important;
     overflow: hidden !important;

@@ -29,6 +29,7 @@
 
   function initProductDetail() {
     syncDescriptionRelocation();
+    trackHeaderHeight();
     observeEditingState(document);
 
     try {
@@ -36,6 +37,24 @@
         observeEditingState(window.parent.document);
       }
     } catch (e) {}
+  }
+
+  /* The gallery's sticky offset must match the real header height,
+     which varies by viewport (52px tablet / 66px desktop). Squarespace
+     exposes no header-height variable, so publish one. */
+  function trackHeaderHeight() {
+    var header = document.querySelector('#header');
+    if (!header) return;
+
+    var apply = function () {
+      document.documentElement.style.setProperty('--glowup-header-h', header.offsetHeight + 'px');
+    };
+
+    apply();
+    window.addEventListener('resize', apply);
+    if (window.ResizeObserver) {
+      new ResizeObserver(apply).observe(header);
+    }
   }
 
   function isActivelyEditing() {
