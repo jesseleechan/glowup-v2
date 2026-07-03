@@ -418,17 +418,27 @@
   }
 
   function insertRelocatedDescription(productMeta, relocated) {
-    // Layout wrapper first: it never moves (the pill borrows only the
-    // inner .sqs-add-to-cart-button-wrapper). `.product-add-to-cart`
-    // no longer exists on this template.
     var insertionAnchor =
-      productMeta.querySelector('.product-add-to-cart-layout-wrapper') ||
       productMeta.querySelector('.product-add-to-cart') ||
+      productMeta.querySelector('.product-add-to-cart-layout-wrapper') ||
       productMeta.querySelector('.product-price') ||
       productMeta.lastElementChild;
 
-    if (insertionAnchor && insertionAnchor.nextSibling) {
-      productMeta.insertBefore(relocated, insertionAnchor.nextSibling);
+    if (!insertionAnchor) {
+      productMeta.appendChild(relocated);
+      return;
+    }
+
+    // The anchor may be nested — walk up to the direct child of
+    // productMeta so insertBefore can never throw NotFoundError
+    var topAnchor = insertionAnchor;
+    while (topAnchor.parentNode && topAnchor.parentNode !== productMeta) {
+      topAnchor = topAnchor.parentNode;
+    }
+
+    if (topAnchor.parentNode === productMeta) {
+      // nextSibling may be null — insertBefore(node, null) appends
+      productMeta.insertBefore(relocated, topAnchor.nextSibling);
     } else {
       productMeta.appendChild(relocated);
     }
