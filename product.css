@@ -399,15 +399,16 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     position: sticky;
     bottom: 24px;
     z-index: 20;
+    isolation: isolate;
   }
 
-  /* Scroll cover under the sticky pill — hides content scrolling
-     beneath it; sized from --meta-pad-x (same var as .product-meta
-     padding) so it always spans the meta's full width */
+  /* Scroll cover below the sticky pill. It hides content passing under
+     the footer area but must not overlap the pill itself, or it can
+     visually erase the lower half of the border/background. */
   .product-add-to-cart.glowup-action-pill::before {
     content: "" !important;
     position: absolute !important;
-    top: 50% !important;
+    top: calc(100% - 1px) !important;
     left: calc(-1 * var(--meta-pad-x, 24px)) !important;
     right: calc(-1 * var(--meta-pad-x, 24px)) !important;
     bottom: -24px !important;

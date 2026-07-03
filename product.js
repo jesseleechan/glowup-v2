@@ -363,6 +363,7 @@
     cartEl.style.setProperty('padding', '3px', 'important');
     cartEl.style.setProperty('box-sizing', 'border-box', 'important');
     cartEl.style.setProperty('z-index', '20', 'important');
+    cartEl.style.setProperty('isolation', 'isolate', 'important');
 
     if (btn) {
       btn.style.setProperty('block-size', '53px', 'important');
@@ -394,7 +395,8 @@
       'margin',
       'padding',
       'box-sizing',
-      'z-index'
+      'z-index',
+      'isolation'
     ].forEach(function (property) {
       cartEl.style.removeProperty(property);
     });
