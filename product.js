@@ -183,6 +183,9 @@
       ) {
         pillState.cartEl.appendChild(pillState.demoContainer);
       }
+      if (pillState.cartEl) {
+        stylePillButtons(pillState.cartEl);
+      }
       return;
     }
 
@@ -213,6 +216,22 @@
   function stylePillButtons(cartEl) {
     var btn = cartEl.querySelector('.sqs-add-to-cart-button');
     var demo = cartEl.querySelector('.sqs-block-button-element');
+    var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+
+    cartEl.style.setProperty('display', 'flex', 'important');
+    cartEl.style.setProperty('flex-direction', 'row', 'important');
+    cartEl.style.setProperty('align-items', 'center', 'important');
+    cartEl.style.setProperty('position', isMobile ? 'static' : 'sticky', 'important');
+    cartEl.style.setProperty('bottom', isMobile ? 'auto' : '24px', 'important');
+    cartEl.style.setProperty('width', '100%', 'important');
+    cartEl.style.setProperty('height', 'auto', 'important');
+    cartEl.style.setProperty('overflow', 'visible', 'important');
+    cartEl.style.setProperty('opacity', '1', 'important');
+    cartEl.style.setProperty('pointer-events', 'auto', 'important');
+    cartEl.style.setProperty('margin', '24px 0 0 0', 'important');
+    cartEl.style.setProperty('padding', '3px', 'important');
+    cartEl.style.setProperty('box-sizing', 'border-box', 'important');
+    cartEl.style.setProperty('z-index', '20', 'important');
 
     if (btn) {
       btn.style.setProperty('block-size', '53px', 'important');
@@ -229,6 +248,25 @@
     var demo = pillState.demoContainer
       ? pillState.demoContainer.querySelector('.sqs-block-button-element')
       : null;
+
+    [
+      'display',
+      'flex-direction',
+      'align-items',
+      'position',
+      'bottom',
+      'width',
+      'height',
+      'overflow',
+      'opacity',
+      'pointer-events',
+      'margin',
+      'padding',
+      'box-sizing',
+      'z-index'
+    ].forEach(function (property) {
+      cartEl.style.removeProperty(property);
+    });
 
     if (btn) {
       btn.style.removeProperty('block-size');
