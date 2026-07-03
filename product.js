@@ -17,7 +17,7 @@
   var pillState = {
     built: false,
     pill: null,
-    cartWrapper: null,
+    cartEl: null,
     cartParent: null,
     cartNextSibling: null,
     demoContainer: null,
@@ -151,23 +151,25 @@
     syncRelocatedGrids(activelyEditing);
   }
 
-  /* Build the action pill: the NATIVE add-to-cart button (moved, not
-     cloned — Squarespace's cart listeners and loading/added states
-     survive DOM moves) beside the View Demo button block's anchor,
-     inside a .glowup-action-pill flex wrapper styled by product.css.
+  /* Build the action pill: the ENTIRE native .product-add-to-cart
+     element (moved, not cloned) beside the View Demo button block's
+     anchor, inside a .glowup-action-pill flex wrapper styled by
+     product.css. The whole subtree moves because Squarespace's cart
+     handler is bound within it — moving only the inner button
+     wrapper orphaned the click binding (learned the hard way).
      Fully reversed while editing. */
   function syncActionPill(activelyEditing) {
     if (activelyEditing) {
       if (!pillState.built) return;
 
-      if (pillState.cartWrapper && pillState.cartParent) {
+      if (pillState.cartEl && pillState.cartParent) {
         if (
           pillState.cartNextSibling &&
           pillState.cartNextSibling.parentNode === pillState.cartParent
         ) {
-          pillState.cartParent.insertBefore(pillState.cartWrapper, pillState.cartNextSibling);
+          pillState.cartParent.insertBefore(pillState.cartEl, pillState.cartNextSibling);
         } else {
-          pillState.cartParent.appendChild(pillState.cartWrapper);
+          pillState.cartParent.appendChild(pillState.cartEl);
         }
       }
 
@@ -190,22 +192,22 @@
     }
 
     var relocated = document.querySelector('.relocated-description');
-    var cartWrapper = document.querySelector('.product-meta .sqs-add-to-cart-button-wrapper');
+    var cartEl = document.querySelector('.product-meta .product-add-to-cart');
     var demoBlock = relocated ? relocated.querySelector('.sqs-block-button') : null;
     var demoContent = demoBlock ? demoBlock.querySelector('.sqs-block-content') : null;
     var demoContainer = demoContent ? demoContent.querySelector('.sqs-block-button-container') : null;
 
-    if (!cartWrapper || !demoContainer) return;
+    if (!cartEl || !demoContainer) return;
 
-    pillState.cartWrapper = cartWrapper;
-    pillState.cartParent = cartWrapper.parentNode;
-    pillState.cartNextSibling = cartWrapper.nextSibling;
+    pillState.cartEl = cartEl;
+    pillState.cartParent = cartEl.parentNode;
+    pillState.cartNextSibling = cartEl.nextSibling;
     pillState.demoContainer = demoContainer;
     pillState.demoContent = demoContent;
 
     var pill = document.createElement('div');
     pill.className = 'glowup-action-pill';
-    pill.appendChild(cartWrapper);
+    pill.appendChild(cartEl);
     pill.appendChild(demoContainer);
     demoContent.appendChild(pill);
 

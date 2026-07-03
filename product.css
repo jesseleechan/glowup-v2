@@ -391,9 +391,20 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     pointer-events: none !important;
   }
 
-  /* Width split: cart ~60% / demo ~40% */
-  .glowup-action-pill .sqs-add-to-cart-button-wrapper {
+  /* Width split: cart ~60% / demo ~40%. The zero-footprint hide above
+     stops matching automatically once the element leaves .product-meta's
+     direct children (it's scoped with >), so no resets are needed here
+     beyond layout. */
+  .glowup-action-pill .product-add-to-cart {
     flex: 1.6;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .glowup-action-pill .product-add-to-cart-layout-wrapper,
+  .glowup-action-pill .sqs-add-to-cart-button-wrapper {
+    display: block !important;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -515,12 +526,12 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     display: none !important;
   }
 
-  /* The native cart layout wrapper must stay RENDERED at init —
-     Squarespace's commerce controller may skip binding display:none
-     buy buttons. Zero-footprint hide instead; product.js moves the
-     inner button wrapper into the action pill where it becomes
-     visible again. */
-  .product-add-to-cart-layout-wrapper {
+  /* The native cart element must stay RENDERED at init — Squarespace's
+     commerce controller may skip binding display:none buy buttons.
+     Zero-footprint hide instead; product.js moves the whole
+     .product-add-to-cart subtree into the action pill (the cart click
+     handler is bound within it), where the pill rules restore it. */
+  .product-meta > .product-add-to-cart {
     position: absolute !important;
     width: 1px !important;
     height: 1px !important;
