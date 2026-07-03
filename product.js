@@ -22,6 +22,8 @@
   };
   var latestParentEditorState = 'unknown';
   var syncScheduled = false;
+  var cartReadyObserver = null;
+  var productContextSnapshot = captureProductDetailContext();
 
   function onReady(callback) {
     if (document.readyState === 'loading') {
@@ -34,9 +36,9 @@
   onReady(initProductDetail);
 
   function initProductDetail() {
-    syncDescriptionRelocation();
     trackHeaderHeight();
     observeEditingState(document);
+    waitForNativeCartReady();
 
     // Re-derive grid overrides when the FE breakpoint flips (24 <-> 8 cols)
     window.addEventListener('resize', scheduleDescriptionSync);
@@ -134,6 +136,11 @@
 
     updateEditorStateClasses(activelyEditing);
 
+    if (!activelyEditing && !isNativeCartReady()) {
+      waitForNativeCartReady();
+      return;
+    }
+
     if (activelyEditing) {
       // Pill teardown MUST precede description restore, or the native
       // cart button would travel into #my-description with the content
@@ -146,6 +153,130 @@
 
     syncGalleryCounter(activelyEditing);
     syncRelocatedGrids(activelyEditing);
+  }
+
+  function waitForNativeCartReady() {
+    if (isNativeCartReady()) {
+      disconnectCartReadyObserver();
+      scheduleDescriptionSync();
+      return;
+    }
+
+    if (cartReadyObserver || !window.MutationObserver || !document.body) return;
+
+    cartReadyObserver = new MutationObserver(function () {
+      if (isNativeCartReady()) {
+        disconnectCartReadyObserver();
+        scheduleDescriptionSync();
+      }
+    });
+
+    cartReadyObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: [
+        'data-controllers-bound',
+        'data-collection-id',
+        'data-item-id',
+        'data-product-type'
+      ],
+      childList: true,
+      subtree: true
+    });
+  }
+
+  function disconnectCartReadyObserver() {
+    if (!cartReadyObserver) return;
+    cartReadyObserver.disconnect();
+    cartReadyObserver = null;
+  }
+
+  function isNativeCartReady() {
+    var detail = document.querySelector('.product-detail[data-controller~="ProductDetail"]');
+    if (!detail) return true;
+
+    var button = detail.querySelector('.product-meta .sqs-add-to-cart-button');
+    if (!button) return false;
+
+    ensureNativeCartButtonAttributes(detail, button);
+
+    var productDetailBound = (detail.getAttribute('data-controllers-bound') || '').indexOf('ProductDetail') !== -1;
+    return productDetailBound && hasNativeCartButtonAttributes(button);
+  }
+
+  function hasNativeCartButtonAttributes(button) {
+    return !!(
+      button.getAttribute('data-collection-id') &&
+      button.getAttribute('data-item-id') &&
+      button.getAttribute('data-product-type')
+    );
+  }
+
+  function ensureNativeCartButtonAttributes(detail, button) {
+    if (hasNativeCartButtonAttributes(button)) return;
+
+    var context = readProductDetailContext(detail);
+    var product = context && context.product ? context.product : {};
+    var collection = context && context.collection ? context.collection : {};
+    var staticItem = getStaticProductItem();
+    var pageRegions = detail.closest('[data-collection-id][data-item-id]');
+    var itemId =
+      product.id ||
+      detail.getAttribute('data-product-id') ||
+      (pageRegions ? pageRegions.getAttribute('data-item-id') : null) ||
+      (staticItem ? staticItem.id : null);
+    var collectionId =
+      collection.id ||
+      (pageRegions ? pageRegions.getAttribute('data-collection-id') : null) ||
+      (staticItem ? staticItem.collectionId : null);
+    var productType =
+      product.productType ||
+      (staticItem && staticItem.structuredContent ? staticItem.structuredContent.productType : null) ||
+      (staticItem ? staticItem.productType : null) ||
+      button.getAttribute('data-product-type');
+
+    if (collectionId) button.setAttribute('data-collection-id', collectionId);
+    if (itemId) button.setAttribute('data-item-id', itemId);
+    if (productType !== undefined && productType !== null) {
+      button.setAttribute('data-product-type', productType);
+    }
+    if (!button.hasAttribute('data-use-custom-label')) {
+      button.setAttribute('data-use-custom-label', 'false');
+    }
+    if (!button.hasAttribute('data-original-label')) {
+      button.setAttribute('data-original-label', 'Add To Cart');
+    }
+  }
+
+  function readProductDetailContext(detail) {
+    var raw = detail.getAttribute('data-context');
+    if (!raw) return productContextSnapshot;
+
+    try {
+      return JSON.parse(raw);
+    } catch (e) {
+      return productContextSnapshot;
+    }
+  }
+
+  function captureProductDetailContext() {
+    var detail = document.querySelector('.product-detail[data-controller~="ProductDetail"]');
+    if (!detail) return null;
+
+    try {
+      return JSON.parse(detail.getAttribute('data-context') || 'null');
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function getStaticProductItem() {
+    try {
+      return window.Static && window.Static.SQUARESPACE_CONTEXT
+        ? window.Static.SQUARESPACE_CONTEXT.item
+        : null;
+    } catch (e) {
+      return null;
+    }
   }
 
   /* Action pill: the NATIVE .product-add-to-cart element itself

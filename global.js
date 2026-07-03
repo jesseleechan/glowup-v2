@@ -5,6 +5,7 @@
 
 function cleanUpPrice() {
 	document.querySelectorAll(".product-price, .product-list-item-price").forEach(price => {
+		if (price.closest(".product-detail")) return;
 		price.textContent = price.textContent.replace(".00", "").replace("US", "");
 	});
 }
