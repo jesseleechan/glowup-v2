@@ -29,20 +29,31 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   /* ==========================================================
      3. PRODUCT GALLERY — Right side (sticky dark panel)
+     Generous breathing room around the mockup, subtle radial
+     gradient, and the native carousel controls restyled into a
+     bottom-center pill: [ ‹  1/4  › ]
   ========================================================== */
   .product-gallery {
+    --gallery-pad-x: clamp(90px, 10vw, 160px);
+    --gallery-pad-top: clamp(60px, 7vw, 110px);
+    --gallery-pad-bottom: 150px;
     position: sticky !important;
     top: 66px !important;
     align-self: flex-start !important;
     height: calc(100vh - 67px) !important;
-    background: #1a1a1a !important;
+    background: radial-gradient(120% 90% at 50% 38%, #2e2e2e 0%, #1a1a1a 55%, #101010 100%) !important;
     box-sizing: border-box !important;
     overflow: hidden !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    padding: 80px !important;
+    padding: var(--gallery-pad-top) var(--gallery-pad-x) var(--gallery-pad-bottom) !important;
+  }
+
+  /* Hide the native thumbnail strip */
+  .product-gallery-scroll {
+    display: none !important;
   }
 
   .product-gallery-slides {
@@ -52,7 +63,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    /* Clip parked/transitioning slides at the sides but let the pill
+       pager (a child of this box) hang below into the padding zone */
     overflow: visible !important;
+    clip-path: inset(0 0 -160px 0);
   }
 
   .product-gallery-slides-item {
@@ -68,6 +82,134 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
+  }
+
+  /* --- Pill pager: prev / counter / next, bottom center --- */
+  .product-gallery-carousel-controls {
+    position: absolute !important;
+    inset: auto !important;
+    left: 50% !important;
+    bottom: calc(-1 * var(--gallery-pad-bottom) + 36px) !important;
+    transform: translateX(-50%);
+    width: fit-content !important;
+    height: auto !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 44px;
+    padding: 4px !important;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    z-index: 5;
+  }
+
+  .product-gallery-carousel-control {
+    position: static !important;
+    width: 52px !important;
+    height: 46px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-radius: 100px;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    opacity: 1 !important;
+    transition: background-color 0.2s ease;
+  }
+
+  .product-gallery-carousel-control:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  /* Hide the native icon, draw our chevron via mask (matches the
+     summary-block pager chevrons) */
+  .product-gallery-carousel-control * {
+    display: none !important;
+  }
+
+  .product-gallery-carousel-control::before {
+    content: none !important;
+  }
+
+  .product-gallery-carousel-control::after {
+    content: "" !important;
+    display: block !important;
+    width: 9px;
+    height: 15px;
+    background-color: #ffffff;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L1 13' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L1 13' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+
+  /* Squarespace rotates its native ::after arrow 45deg — neutralize */
+  .product-gallery-next::after {
+    transform: none !important;
+  }
+
+  .product-gallery-prev::after {
+    transform: rotate(180deg) !important;
+  }
+
+  /* Native "1 / 4" counter — hidden by Squarespace on desktop;
+     shown centered between the chevrons */
+  .product-gallery-current-slide-indicator {
+    display: block !important;
+    position: absolute !important;
+    inset: auto !important;
+    left: 50% !important;
+    bottom: calc(-1 * var(--gallery-pad-bottom) + 36px + 20px) !important;
+    transform: translateX(-50%);
+    width: auto !important;
+    color: #ffffff !important;
+    font-family: var(--body-font-font-family);
+    font-size: 0.85rem !important;
+    letter-spacing: 0.05em;
+    line-height: 1 !important;
+    z-index: 6;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* --- Mobile: gallery becomes a static full-width panel above the
+     meta (sticky 100vh overlapped the stacked column layout) --- */
+  @media screen and (max-width: 767px) {
+    .product-gallery {
+      position: relative !important;
+      top: auto !important;
+      height: min(74vh, 600px) !important;
+      --gallery-pad-x: 28px;
+      --gallery-pad-top: 40px;
+      --gallery-pad-bottom: 118px;
+    }
+
+    .product-gallery-carousel-controls {
+      bottom: calc(-1 * var(--gallery-pad-bottom) + 28px) !important;
+      gap: 36px;
+    }
+
+    .product-gallery-carousel-control {
+      width: 46px !important;
+      height: 42px !important;
+    }
+
+    .product-gallery-current-slide-indicator {
+      bottom: calc(-1 * var(--gallery-pad-bottom) + 28px + 18px) !important;
+      font-size: 0.8rem !important;
+    }
+
+    .product-meta {
+      padding: 40px 24px !important;
+      padding-bottom: 0 !important;
+    }
   }
 
 
