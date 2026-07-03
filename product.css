@@ -128,6 +128,7 @@ body:not(.sqs-edit-mode-active) {
   /* ==========================================================
      4b. CUSTOM BULLET POINTS — Page icon (2nd list)
   ========================================================== */
+  .relocated-description .glowup-product-list-child--pages ul[data-rte-list] li > *:first-child::before,
   .relocated-description .sqs-stack-container > .stack-child-container:nth-child(3) ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
     display: inline-block !important;
@@ -151,6 +152,7 @@ body:not(.sqs-edit-mode-active) {
   /* ==========================================================
      4c. CHECKMARK BULLET POINTS (3rd list)
   ========================================================== */
+  .relocated-description .glowup-product-list-child--checks ul[data-rte-list] li > *:first-child::before,
   .relocated-description .sqs-stack-container > .stack-child-container:nth-child(4) ul[data-rte-list] li > *:first-child::before {
     content: "" !important;
     display: inline-block !important;
@@ -180,6 +182,7 @@ body:not(.sqs-edit-mode-active) {
     height: 100% !important;
   }
 
+  .relocated-description .glowup-product-action-stack,
   .relocated-description .sqs-stack-container:has(.product-block) {
     display: flex !important;
     flex-direction: row !important;
@@ -207,6 +210,7 @@ body:not(.sqs-edit-mode-active) {
     pointer-events: none !important;
   }
 
+  .relocated-description .glowup-product-action-stack .stack-child-container,
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container {
     width: auto !important;
     margin: 0 !important;
@@ -214,9 +218,11 @@ body:not(.sqs-edit-mode-active) {
     height: auto !important;
   }
 
+  .relocated-description .glowup-product-action-child--cart,
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:first-child {
     flex: 1.6 !important;
   }
+  .relocated-description .glowup-product-action-child--demo,
   .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:last-child {
     flex: 1 !important;
   }
