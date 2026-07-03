@@ -14,6 +14,15 @@
     originalParent: null,
     originalNextSibling: null
   };
+  var pillState = {
+    built: false,
+    pill: null,
+    cartWrapper: null,
+    cartParent: null,
+    cartNextSibling: null,
+    demoContainer: null,
+    demoContent: null
+  };
   var latestParentEditorState = 'unknown';
   var syncScheduled = false;
 
@@ -129,13 +138,94 @@
     updateEditorStateClasses(activelyEditing);
 
     if (activelyEditing) {
+      // Pill teardown MUST precede description restore, or the native
+      // cart button would travel into #my-description with the content
+      syncActionPill(true);
       restoreDescription();
     } else {
       relocateDescription();
+      syncActionPill(false);
     }
 
     syncGalleryCounter(activelyEditing);
     syncRelocatedGrids(activelyEditing);
+  }
+
+  /* Build the action pill: the NATIVE add-to-cart button (moved, not
+     cloned — Squarespace's cart listeners and loading/added states
+     survive DOM moves) beside the View Demo button block's anchor,
+     inside a .glowup-action-pill flex wrapper styled by product.css.
+     Fully reversed while editing. */
+  function syncActionPill(activelyEditing) {
+    if (activelyEditing) {
+      if (!pillState.built) return;
+
+      if (pillState.cartWrapper && pillState.cartParent) {
+        if (
+          pillState.cartNextSibling &&
+          pillState.cartNextSibling.parentNode === pillState.cartParent
+        ) {
+          pillState.cartParent.insertBefore(pillState.cartWrapper, pillState.cartNextSibling);
+        } else {
+          pillState.cartParent.appendChild(pillState.cartWrapper);
+        }
+      }
+
+      if (pillState.demoContainer && pillState.demoContent) {
+        pillState.demoContent.insertBefore(pillState.demoContainer, pillState.demoContent.firstChild);
+      }
+
+      if (pillState.pill && pillState.pill.parentNode) {
+        pillState.pill.parentNode.removeChild(pillState.pill);
+      }
+
+      pillState.built = false;
+      pillState.pill = null;
+      return;
+    }
+
+    if (pillState.built) {
+      syncPillPinnedClass();
+      return;
+    }
+
+    var relocated = document.querySelector('.relocated-description');
+    var cartWrapper = document.querySelector('.product-meta .sqs-add-to-cart-button-wrapper');
+    var demoBlock = relocated ? relocated.querySelector('.sqs-block-button') : null;
+    var demoContent = demoBlock ? demoBlock.querySelector('.sqs-block-content') : null;
+    var demoContainer = demoContent ? demoContent.querySelector('.sqs-block-button-container') : null;
+
+    if (!cartWrapper || !demoContainer) return;
+
+    pillState.cartWrapper = cartWrapper;
+    pillState.cartParent = cartWrapper.parentNode;
+    pillState.cartNextSibling = cartWrapper.nextSibling;
+    pillState.demoContainer = demoContainer;
+    pillState.demoContent = demoContent;
+
+    var pill = document.createElement('div');
+    pill.className = 'glowup-action-pill';
+    pill.appendChild(cartWrapper);
+    pill.appendChild(demoContainer);
+    demoContent.appendChild(pill);
+
+    pillState.pill = pill;
+    pillState.built = true;
+
+    syncPillPinnedClass();
+  }
+
+  /* The scroll-cover pseudo-element only applies when the button block
+     is actually pinned in the FE editor (desktop-only; computes static
+     on mobile) — toggled every sync so breakpoint flips stay truthful */
+  function syncPillPinnedClass() {
+    if (!pillState.pill) return;
+    var feBlock = pillState.pill.closest('.fe-block');
+    if (!feBlock) return;
+    feBlock.classList.toggle(
+      'glowup-pinned',
+      getComputedStyle(feBlock).position === 'sticky'
+    );
   }
 
   /* Collapse the outer gutter columns of the relocated Fluid Engine
@@ -328,9 +418,12 @@
   }
 
   function insertRelocatedDescription(productMeta, relocated) {
+    // Layout wrapper first: it never moves (the pill borrows only the
+    // inner .sqs-add-to-cart-button-wrapper). `.product-add-to-cart`
+    // no longer exists on this template.
     var insertionAnchor =
-      productMeta.querySelector('.product-add-to-cart') ||
       productMeta.querySelector('.product-add-to-cart-layout-wrapper') ||
+      productMeta.querySelector('.product-add-to-cart') ||
       productMeta.querySelector('.product-price') ||
       productMeta.lastElementChild;
 
@@ -359,38 +452,8 @@
       }
     });
 
-    var actionStacks = Array.prototype.filter.call(
-      relocated.querySelectorAll('.sqs-stack-container'),
-      function (stack) {
-        return stack.querySelector('.product-block');
-      }
-    );
-
-    actionStacks.forEach(function (stack) {
-      stack.classList.add('glowup-product-action-stack');
-
-      var children = Array.prototype.filter.call(stack.children, function (child) {
-        return child.classList.contains('stack-child-container');
-      });
-
-      if (children[0]) children[0].classList.add('glowup-product-action-child--cart');
-      if (children[1]) children[1].classList.add('glowup-product-action-child--demo');
-
-      // The scroll-cover pseudo-element only makes sense when the block
-      // is actually pinned (FE editor setting — desktop-only; computes
-      // static on mobile). Toggled every sync so breakpoint flips stay
-      // truthful.
-      var feBlock = stack.closest('.fe-block');
-      if (feBlock) {
-        feBlock.classList.toggle(
-          'glowup-pinned',
-          getComputedStyle(feBlock).position === 'sticky'
-        );
-      }
-    });
-
-    relocated.querySelectorAll('[data-definition-name="website.components.product"] .product-block').forEach(function (block) {
-      block.classList.add('is-first-product-block');
-    });
+    // (The old action-stack annotation was removed July 2026: the
+    // product-block stack was replaced by the native add-to-cart button
+    // + View Demo pill built in syncActionPill.)
   }
 })();

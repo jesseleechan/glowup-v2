@@ -350,34 +350,36 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
 
   /* ==========================================================
-     5. BUTTON STACK (Add to Cart + Live Demo pill)
+     5. ACTION PILL (native Add to Cart + View Demo)
+     product.js moves the NATIVE .sqs-add-to-cart-button-wrapper
+     (cart listeners + loading/added states intact) into a
+     .glowup-action-pill flex wrapper built inside the View Demo
+     button block. Replaced the old product-block stack July 2026.
   ========================================================== */
-  .relocated-description .fe-block:has(.sqs-stack-container) .sqs-block-content {
+  .relocated-description .fe-block:has(.glowup-action-pill) .sqs-block-content {
     display: flex !important;
     align-items: center !important;
     height: 100% !important;
   }
 
-  .relocated-description .glowup-product-action-stack,
-  .relocated-description .sqs-stack-container:has(.product-block) {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 8px !important;
-    border: 1.5px solid #000000 !important;
-    border-radius: 100px !important;
-    padding: 3px !important;
-    background-color: #ebe7e4 !important;
-    height: auto !important;
-    box-sizing: border-box !important;
-    width: 100% !important;
-    position: relative !important;
+  .relocated-description .glowup-action-pill {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    border: 1.5px solid #000000;
+    border-radius: 100px;
+    padding: 3px;
+    background-color: #ebe7e4;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
   }
 
   /* Scroll cover under the pinned button pill. Scoped to .glowup-pinned
      (set by product.js only when the FE block is actually sticky) and
      sized from --meta-pad-x so it always spans the meta's full width. */
-  .relocated-description .fe-block.glowup-pinned:has(.sqs-stack-container)::before {
+  .relocated-description .fe-block.glowup-pinned:has(.glowup-action-pill)::before {
     content: "" !important;
     position: absolute !important;
     top: 50% !important;
@@ -389,39 +391,21 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     pointer-events: none !important;
   }
 
-  .relocated-description .glowup-product-action-stack .stack-child-container,
-  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container {
-    width: auto !important;
+  /* Width split: cart ~60% / demo ~40% */
+  .glowup-action-pill .sqs-add-to-cart-button-wrapper {
+    flex: 1.6;
     margin: 0 !important;
     padding: 0 !important;
-    height: auto !important;
   }
 
-  .relocated-description .glowup-product-action-child--cart,
-  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:first-child {
-    flex: 1.6 !important;
-  }
-  .relocated-description .glowup-product-action-child--demo,
-  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container:last-child {
-    flex: 1 !important;
-  }
-
-  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-wrapper,
-  .relocated-description .sqs-stack-container:has(.product-block) .stack-child-container .fe-block,
-  .relocated-description .sqs-stack-container:has(.product-block) .product-block,
-  .relocated-description .sqs-stack-container:has(.product-block) .productDetails,
-  .relocated-description .sqs-stack-container:has(.product-block) .product-purchase-controls-wrapper,
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button-wrapper,
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-container,
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-content {
+  .glowup-action-pill .sqs-block-button-container {
+    flex: 1;
     margin: 0 !important;
     padding: 0 !important;
-    width: 100% !important;
-    height: auto !important;
   }
 
-  /* Left button: Add to Cart (solid black) */
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button {
+  /* Left button: native Add to Cart (solid black) */
+  .glowup-action-pill .sqs-add-to-cart-button {
     background-color: #000000 !important;
     color: #ffffff !important;
     border-radius: 100px !important;
@@ -439,17 +423,17 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     transition: background-color 0.2s ease !important;
   }
 
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button:hover {
+  .glowup-action-pill .sqs-add-to-cart-button:hover {
     background-color: #333333 !important;
   }
 
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
+  .glowup-action-pill .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
     color: #ffffff !important;
     font-size: 1.2rem !important; /* matches the View Demo button */
   }
 
-  /* Right button: Live Demo (outline) */
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-element {
+  /* Right button: View Demo (outline) */
+  .glowup-action-pill .sqs-block-button-element {
     background-color: transparent !important;
     color: #000000 !important;
     border-radius: 100px !important;
@@ -468,16 +452,8 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     transition: background-color 0.2s ease !important;
   }
 
-  .relocated-description .sqs-stack-container:has(.product-block) .sqs-block-button-element:hover {
+  .glowup-action-pill .sqs-block-button-element:hover {
     background-color: rgba(0, 0, 0, 0.05) !important;
-  }
-
-  .product-block .productDetails .product-purchase-controls-wrapper {
-    margin-top: 0 !important;
-  }
-
-  .sqs-block[data-definition-name="website.components.product"] .product-block .productDetails .product-purchase-controls-wrapper .sqs-add-to-cart-button-wrapper .sqs-add-to-cart-button .sqs-add-to-cart-button-inner {
-    font-size: 1.2rem !important; /* matches the View Demo button */
   }
 
 
@@ -535,9 +511,24 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
      variant (.hidden-up-md). It stays in the DOM for crawlers, and
      the description also ships in the Product JSON-LD + meta tags. */
   #main-product-price,
-  .product-description,
-  .product-add-to-cart-layout-wrapper {
+  .product-description {
     display: none !important;
+  }
+
+  /* The native cart layout wrapper must stay RENDERED at init —
+     Squarespace's commerce controller may skip binding display:none
+     buy buttons. Zero-footprint hide instead; product.js moves the
+     inner button wrapper into the action pill where it becomes
+     visible again. */
+  .product-add-to-cart-layout-wrapper {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   body.view-item.collection-type-products .product-detail-section {
