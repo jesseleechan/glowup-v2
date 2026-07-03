@@ -302,3 +302,22 @@
     border-bottom: none !important;
   }
 }
+
+
+/* ==========================================================
+   10. JS-CALCULATED GRID EDGES
+   Keeps borders correct when filtering returns partial rows.
+   The nth-child rules above remain as a no-JS fallback.
+========================================================== */
+.product-list-layout-container.has-js-grid-edges .product-list-item {
+  border-right: 1px solid #1a1a1a !important;
+  border-bottom: 1px solid #1a1a1a !important;
+}
+
+.product-list-layout-container.has-js-grid-edges .product-list-item.is-row-end {
+  border-right: none !important;
+}
+
+.product-list-layout-container.has-js-grid-edges .product-list-item.is-last-row {
+  border-bottom: none !important;
+}

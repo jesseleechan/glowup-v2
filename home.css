@@ -115,7 +115,7 @@
    04. PRODUCT SUMMARY BLOCK (#collection-grid)
 ====================================== */
 
-#collection-grid .summary-block {
+body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   /* Global Summary Block Adjustments */
   .summary-item {
     margin-bottom: 0 !important;

@@ -1,311 +1,459 @@
 /* ==========================================================
-   GLOWUP ONLINE — SHOP TEMPLATES CUSTOM JAVASCRIPT
+   GLOWUP ONLINE - SHOP TEMPLATES CUSTOM JAVASCRIPT
 ========================================================== */
 
-document.addEventListener("DOMContentLoaded", function () {
-
-  /* ========================================================
-     UTILITIES
-  ======================================================== */
-
-  // Capitalize each word
-  function titleCase(str) {
-    return str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  }
-
-  // Get the current tag filter from the URL (e.g. ?tag=coaching)
-  function getCurrentTag() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('tag') || '';
-  }
-
-  // Build a URL with a tag parameter, preserving the current path
-  function buildTagUrl(tagValue) {
-    const url = new URL(window.location.href);
-    if (tagValue) {
-      url.searchParams.set('tag', tagValue);
+(function () {
+  function onReady(callback) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', callback, { once: true });
     } else {
-      url.searchParams.delete('tag');
+      callback();
     }
-    return url.toString();
   }
 
-  // Find a native <select> by its parent filter label text
-  function findSelectByLabel(container, labelText) {
-    const dropdowns = container.querySelectorAll('.product-filter-dropdown');
-    for (const dropdown of dropdowns) {
-      const label = dropdown.querySelector('.product-filter-label');
-      if (label && label.textContent.trim().toLowerCase() === labelText.toLowerCase()) {
-        return dropdown.querySelector('select');
+  onReady(initShopTemplates);
+
+  function initShopTemplates() {
+
+    /* ========================================================
+       UTILITIES
+    ======================================================== */
+
+    function titleCase(str) {
+      return String(str)
+        .trim()
+        .split(/\s+/)
+        .map(function (word) {
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ');
+    }
+
+    function normalizePath(path) {
+      try {
+        var pathname = new URL(path, window.location.origin).pathname;
+        return pathname.replace(/\/+$/, '') || '/';
+      } catch (e) {
+        return String(path || '').split('?')[0].replace(/\/+$/, '') || '/';
       }
     }
-    return null;
-  }
 
+    function hasOwn(obj, key) {
+      return Object.prototype.hasOwnProperty.call(obj, key);
+    }
 
-  /* ========================================================
-     PART 1 — CUSTOM SIDEBAR
-  ======================================================== */
-  const sidebar = document.querySelector('.product-list-nav-and-filters');
-  if (!sidebar) return;
+    function readJsonObject(key) {
+      try {
+        var raw = sessionStorage.getItem(key);
+        if (!raw) return null;
 
-  // --- Locate native elements ---
-  const categoryLinksEls = [...sidebar.querySelectorAll('.nested-category-tree-wrapper .category-link')];
-  const industrySelect = findSelectByLabel(sidebar, 'Industry');
-  const allProducts = document.querySelectorAll('.product-list-item');
-  const totalCount = allProducts.length;
-  const currentTag = getCurrentTag();
+        var parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
 
-  // Categories (reversed so Website Templates appears first)
-  const categories = categoryLinksEls.map(a => ({
-    name: a.textContent.trim(),
-    href: a.getAttribute('href')
-  })).reverse();
-
-  // Tag options from the native Industry dropdown
-  // We use this because Squarespace keeps the full list in the hidden dropdown
-  // even when the page is filtered.
-  const tagOptions = [];
-  if (industrySelect) {
-    industrySelect.querySelectorAll('option').forEach(opt => {
-      if (opt.value && opt.value !== '') {
-        tagOptions.push({ value: opt.value, label: opt.textContent.trim() });
+        return parsed;
+      } catch (e) {
+        return null;
       }
-    });
-  }
-
-  // Read cached counts from sessionStorage
-  let cachedTags = null;
-  let cachedCats = null;
-  try {
-    const rawTags = sessionStorage.getItem('glowup_shop_tags_' + window.location.pathname);
-    if (rawTags) cachedTags = JSON.parse(rawTags);
-    const rawCats = sessionStorage.getItem('glowup_shop_categories');
-    if (rawCats) cachedCats = JSON.parse(rawCats);
-  } catch (e) {}
-
-  // Detect current category from URL for active state
-  function getCurrentCategory() {
-    const path = window.location.pathname.toLowerCase();
-    for (const cat of categories) {
-      if (path.includes(cat.href.toLowerCase())) return cat.href;
     }
-    return null;
-  }
 
-  // --- Hide native sidebar content ---
-  const nativeNav = sidebar.querySelector('.product-list-nav');
-  const nativeFilters = sidebar.querySelector('.product-list-filters');
-  const nativeOverlay = sidebar.querySelector('.product-list-filters-drawer-overlay');
-
-  if (nativeNav) nativeNav.style.display = 'none';
-  if (nativeFilters) {
-    nativeFilters.style.cssText =
-      'position:absolute!important;opacity:0!important;pointer-events:none!important;' +
-      'height:0!important;overflow:hidden!important;';
-  }
-  if (nativeOverlay) nativeOverlay.style.display = 'none';
-
-
-  // --- Build custom sidebar HTML ---
-  const custom = document.createElement('div');
-  custom.className = 'custom-sidebar';
-
-  // ---- CATEGORY ----
-  const currentCat = getCurrentCategory();
-  let catItems = '';
-  categories.forEach(cat => {
-    const isActive = currentCat ? cat.href.toLowerCase() === currentCat : false;
-    let countDisplay = '...';
-    if (cachedCats && cachedCats[cat.href] !== undefined) {
-      countDisplay = cachedCats[cat.href];
-    } else if (isActive && !currentTag) {
-      countDisplay = totalCount;
+    function writeJsonObject(key, value) {
+      try {
+        sessionStorage.setItem(key, JSON.stringify(value));
+      } catch (e) {}
     }
-    catItems += `<li><a href="${cat.href}" class="custom-sidebar-link${isActive ? ' active' : ''}">${cat.name} <sup data-cat-id="${cat.href}">[${countDisplay}]</sup></a></li>`;
-  });
-  const catHTML = `
-    <div class="custom-sidebar-section" data-section="category">
-      <h4 class="custom-sidebar-heading">CATEGORY</h4>
-      <ul class="custom-sidebar-list">${catItems}</ul>
-    </div>`;
 
-  // ---- INDUSTRY (from tags) ----
-  // Use URL-based navigation for filtering — Squarespace respects ?tag= parameters
-  const allTagUrl = buildTagUrl('');
-  const isAllActive = !currentTag;
-  const allCountDisplay = cachedTags ? cachedTags.all : (currentTag ? '...' : totalCount);
-  let indItems = `<li><a href="${allTagUrl}" class="custom-sidebar-link${isAllActive ? ' active' : ''}">All <sup data-tag-id="all">[${allCountDisplay}]</sup></a></li>`;
-
-  tagOptions.forEach(tag => {
-    let countDisplay = '...';
-    if (cachedTags) {
-      countDisplay = cachedTags[tag.value] || 0;
-    } else if (!currentTag) {
-      // If we are on the unfiltered page, count from DOM directly
-      const cls = 'tag-' + tag.value.replace(/\s+/g, '-');
-      countDisplay = document.querySelectorAll('.product-list-item.' + cls).length;
+    function displayCount(value) {
+      return value === undefined || value === null || value === '' ? '...' : value;
     }
-    const tagUrl = buildTagUrl(tag.value);
-    const isActive = currentTag === tag.value;
-    indItems += `<li><a href="${tagUrl}" class="custom-sidebar-link${isActive ? ' active' : ''}">${titleCase(tag.label)} <sup data-tag-id="${tag.value}">[${countDisplay}]</sup></a></li>`;
-  });
 
-  const indHTML = `
-    <div class="custom-sidebar-section" data-section="industry">
-      <h4 class="custom-sidebar-heading">INDUSTRY</h4>
-      <ul class="custom-sidebar-list">${indItems}</ul>
-    </div>`;
-
-  custom.innerHTML = catHTML + indHTML;
-  sidebar.appendChild(custom);
-
-  // --- Fetch true counts if on a filtered URL and no cache exists ---
-  function applyCountsToSidebar() {
-    if (cachedTags) {
-      const allSup = sidebar.querySelector('sup[data-tag-id="all"]');
-      if (allSup && cachedTags.all !== undefined) allSup.textContent = `[${cachedTags.all}]`;
-      tagOptions.forEach(tag => {
-        const sup = sidebar.querySelector(`sup[data-tag-id="${tag.value}"]`);
-        if (sup && cachedTags[tag.value] !== undefined) sup.textContent = `[${cachedTags[tag.value]}]`;
-      });
+    function getCachedCount(cache, key, fallback) {
+      if (cache && hasOwn(cache, key)) return cache[key];
+      return fallback;
     }
-    if (cachedCats) {
-      categories.forEach(cat => {
-        const sup = sidebar.querySelector(`sup[data-cat-id="${cat.href}"]`);
-        if (sup && cachedCats[cat.href] !== undefined) sup.textContent = `[${cachedCats[cat.href]}]`;
-      });
+
+    function getCurrentTag() {
+      var params = new URLSearchParams(window.location.search);
+      return params.get('tag') || '';
     }
-  }
 
-  let saveTags = false;
-  let saveCats = false;
-  cachedTags = cachedTags || {};
-  cachedCats = cachedCats || {};
+    function buildTagUrl(tagValue) {
+      var url = new URL(window.location.href);
+      if (tagValue) {
+        url.searchParams.set('tag', tagValue);
+      } else {
+        url.searchParams.delete('tag');
+      }
+      return url.pathname + url.search + url.hash;
+    }
 
-  // 1. Tags & All (Contextual to the current URL path)
-  if (cachedTags.all === undefined) {
-    if (!currentTag) {
-      cachedTags.all = totalCount;
-      tagOptions.forEach(tag => {
-        const cls = 'tag-' + tag.value.replace(/\s+/g, '-');
-        cachedTags[tag.value] = document.querySelectorAll('.product-list-item.' + cls).length;
-      });
-      saveTags = true;
-    } else {
-      fetch(window.location.pathname)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          cachedTags.all = doc.querySelectorAll('.product-list-item').length;
-          tagOptions.forEach(tag => {
-            const cls = 'tag-' + tag.value.replace(/\s+/g, '-');
-            cachedTags[tag.value] = doc.querySelectorAll('.product-list-item.' + cls).length;
-          });
-          sessionStorage.setItem('glowup_shop_tags_' + window.location.pathname, JSON.stringify(cachedTags));
-          applyCountsToSidebar();
+    function getTagClass(tagValue) {
+      return 'tag-' + String(tagValue).trim().toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function countProductsWithTag(root, tagValue) {
+      var tagClass = getTagClass(tagValue);
+      return Array.prototype.filter.call(root.querySelectorAll('.product-list-item'), function (item) {
+        return item.classList.contains(tagClass);
+      }).length;
+    }
+
+    function fetchDocument(url) {
+      return fetch(url, { credentials: 'same-origin' })
+        .then(function (response) {
+          if (!response.ok) throw new Error('Request failed: ' + response.status);
+          return response.text();
+        })
+        .then(function (html) {
+          return new DOMParser().parseFromString(html, 'text/html');
+        })
+        .catch(function () {
+          return null;
         });
     }
-  }
 
-  // 2. Categories (Global across the entire store)
-  categories.forEach(cat => {
-    if (cachedCats[cat.href] === undefined) {
-      if (currentCat === cat.href.toLowerCase() && !currentTag) {
-        cachedCats[cat.href] = totalCount;
-        saveCats = true;
-      } else {
-        fetch(cat.href)
-          .then(res => res.text())
-          .then(html => {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            cachedCats[cat.href] = doc.querySelectorAll('.product-list-item').length;
-            sessionStorage.setItem('glowup_shop_categories', JSON.stringify(cachedCats));
-            applyCountsToSidebar();
-          });
-      }
-    }
-  });
-
-  if (saveTags) sessionStorage.setItem('glowup_shop_tags_' + window.location.pathname, JSON.stringify(cachedTags));
-  if (saveCats) sessionStorage.setItem('glowup_shop_categories', JSON.stringify(cachedCats));
-  if (saveTags || saveCats) applyCountsToSidebar();
-
-
-  /* ========================================================
-     PART 2 — PRODUCT CARD ENHANCEMENTS
-     Injects excerpt text and tag pills into each product card.
-     Uses a MutationObserver to re-inject after Squarespace
-     re-renders the grid (e.g. after filtering).
-  ======================================================== */
-
-  function enhanceProductCards() {
-    const productItems = document.querySelectorAll('.product-list-item');
-
-    productItems.forEach(item => {
-      // Skip if already enhanced
-      if (item.querySelector('.custom-product-excerpt')) return;
-
-      // --- Extract tags from CSS classes ---
-      const tags = Array.from(item.classList)
-        .filter(cls => cls.startsWith('tag-'))
-        .map(cls => cls.replace('tag-', '').replace(/-/g, ' ').toUpperCase());
-
-      const metaSection = item.querySelector('.product-list-item-meta');
-      if (!metaSection) return;
-
-      // --- Inject Excerpt / Description ---
-      const descEl = document.createElement('p');
-      descEl.className = 'custom-product-excerpt';
-      descEl.textContent = 'Grow your brand with this modern editorial design for bold brands.';
-
-      const statusEl = metaSection.querySelector('.product-list-item-status');
-      const titlePriceRow = metaSection.querySelector('.product-list-title-price');
-      const insertAfter = statusEl || titlePriceRow;
-
-      if (insertAfter && insertAfter.nextSibling) {
-        metaSection.insertBefore(descEl, insertAfter.nextSibling);
-      } else if (insertAfter) {
-        metaSection.appendChild(descEl);
-      } else {
-        metaSection.appendChild(descEl);
-      }
-
-      // --- Inject Tag Pills ---
-      if (tags.length > 0) {
-        const tagsContainer = document.createElement('div');
-        tagsContainer.className = 'custom-product-tags';
-
-        tags.forEach(tag => {
-          // Don't show the "popular" tag as a pill — it's a sort filter, not a visible tag
-          if (tag.toLowerCase() === 'popular') return;
-
-          const pill = document.createElement('span');
-          pill.className = 'custom-tag-pill';
-          pill.textContent = tag;
-          tagsContainer.appendChild(pill);
-        });
-
-        if (tagsContainer.children.length > 0) {
-          metaSection.appendChild(tagsContainer);
+    function findSelectByLabel(container, labelText) {
+      var dropdowns = container.querySelectorAll('.product-filter-dropdown');
+      for (var i = 0; i < dropdowns.length; i++) {
+        var label = dropdowns[i].querySelector('.product-filter-label');
+        if (label && label.textContent.trim().toLowerCase() === labelText.toLowerCase()) {
+          return dropdowns[i].querySelector('select');
         }
       }
+      return null;
+    }
+
+    function createElement(tagName, className, text) {
+      var element = document.createElement(tagName);
+      if (className) element.className = className;
+      if (text !== undefined) element.textContent = text;
+      return element;
+    }
+
+    function appendSidebarLink(list, options) {
+      var item = document.createElement('li');
+      var link = createElement('a', 'custom-sidebar-link' + (options.active ? ' active' : ''), options.label + ' ');
+      var count = createElement('sup', '', '[' + displayCount(options.count) + ']');
+
+      link.href = options.href;
+      count.dataset[options.countType] = options.countKey;
+      options.countRefs[options.countKey] = count;
+
+      link.appendChild(count);
+      item.appendChild(link);
+      list.appendChild(item);
+    }
+
+    function createSidebarSection(headingText) {
+      var section = createElement('div', 'custom-sidebar-section');
+      var heading = createElement('h4', 'custom-sidebar-heading', headingText);
+      var list = createElement('ul', 'custom-sidebar-list');
+
+      section.dataset.section = headingText.toLowerCase();
+      section.appendChild(heading);
+      section.appendChild(list);
+
+      return { section: section, list: list };
+    }
+
+    /* ========================================================
+       PART 1 - CUSTOM SIDEBAR
+    ======================================================== */
+
+    var sidebar = document.querySelector('.product-list-nav-and-filters');
+    if (!sidebar) return;
+
+    var categoryLinksEls = Array.prototype.slice.call(sidebar.querySelectorAll('.nested-category-tree-wrapper .category-link'));
+    var industrySelect = findSelectByLabel(sidebar, 'Industry');
+    var totalCount = document.querySelectorAll('.product-list-item').length;
+    var currentTag = getCurrentTag();
+    var currentPath = normalizePath(window.location.pathname);
+    var tagCacheKey = 'glowup_shop_tags_' + currentPath;
+    var catCacheKey = 'glowup_shop_categories';
+
+    var categories = categoryLinksEls
+      .map(function (link) {
+        return {
+          name: link.textContent.trim(),
+          href: link.getAttribute('href') || ''
+        };
+      })
+      .filter(function (category) {
+        return category.name && category.href;
+      })
+      .reverse();
+
+    var tagOptions = [];
+    if (industrySelect) {
+      industrySelect.querySelectorAll('option').forEach(function (option) {
+        if (option.value) {
+          tagOptions.push({
+            value: option.value,
+            label: option.textContent.trim()
+          });
+        }
+      });
+    }
+
+    var cachedTags = readJsonObject(tagCacheKey);
+    var cachedCats = readJsonObject(catCacheKey);
+
+    function getCurrentCategory() {
+      for (var i = 0; i < categories.length; i++) {
+        if (normalizePath(categories[i].href) === currentPath) return categories[i].href;
+      }
+      return null;
+    }
+
+    var nativeNav = sidebar.querySelector('.product-list-nav');
+    var nativeFilters = sidebar.querySelector('.product-list-filters');
+    var nativeOverlay = sidebar.querySelector('.product-list-filters-drawer-overlay');
+
+    if (nativeNav) nativeNav.style.display = 'none';
+    if (nativeFilters) {
+      nativeFilters.style.cssText =
+        'position:absolute!important;opacity:0!important;pointer-events:none!important;' +
+        'height:0!important;overflow:hidden!important;';
+    }
+    if (nativeOverlay) nativeOverlay.style.display = 'none';
+
+    var existingCustomSidebar = sidebar.querySelector('.custom-sidebar');
+    if (existingCustomSidebar) existingCustomSidebar.remove();
+
+    var custom = createElement('div', 'custom-sidebar');
+    var countRefs = { tags: {}, cats: {} };
+    var currentCat = getCurrentCategory();
+    var categorySection = createSidebarSection('CATEGORY');
+    var industrySection = createSidebarSection('INDUSTRY');
+
+    categories.forEach(function (category) {
+      var isActive = currentCat === category.href;
+      var fallbackCount = isActive && !currentTag ? totalCount : '...';
+
+      appendSidebarLink(categorySection.list, {
+        href: category.href,
+        label: category.name,
+        active: isActive,
+        count: getCachedCount(cachedCats, category.href, fallbackCount),
+        countType: 'catId',
+        countKey: category.href,
+        countRefs: countRefs.cats
+      });
     });
-  }
 
-  // Initial enhancement
-  enhanceProductCards();
-
-  // Re-enhance after Squarespace re-renders the grid (e.g. after filtering)
-  const gridContainer = document.querySelector('.product-list-layout-container');
-  if (gridContainer) {
-    const observer = new MutationObserver(function () {
-      // Small delay to let Squarespace finish rendering
-      setTimeout(enhanceProductCards, 150);
+    appendSidebarLink(industrySection.list, {
+      href: buildTagUrl(''),
+      label: 'All',
+      active: !currentTag,
+      count: getCachedCount(cachedTags, 'all', currentTag ? '...' : totalCount),
+      countType: 'tagId',
+      countKey: 'all',
+      countRefs: countRefs.tags
     });
-    observer.observe(gridContainer, { childList: true, subtree: true });
-  }
 
-});
+    tagOptions.forEach(function (tag) {
+      var fallbackCount = currentTag ? '...' : countProductsWithTag(document, tag.value);
+
+      appendSidebarLink(industrySection.list, {
+        href: buildTagUrl(tag.value),
+        label: titleCase(tag.label),
+        active: currentTag === tag.value,
+        count: getCachedCount(cachedTags, tag.value, fallbackCount),
+        countType: 'tagId',
+        countKey: tag.value,
+        countRefs: countRefs.tags
+      });
+    });
+
+    custom.appendChild(categorySection.section);
+    custom.appendChild(industrySection.section);
+    sidebar.appendChild(custom);
+
+    function applyCountsToSidebar() {
+      if (cachedTags) {
+        if (countRefs.tags.all && cachedTags.all !== undefined) {
+          countRefs.tags.all.textContent = '[' + cachedTags.all + ']';
+        }
+
+        tagOptions.forEach(function (tag) {
+          var countEl = countRefs.tags[tag.value];
+          if (countEl && cachedTags[tag.value] !== undefined) {
+            countEl.textContent = '[' + cachedTags[tag.value] + ']';
+          }
+        });
+      }
+
+      if (cachedCats) {
+        categories.forEach(function (category) {
+          var countEl = countRefs.cats[category.href];
+          if (countEl && cachedCats[category.href] !== undefined) {
+            countEl.textContent = '[' + cachedCats[category.href] + ']';
+          }
+        });
+      }
+    }
+
+    var saveTags = false;
+    var saveCats = false;
+    cachedTags = cachedTags || {};
+    cachedCats = cachedCats || {};
+
+    if (cachedTags.all === undefined) {
+      if (!currentTag) {
+        cachedTags.all = totalCount;
+        tagOptions.forEach(function (tag) {
+          cachedTags[tag.value] = countProductsWithTag(document, tag.value);
+        });
+        saveTags = true;
+      } else {
+        fetchDocument(currentPath).then(function (doc) {
+          if (!doc) return;
+
+          cachedTags.all = doc.querySelectorAll('.product-list-item').length;
+          tagOptions.forEach(function (tag) {
+            cachedTags[tag.value] = countProductsWithTag(doc, tag.value);
+          });
+
+          writeJsonObject(tagCacheKey, cachedTags);
+          applyCountsToSidebar();
+        });
+      }
+    }
+
+    categories.forEach(function (category) {
+      if (cachedCats[category.href] !== undefined) return;
+
+      if (currentCat === category.href && !currentTag) {
+        cachedCats[category.href] = totalCount;
+        saveCats = true;
+        return;
+      }
+
+      fetchDocument(category.href).then(function (doc) {
+        if (!doc) return;
+
+        cachedCats[category.href] = doc.querySelectorAll('.product-list-item').length;
+        writeJsonObject(catCacheKey, cachedCats);
+        applyCountsToSidebar();
+      });
+    });
+
+    if (saveTags) writeJsonObject(tagCacheKey, cachedTags);
+    if (saveCats) writeJsonObject(catCacheKey, cachedCats);
+    if (saveTags || saveCats) applyCountsToSidebar();
+
+    /* ========================================================
+       PART 2 - PRODUCT CARD ENHANCEMENTS
+    ======================================================== */
+
+    function getProductTags(item) {
+      var seen = {};
+
+      return Array.prototype.slice.call(item.classList)
+        .filter(function (className) {
+          return className.indexOf('tag-') === 0;
+        })
+        .map(function (className) {
+          return className.replace('tag-', '').replace(/-/g, ' ');
+        })
+        .filter(function (tag) {
+          var key = tag.toLowerCase();
+          if (key === 'popular' || seen[key]) return false;
+          seen[key] = true;
+          return true;
+        })
+        .map(function (tag) {
+          return tag.toUpperCase();
+        });
+    }
+
+    function syncProductGridEdges() {
+      var gridContainer = document.querySelector('.product-list-layout-container');
+      if (!gridContainer) return;
+
+      var items = Array.prototype.filter.call(gridContainer.querySelectorAll('.product-list-item'), function (item) {
+        return item.offsetParent !== null;
+      });
+
+      if (!items.length) {
+        gridContainer.classList.remove('has-js-grid-edges');
+        return;
+      }
+
+      var firstRowTop = Math.round(items[0].getBoundingClientRect().top);
+      var columnCount = 0;
+
+      for (var i = 0; i < items.length; i++) {
+        var itemTop = Math.round(items[i].getBoundingClientRect().top);
+        if (Math.abs(itemTop - firstRowTop) > 1) break;
+        columnCount++;
+      }
+
+      columnCount = Math.max(1, Math.min(columnCount, items.length));
+
+      var lastRowStart = Math.floor((items.length - 1) / columnCount) * columnCount;
+      gridContainer.classList.add('has-js-grid-edges');
+
+      items.forEach(function (item, index) {
+        item.classList.toggle('is-row-end', (index + 1) % columnCount === 0 || index === items.length - 1);
+        item.classList.toggle('is-last-row', index >= lastRowStart);
+      });
+    }
+
+    function enhanceProductCards() {
+      var productItems = document.querySelectorAll('.product-list-item');
+
+      productItems.forEach(function (item) {
+        var metaSection = item.querySelector('.product-list-item-meta');
+        if (!metaSection) return;
+
+        if (!metaSection.querySelector('.custom-product-excerpt')) {
+          var descEl = createElement('p', 'custom-product-excerpt', 'Grow your brand with this modern editorial design for bold brands.');
+          var statusEl = metaSection.querySelector('.product-list-item-status');
+          var titlePriceRow = metaSection.querySelector('.product-list-title-price');
+          var insertAfter = statusEl || titlePriceRow;
+
+          if (insertAfter && insertAfter.nextSibling) {
+            metaSection.insertBefore(descEl, insertAfter.nextSibling);
+          } else {
+            metaSection.appendChild(descEl);
+          }
+        }
+
+        if (!metaSection.querySelector('.custom-product-tags')) {
+          var tags = getProductTags(item);
+          var tagsContainer = createElement('div', 'custom-product-tags');
+
+          tags.forEach(function (tag) {
+            tagsContainer.appendChild(createElement('span', 'custom-tag-pill', tag));
+          });
+
+          if (tagsContainer.children.length > 0) {
+            metaSection.appendChild(tagsContainer);
+          }
+        }
+      });
+
+      syncProductGridEdges();
+
+      if (typeof window.cleanUpPrice === 'function') {
+        window.cleanUpPrice();
+      }
+    }
+
+    var enhanceTimer = null;
+
+    function scheduleEnhancement() {
+      window.clearTimeout(enhanceTimer);
+      enhanceTimer = window.setTimeout(enhanceProductCards, 150);
+    }
+
+    enhanceProductCards();
+
+    var gridContainer = document.querySelector('.product-list-layout-container');
+    if (gridContainer) {
+      var observer = new MutationObserver(scheduleEnhancement);
+      observer.observe(gridContainer, { childList: true, subtree: true });
+      window.addEventListener('resize', scheduleEnhancement);
+    }
+  }
+})();
