@@ -33,7 +33,8 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
        width from this var — change padding here, cover follows */
     --meta-pad-x: 3vw;
     padding: 4vw var(--meta-pad-x);
-    padding-bottom: 0 !important;
+    /* Breathing room under the action pill at its final rest position */
+    padding-bottom: 40px !important;
   }
 
 
@@ -382,6 +383,13 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     padding: 0 !important;
   }
 
+  /* PAINT ORDER (why the capsule lives on ::after):
+     inside a stacking context, negative z-index children paint OVER
+     the root's own background/border — so a full-box cover on ::before
+     would erase a background painted on the root. Layering instead:
+     root (transparent, layout only) → ::before cover (z:-2, masks text
+     scrolling under the pill incl. around the rounded corners) →
+     ::after capsule visual (z:-1, border + cream bg) → buttons. */
   .product-add-to-cart.glowup-action-pill {
     display: flex !important;
     /* Squarespace styles .product-add-to-cart as a COLUMN flex —
@@ -389,10 +397,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     flex-direction: row !important;
     align-items: center !important;
     gap: 8px;
-    border: 1.5px solid #000000;
+    border: 1.5px solid transparent; /* layout space; visual on ::after */
     border-radius: 100px;
     padding: 3px !important;
-    background-color: #ebe7e4;
+    background-color: transparent;
     box-sizing: border-box;
     width: 100%;
     margin: 24px 0 0 0 !important;
@@ -402,18 +410,38 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     isolation: isolate;
   }
 
-  /* Scroll cover below the sticky pill. Percentage top resolves from
-     the inner box, so add a few px to clear the outer border. */
+  /* Scroll cover: spans the pill's full box (masking bleed-through at
+     the rounded corners) plus the sticky gap below, and the meta's
+     horizontal padding via --meta-pad-x */
   .product-add-to-cart.glowup-action-pill::before {
     content: "" !important;
     position: absolute !important;
-    top: calc(100% + 3px) !important;
+    top: -4px !important;
     left: calc(-1 * var(--meta-pad-x, 24px)) !important;
     right: calc(-1 * var(--meta-pad-x, 24px)) !important;
     bottom: -24px !important;
     background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+  }
+
+  /* Capsule visual — painted above the cover, below the buttons */
+  .product-add-to-cart.glowup-action-pill::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: -1.5px !important;
+    border: 1.5px solid #000000 !important;
+    border-radius: 100px !important;
+    background-color: #ebe7e4 !important;
     z-index: -1 !important;
     pointer-events: none !important;
+  }
+
+  /* The View Demo fe-block is emptied when its button container moves
+     into the pill — remove it from the grid so it leaves no dead space
+     (trailing rows are trimmed by product.js syncRelocatedGrids) */
+  .relocated-description .fe-block:has(.sqs-block-button):not(:has(.sqs-block-button-container)) {
+    display: none !important;
   }
 
   /* Width split: cart ~60% / demo ~40% */
@@ -506,7 +534,13 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
       content: none !important;
     }
 
-    .glowup-action-pill > .product-add-to-cart-layout-wrapper,
+    /* Cart label ("Purchase for $375") is longer than "View Demo" —
+       give it the larger share so it never wraps on small phones */
+    .glowup-action-pill > .product-add-to-cart-layout-wrapper {
+      flex: 1.3 1 0 !important;
+      min-width: 0 !important;
+    }
+
     .glowup-action-pill > .sqs-block-button-container {
       flex: 1 1 0 !important;
       min-width: 0 !important;

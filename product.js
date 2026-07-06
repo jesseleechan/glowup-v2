@@ -243,7 +243,11 @@
       button.setAttribute('data-use-custom-label', 'false');
     }
     if (!button.hasAttribute('data-original-label')) {
-      button.setAttribute('data-original-label', 'Add To Cart');
+      // Derive from the live label ("Purchase" when direct-checkout is
+      // on) — Squarespace restores button text from this attribute
+      var labelSpan = button.querySelector('.add-to-cart-text');
+      var liveLabel = labelSpan ? labelSpan.textContent.trim() : '';
+      button.setAttribute('data-original-label', liveLabel || 'Add To Cart');
     }
   }
 
@@ -297,6 +301,7 @@
       }
 
       if (pillState.cartEl) {
+        restoreCartButtonLabel(pillState.cartEl);
         unstylePillButtons(pillState.cartEl);
         pillState.cartEl.classList.remove('glowup-action-pill');
       }
@@ -316,6 +321,7 @@
       }
       if (pillState.cartEl) {
         stylePillButtons(pillState.cartEl);
+        updateCartButtonLabel(pillState.cartEl);
       }
       return;
     }
@@ -335,8 +341,52 @@
     cartEl.classList.add('glowup-action-pill');
     cartEl.appendChild(demoContainer);
     stylePillButtons(cartEl);
+    updateCartButtonLabel(cartEl);
 
     pillState.built = true;
+  }
+
+  /* Append the product price to the native button label:
+     "Purchase" -> "Purchase for $375". data-original-label must match
+     because Squarespace restores the label from it after the
+     added-to-cart state animation. Reversed while editing. */
+  function updateCartButtonLabel(cartEl) {
+    var btn = cartEl.querySelector('.sqs-add-to-cart-button');
+    var span = btn ? btn.querySelector('.add-to-cart-text') : null;
+    if (!btn || !span) return;
+
+    var current = span.textContent.trim();
+    if (!current || current.indexOf(' for ') !== -1) return;
+
+    var price = getCleanProductPrice();
+    if (!price) return;
+
+    var label = current + ' for ' + price;
+    btn.setAttribute('data-glowup-base-label', current);
+    span.textContent = label;
+    btn.setAttribute('data-original-label', label);
+  }
+
+  function restoreCartButtonLabel(cartEl) {
+    var btn = cartEl ? cartEl.querySelector('.sqs-add-to-cart-button') : null;
+    if (!btn) return;
+    var base = btn.getAttribute('data-glowup-base-label');
+    if (!base) return;
+    var span = btn.querySelector('.add-to-cart-text');
+    if (span) span.textContent = base;
+    btn.setAttribute('data-original-label', base);
+    btn.removeAttribute('data-glowup-base-label');
+  }
+
+  /* "US$375.00" (or "$375.00") -> "$375". Falls back to empty string
+     (label is then left untouched) if no price element is present. */
+  function getCleanProductPrice() {
+    var el = document.querySelector('.product-price');
+    if (!el) return '';
+    var text = el.textContent.replace(/\s|US/g, '');
+    var match = text.match(/[^\d.,]*[\d][\d.,]*/);
+    if (!match) return '';
+    return match[0].replace(/\.00$/, '');
   }
 
   /* Squarespace ships its commerce-button sizing in a CSS cascade
@@ -445,14 +495,18 @@
 
     var grids = scope.querySelectorAll('.fluid-engine');
 
+    var isMobile = window.matchMedia && window.matchMedia('(max-width: 767px)').matches;
+
     Array.prototype.forEach.call(grids, function (fe) {
       if (activelyEditing) {
         fe.style.removeProperty('grid-template-columns');
+        fe.style.removeProperty('grid-template-rows');
         return;
       }
 
-      // Clear our previous inline value so the native template is read
+      // Clear our previous inline values so the native template is read
       fe.style.removeProperty('grid-template-columns');
+      fe.style.removeProperty('grid-template-rows');
       var tracks = getComputedStyle(fe).gridTemplateColumns.trim().split(/\s+/);
       if (tracks.length < 3) return;
 
@@ -462,6 +516,29 @@
         '0px repeat(' + inner + ', minmax(0, 1fr)) 0px',
         'important'
       );
+
+      // Desktop: trim trailing grid rows left behind by the emptied
+      // View Demo fe-block (display:none via CSS once its container
+      // moves into the pill). Native row values are non-uniform, so we
+      // slice the native list at the last row a visible block occupies
+      // rather than rebuilding. Mobile keeps the stylesheet's auto rows.
+      if (isMobile) return;
+
+      var rows = getComputedStyle(fe).gridTemplateRows.trim().split(/\s+/);
+      var maxEnd = 1;
+      Array.prototype.forEach.call(fe.children, function (block) {
+        if (getComputedStyle(block).display === 'none') return;
+        var end = parseInt(getComputedStyle(block).gridRowEnd, 10);
+        if (!isNaN(end)) maxEnd = Math.max(maxEnd, end);
+      });
+
+      if (maxEnd > 1 && rows.length >= maxEnd) {
+        fe.style.setProperty(
+          'grid-template-rows',
+          rows.slice(0, maxEnd - 1).join(' '),
+          'important'
+        );
+      }
     });
   }
 
