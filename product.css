@@ -383,13 +383,20 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     padding: 0 !important;
   }
 
-  /* PAINT ORDER (why the capsule lives on ::after):
-     inside a stacking context, negative z-index children paint OVER
-     the root's own background/border — so a full-box cover on ::before
-     would erase a background painted on the root. Layering instead:
-     root (transparent, layout only) → ::before cover (z:-2, masks text
-     scrolling under the pill incl. around the rounded corners) →
-     ::after capsule visual (z:-1, border + cream bg) → buttons. */
+  /* PAINT ORDER (why the capsule lives on ::after, and why every
+     layer is POSITIVE):
+     1) inside a stacking context, negative z-index children paint OVER
+        the root's own background/border — so a full-box cover on
+        ::before would erase a background painted on the root.
+     2) negative-z pseudos on a sticky element ALSO lose to the
+        transformed FE blocks Squarespace generates (fe-blocks carry
+        transforms + z-index:10), letting description text paint over
+        the cover — a compositing quirk that ignores the pill's higher
+        context z-index. Positive layers are immune.
+     Layering: root (transparent, layout only) → ::before cover (z:0,
+     masks text scrolling under the pill incl. around the rounded
+     corners) → ::after capsule visual (z:1, border + cream bg) →
+     button wrappers (z:2). */
   .product-add-to-cart.glowup-action-pill {
     display: flex !important;
     /* Squarespace styles .product-add-to-cart as a COLUMN flex —
@@ -421,7 +428,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     right: calc(-1 * var(--meta-pad-x, 24px)) !important;
     bottom: -24px !important;
     background-color: var(--backgroundOverlayColor, #f5f4ef) !important;
-    z-index: -2 !important;
+    z-index: 0 !important;
     pointer-events: none !important;
   }
 
@@ -433,7 +440,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     border: 1.5px solid #000000 !important;
     border-radius: 100px !important;
     background-color: #ebe7e4 !important;
-    z-index: -1 !important;
+    z-index: 1 !important;
     pointer-events: none !important;
   }
 
@@ -444,9 +451,12 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     display: none !important;
   }
 
-  /* Width split: cart ~60% / demo ~40% */
+  /* Width split: cart ~60% / demo ~40%. z-index 2 lifts the buttons
+     above the cover (0) and capsule (1) — see PAINT ORDER above. */
   .glowup-action-pill > .product-add-to-cart-layout-wrapper {
     flex: 1.6;
+    position: relative !important;
+    z-index: 2 !important;
     margin: 0 !important;
     padding: 0 !important;
   }
@@ -460,6 +470,8 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   .glowup-action-pill > .sqs-block-button-container {
     flex: 1;
+    position: relative !important;
+    z-index: 2 !important;
     margin: 0 !important;
     padding: 0 !important;
   }
