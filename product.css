@@ -538,7 +538,10 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   @media screen and (max-width: 767px) {
     .product-add-to-cart.glowup-action-pill {
-      position: static !important;
+      /* relative, NOT static: the ::after capsule is position:absolute
+         and needs the pill as its containing block — on a static pill
+         it anchors to .content-wrapper and blankets the whole column */
+      position: relative !important;
       align-items: stretch !important;
     }
 

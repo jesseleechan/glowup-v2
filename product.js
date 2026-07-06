@@ -402,7 +402,9 @@
     cartEl.style.setProperty('display', 'flex', 'important');
     cartEl.style.setProperty('flex-direction', 'row', 'important');
     cartEl.style.setProperty('align-items', isMobile ? 'stretch' : 'center', 'important');
-    cartEl.style.setProperty('position', isMobile ? 'static' : 'sticky', 'important');
+    // relative (not static) on mobile: the ::after capsule is absolute
+    // and must anchor to the pill, not .content-wrapper
+    cartEl.style.setProperty('position', isMobile ? 'relative' : 'sticky', 'important');
     cartEl.style.setProperty('bottom', isMobile ? 'auto' : '24px', 'important');
     cartEl.style.setProperty('width', '100%', 'important');
     cartEl.style.setProperty('height', 'auto', 'important');
