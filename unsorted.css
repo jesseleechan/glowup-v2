@@ -89,6 +89,13 @@
     font-size: var(--heading-3-size) !important;
   }
 
+  @media screen and (max-width: 767px) {
+    .summary-title,
+    .product-price {
+      font-size: 1.8rem !important;
+    }
+  }
+
   /* Layout Settings Target */
   .summary-block-setting-metadata-position-below-content {
     .summary-metadata-container--below-content {

@@ -275,7 +275,7 @@
     }
 
     .addons-desc {
-      font-size: var(--heading-4-size, 2rem);
+      font-size: 1.2rem;
     }
 
     .col-border {
@@ -291,7 +291,7 @@
       padding: 8vw 5vw;
 
       h3 {
-        font-size: var(--heading-3-size, 3rem);
+        font-size: 1.8rem;
       }
     }
 

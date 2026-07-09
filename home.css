@@ -128,6 +128,13 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     font-size: var(--heading-4-size) !important;
   }
 
+  @media screen and (max-width: 767px) {
+    .summary-title,
+    .product-price {
+      font-size: 1.2rem !important;
+    }
+  }
+
   /* --- Layout Settings: Position Metadata Below Content --- */
   .summary-block-setting-metadata-position-below-content {
     .summary-metadata-container--below-content {
