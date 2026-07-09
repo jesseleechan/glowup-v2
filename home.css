@@ -310,6 +310,9 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     .summary-metadata-container {
       grid-area: tags;
       width: 100%;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 32px), transparent 100%);
+      mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 32px), transparent 100%);
     }
 
     .summary-metadata-item--tags {
@@ -318,13 +321,15 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
       /* Flex gap spaces pills on both axes — fixes zero vertical
          spacing when pills wrap to a second line */
       display: flex !important;
-      flex-wrap: wrap;
+      width: max-content;
+      flex-wrap: nowrap;
       gap: 2px;
 
       a {
         font-size: 0.7rem !important;
         color: var(--black) !important;
         display: inline-block;
+        flex: 0 0 auto;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         border: 1.5px solid var(--black);
