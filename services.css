@@ -58,3 +58,245 @@
   }
 
 }
+
+/* ==========================================================
+   POLISH + DFY SERVICE DETAILS
+========================================================== */
+#service-polish,
+#service-dfy {
+  /* --- Premium Badge Spark SVG (theme-aware) --- */
+  h2:first-of-type::after {
+    content: '';
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-left: 0;
+    vertical-align: middle;
+    transform: translateY(-60%);
+    background-color: currentColor !important;
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='58' height='58' viewBox='0 0 58 58' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.138 28.7445L0 18.9921L0.507258 17.7383L24.7953 27.5513L6.29761 9.05441L7.25379 8.09823L25.4692 26.3141L15.8198 2.43112L17.0743 1.92387L26.9854 26.4546V0H28.3381V25.586L37.9216 1.8657L39.1762 2.37296L29.3767 26.6259L47.8965 8.10583L48.8532 9.06252L30.3759 27.5401L54.6366 17.7383L55.1438 18.9921L31.0049 28.7445H57.0714V30.0972H31.0963L55.2101 39.84L54.7029 41.0938L30.4492 31.2945L48.9722 49.8174L48.016 50.7736L29.2137 31.9712L39.1757 56.6284L37.9212 57.1357L28.3378 33.4138L24.138 28.7445Z' fill='%23000000'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='58' height='58' viewBox='0 0 58 58' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.138 28.7445L0 18.9921L0.507258 17.7383L24.7953 27.5513L6.29761 9.05441L7.25379 8.09823L25.4692 26.3141L15.8198 2.43112L17.0743 1.92387L26.9854 26.4546V0H28.3381V25.586L37.9216 1.8657L39.1762 2.37296L29.3767 26.6259L47.8965 8.10583L48.8532 9.06252L30.3759 27.5401L54.6366 17.7383L55.1438 18.9921L31.0049 28.7445H57.0714V30.0972H31.0963L55.2101 39.84L54.7029 41.0938L30.4492 31.2945L48.9722 49.8174L48.016 50.7736L29.2137 31.9712L39.1757 56.6284L37.9212 57.1357L28.3378 33.4138L24.138 28.7445Z' fill='%23000000'/%3E%3C/svg%3E");
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+  }
+
+  /* --- Checkmark list --- */
+  ul[data-rte-list] li > *:first-child::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 40px !important;
+    height: 14px !important;
+    margin-top: -2px !important;
+    margin-left: -40px !important;
+    vertical-align: middle !important;
+    background-color: currentColor !important;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
+    -webkit-mask-position: right 10px center !important;
+    -webkit-mask-repeat: no-repeat !important;
+    -webkit-mask-size: 14px 14px !important;
+    mask-position: right 10px center !important;
+    mask-repeat: no-repeat !important;
+    mask-size: 14px 14px !important;
+  }
+}
+
+/* ==========================================================
+   SERVICES HEADER TAG CHIPS
+========================================================== */
+#services-header {
+  ul {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 4px !important;
+    justify-content: flex-end;
+    margin: 0 !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+
+  ul li {
+    display: inline-flex !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  ul li p {
+    margin: 0 !important;
+    padding: 1px 12px !important;
+    border: 1.2px solid var(--black) !important;
+    border-radius: 9999px !important;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+
+    a {
+      color: inherit !important;
+      text-decoration: none !important;
+      border-bottom: none !important;
+      background-image: none !important;
+    }
+  }
+
+  ul li p::before {
+    content: "" !important;
+    display: none !important;
+  }
+
+  ul li p:hover {
+    color: var(--white) !important;
+    background-color: var(--black) !important;
+    border-color: var(--black) !important;
+    cursor: pointer;
+
+    a {
+      color: var(--white) !important;
+    }
+  }
+}
+
+/* ==========================================================
+   ADD-ONS MENU
+========================================================== */
+#addons-menu {
+  .custom-addons-wrapper,
+  .custom-addons-wrapper * {
+    box-sizing: border-box;
+  }
+
+  .custom-addons-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 100%;
+    background-color: var(--black);
+    border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
+  }
+
+  .addons-sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100%;
+    padding: 4vw;
+    color: var(--white);
+    background-color: var(--black);
+  }
+
+  .addons-label {
+    margin-bottom: 4rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .addons-desc {
+    margin: 0;
+    color: var(--white);
+    font-family: var(--heading-font-font-family);
+    font-size: var(--heading-4-size, 3rem);
+    font-weight: var(--heading-font-font-weight, 400);
+    line-height: var(--heading-font-line-height, 1.1em);
+    letter-spacing: var(--heading-font-letter-spacing, -0.02em);
+  }
+
+  .addons-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    color: var(--black);
+    background-color: var(--siteBackgroundColor);
+  }
+
+  .addons-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .col-border {
+    border-right: 1px solid var(--black);
+  }
+
+  .addons-header-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 4vw 3vw 6vw;
+    border-bottom: 1px solid var(--black);
+
+    h3 {
+      margin: 0 0 1rem;
+      font-family: var(--heading-font-font-family);
+      font-size: 2.5rem;
+      font-weight: var(--heading-font-font-weight, 400);
+      line-height: var(--heading-font-line-height, 1em);
+      letter-spacing: var(--heading-font-letter-spacing, -0.02em);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  }
+
+  .addons-list-cell {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1vw 3vw;
+    border-bottom: 1px solid var(--black);
+
+    .item-price {
+      font-weight: 500;
+    }
+  }
+
+  .addons-column .addons-list-cell:last-child {
+    border-bottom: 0;
+  }
+
+  @media (max-width: 767px) {
+    .custom-addons-wrapper,
+    .addons-content {
+      grid-template-columns: 1fr;
+    }
+
+    .addons-sidebar {
+      min-height: 50vh;
+      padding: 8vw 5vw;
+    }
+
+    .addons-desc {
+      font-size: var(--heading-4-size, 2rem);
+    }
+
+    .col-border {
+      border-right: 0;
+      border-bottom: 1px solid var(--black);
+    }
+
+    .col-border .addons-list-cell:last-child {
+      border-bottom: 1px solid var(--black);
+    }
+
+    .addons-header-cell {
+      padding: 8vw 5vw;
+
+      h3 {
+        font-size: var(--heading-3-size, 3rem);
+      }
+    }
+
+    .addons-list-cell {
+      padding: 4vw 5vw;
+    }
+  }
+}

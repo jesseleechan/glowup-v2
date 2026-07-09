@@ -636,7 +636,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   }
 
   body.view-item.collection-type-products .product-detail-section {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--black);
   }
 
 }
