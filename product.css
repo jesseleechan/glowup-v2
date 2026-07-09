@@ -635,12 +635,18 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     display: none !important;
   }
 
-  body.view-item.collection-type-products .product-detail-section {
-    border-bottom: 1px solid var(--black);
-  }
+
 
 }
 
+/* ==========================================================
+   7b. PRODUCT DETAIL MISC — Product page only
+    (Outside body:not — safe, scoped to code block marker ID)
+========================================================== */
+
+body.view-item.collection-type-products .product-detail-section {
+    border-bottom: 1px solid var(--black);
+  }
 
 /* ==========================================================
    8. PRODUCT ITEM BENEFITS — Homepage product overview bar

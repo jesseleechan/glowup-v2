@@ -185,11 +185,17 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    padding: 11px 0 !important;
+    padding: 10px 0 !important;
     border-top: 1px solid var(--black);
 
     .summary-heading {
       display: none !important;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .summary-block-header {
+      padding: 2px 0 !important;
     }
   }
 
