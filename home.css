@@ -311,8 +311,8 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
       grid-area: tags;
       width: 100%;
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 32px), transparent 100%);
-      mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 32px), transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 18px), transparent 100%);
+      mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 18px), transparent 100%);
     }
 
     .summary-metadata-item--tags {
@@ -332,7 +332,7 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
         flex: 0 0 auto;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        border: 1.5px solid var(--black);
+        border: 1px solid var(--black);
         border-radius: 30px;
         padding: 10px 15px;
         font-weight: 500;
@@ -343,6 +343,25 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
           background-color: var(--black);
           color: var(--white) !important;
         }
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .summary-metadata-container--below-content {
+        margin-top: 0 !important;
+      }
+
+      .summary-content {
+        grid-template-rows: auto auto auto;
+        row-gap: 6px;
+      }
+
+      .summary-excerpt p {
+        font-size: 12px;
+      }
+
+      .summary-metadata-item--tags a {
+        font-size: 12px !important;
       }
     }
 
