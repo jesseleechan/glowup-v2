@@ -80,7 +80,7 @@
 
     @media screen and (max-width: 767px) {
       right: 24px;
-      bottom: 24px;
+      bottom: 40px;
       gap: 8px;
 
       .nav-btn {
@@ -152,8 +152,7 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   .sqs-gallery-design-carousel {
     order: 1;
     border-top: 1px solid var(--black);
-    border-bottom: 1px solid var(--black);
-    margin-top: -2px !important;
+    margin-top: -1px !important;
     margin-bottom: 0 !important;
 
     /* Flex row equalizes card heights so separator borders always run
@@ -187,6 +186,7 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     align-items: center !important;
     padding: 10px 0 !important;
     border-top: 1px solid var(--black);
+    border-bottom: 1px solid var(--black);
 
     .summary-heading {
       display: none !important;
@@ -319,7 +319,7 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
          spacing when pills wrap to a second line */
       display: flex !important;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 2px;
 
       a {
         font-size: 0.7rem !important;
