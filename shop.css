@@ -240,6 +240,7 @@
   border: 1px solid var(--black);
   border-radius: 30px;
   padding: 0px 15px;
+  line-height: 1.8;
   font-size: 0.7rem;
   font-weight: 500;
   color: var(--black);
@@ -362,21 +363,22 @@
 
   /* Card tightening for the narrower columns */
   .product-list-item-title {
-    font-size: 1.05rem !important;
+    font-size: 1.3rem !important;
   }
   .product-list-item-price {
-    font-size: 0.85rem !important;
+    font-size: 1.3rem !important;
   }
   .product-list-title-price {
     gap: 8px !important;
     margin-bottom: 5px !important;
   }
   .custom-product-excerpt {
-    font-size: 0.72rem !important;
+    font-size: 0.8125rem !important;
     margin-bottom: 12px !important;
   }
   .product-list-image-wrapper {
     padding: 12px !important;
+    border-radius: 10px !important;
     margin-bottom: 10px !important;
   }
   .custom-tag-pill {
