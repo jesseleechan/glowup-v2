@@ -717,6 +717,11 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     padding-right: 0 !important;
   }
 
+  /* Native prev/next arrows hidden — swipe/scroll is enough on mobile */
+  .mobile-arrows {
+    display: none !important;
+  }
+
   .list-item {
     display: flex !important;
     flex-direction: column !important;
