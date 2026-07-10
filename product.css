@@ -304,7 +304,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   .relocated-description {
     .sqs-block.html-block:has(p.sqsrte-small strong) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      border-bottom: 1px dotted var(--black) !important;
     }
   }
 
@@ -621,6 +621,33 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
 
   #shop-gallery .user-items-list-carousel__media-container {
     margin-bottom: 0 !important;
+  }
+
+  /* --- Mobile prev/next arrows: match the summary-carousel-pager
+     look (flat icon buttons, no background/circle, no counter) ---
+     No-JS: the native "N / M" counter is left untouched/unmoved. */
+  #shop-gallery .mobile-arrows {
+    margin-top: 0 !important;
+    gap: 16px !important;
+  }
+
+  #shop-gallery .mobile-arrow-button {
+    width: 44px !important;
+    height: 44px !important;
+    background: transparent !important;
+  }
+
+  #shop-gallery .mobile-arrow-icon-background-area {
+    display: none !important;
+  }
+
+  #shop-gallery .mobile-arrow-icon-path {
+    stroke: var(--black) !important;
+    transition: opacity 0.2s ease;
+  }
+
+  #shop-gallery .mobile-arrow-button:hover .mobile-arrow-icon-path {
+    opacity: 0.5;
   }
 
 
