@@ -663,10 +663,23 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   /* --- Mobile: stack the three cards full-width. Hover accordion
      doesn't exist on touch; cards are simple tappable banners --- */
   @media screen and (max-width: 767px) {
+    /* Full bleed — zero the native full-width auto-layout gutter
+       (small vw-based side padding Squarespace still applies even
+       with data-layout-width="full") */
+    .user-items-list-simple[data-layout-width="full"] {
+      padding: 0 !important;
+    }
+
     .user-items-list-item-container {
       height: auto !important;
       grid-template-columns: 1fr !important;
-      grid-auto-rows: 280px !important;
+      grid-auto-rows: auto !important;
+    }
+
+    /* 1:1 square cards instead of the old fixed 280px short banner */
+    .list-item {
+      height: auto !important;
+      aspect-ratio: 1 / 1 !important;
     }
 
     .list-item-content {
