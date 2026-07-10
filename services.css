@@ -247,3 +247,12 @@
     }
   }
 }
+
+#service-polish, #service-dfy, #polish-pass-faqs, #inclusions-grid, #dfy-faqs {
+
+  .image-block-outer-wrapper {
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+}
