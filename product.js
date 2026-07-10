@@ -752,15 +752,15 @@
       }
     );
 
-    // List order on the product page: 1st "WHAT MAKES X DIFFERENT",
-    // 2nd "PAGES INCLUDED" (page icons), 3rd "FEATURES" (checkmarks),
-    // 4th "HOW IT WORKS" (left plain).
+    // List order on the product page: 1st "WHAT MAKES X DIFFERENT"
+    // (checkmarks), 2nd "PAGES INCLUDED" (page icons), 3rd "FEATURES"
+    // (checkmarks), 4th "HOW IT WORKS" (left plain).
     listChildren.forEach(function (child, index) {
       child.classList.add('glowup-product-list-child');
 
       if (index === 1) {
         child.classList.add('glowup-product-list-child--pages');
-      } else if (index === 2) {
+      } else if (index === 0 || index === 2) {
         child.classList.add('glowup-product-list-child--checks');
       }
     });
