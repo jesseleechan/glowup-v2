@@ -138,7 +138,7 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   /* --- Layout Settings: Position Metadata Below Content --- */
   .summary-block-setting-metadata-position-below-content {
     .summary-metadata-container--below-content {
-      margin-top: 10px !important;
+      margin-top: 0 !important;
     }
   }
 
@@ -308,11 +308,22 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
 
     /* --- Tags & Metadata --- */
     .summary-metadata-container {
+      position: relative;
       grid-area: tags;
       width: 100%;
       overflow: hidden;
-      -webkit-mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 18px), transparent 100%);
-      mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 18px), transparent 100%);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        width: 18px;
+        pointer-events: none;
+        background: linear-gradient(to right, transparent, var(--siteBackgroundColor));
+      }
     }
 
     .summary-metadata-item--tags {
@@ -347,10 +358,6 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     }
 
     @media screen and (max-width: 767px) {
-      .summary-metadata-container--below-content {
-        margin-top: 0 !important;
-      }
-
       .summary-content {
         grid-template-rows: auto auto auto;
         row-gap: 6px;
@@ -360,9 +367,6 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
         font-size: 12px;
       }
 
-      .summary-metadata-item--tags a {
-        font-size: 12px !important;
-      }
     }
 
     /* --- Thumbnail Drop Shadow (Safari-safe) --- */
