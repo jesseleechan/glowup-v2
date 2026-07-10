@@ -728,19 +728,39 @@
   }
 
   function annotateRelocatedContent(relocated) {
-    var listChildren = Array.prototype.filter.call(
-      relocated.querySelectorAll('.sqs-stack-container > .stack-child-container'),
-      function (child) {
-        return child.querySelector('ul[data-rte-list]');
+    // One entry per actual <ul>, not per matching ancestor: nested
+    // stacks (an outer heading+list wrapper containing an inner
+    // list-only stack) mean naive `:has(ul)` filtering over EVERY
+    // .stack-child-container matches each list twice (the outer
+    // wrapper AND the inner leaf), doubling the count and shifting
+    // every index — which silently mis-targeted the page/check icons
+    // to the wrong lists (and to duplicate elements) for months.
+    // Walking from each <ul> up to its closest .stack-child-container
+    // and deduping guarantees exactly one container per visual list,
+    // in document order.
+    var seen = [];
+    var listChildren = [];
+
+    Array.prototype.forEach.call(
+      relocated.querySelectorAll('.sqs-stack-container ul[data-rte-list]'),
+      function (ul) {
+        var container = ul.closest('.stack-child-container');
+        if (container && seen.indexOf(container) === -1) {
+          seen.push(container);
+          listChildren.push(container);
+        }
       }
     );
 
+    // List order on the product page: 1st "WHAT MAKES X DIFFERENT",
+    // 2nd "PAGES INCLUDED" (page icons), 3rd "FEATURES" (checkmarks),
+    // 4th "HOW IT WORKS" (left plain).
     listChildren.forEach(function (child, index) {
       child.classList.add('glowup-product-list-child');
 
-      if (index === 0) {
+      if (index === 1) {
         child.classList.add('glowup-product-list-child--pages');
-      } else if (index === 1) {
+      } else if (index === 2) {
         child.classList.add('glowup-product-list-child--checks');
       }
     });
