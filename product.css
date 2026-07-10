@@ -822,4 +822,23 @@ body.view-item.collection-type-products .product-detail-section {
     color: #ffffff !important;
   }
 
+    h3:first-of-type::after {
+    content: '';
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-left: 0;
+    vertical-align: middle;
+    transform: translateY(-60%);
+    background-color: currentColor !important;
+    -webkit-mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='58' height='58' viewBox='0 0 58 58' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.138 28.7445L0 18.9921L0.507258 17.7383L24.7953 27.5513L6.29761 9.05441L7.25379 8.09823L25.4692 26.3141L15.8198 2.43112L17.0743 1.92387L26.9854 26.4546V0H28.3381V25.586L37.9216 1.8657L39.1762 2.37296L29.3767 26.6259L47.8965 8.10583L48.8532 9.06252L30.3759 27.5401L54.6366 17.7383L55.1438 18.9921L31.0049 28.7445H57.0714V30.0972H31.0963L55.2101 39.84L54.7029 41.0938L30.4492 31.2945L48.9722 49.8174L48.016 50.7736L29.2137 31.9712L39.1757 56.6284L37.9212 57.1357L28.3378 33.4138L24.138 28.7445Z' fill='%23000000'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='58' height='58' viewBox='0 0 58 58' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M24.138 28.7445L0 18.9921L0.507258 17.7383L24.7953 27.5513L6.29761 9.05441L7.25379 8.09823L25.4692 26.3141L15.8198 2.43112L17.0743 1.92387L26.9854 26.4546V0H28.3381V25.586L37.9216 1.8657L39.1762 2.37296L29.3767 26.6259L47.8965 8.10583L48.8532 9.06252L30.3759 27.5401L54.6366 17.7383L55.1438 18.9921L31.0049 28.7445H57.0714V30.0972H31.0963L55.2101 39.84L54.7029 41.0938L30.4492 31.2945L48.9722 49.8174L48.016 50.7736L29.2137 31.9712L39.1757 56.6284L37.9212 57.1357L28.3378 33.4138L24.138 28.7445Z' fill='%23000000'/%3E%3C/svg%3E");
+    -webkit-mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+  }
+
 }
