@@ -707,8 +707,14 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
 
 
 #testimonials {
-  .user-items-list-simple[data-layout-width="inset"] {
-    padding: 0 !important;
+  /* Converted from Simple List to Carousel (July 2026) so all three
+     testimonials stay reachable at every breakpoint — Squarespace's
+     own column settings (3/2/1) drive the layout, no grid hardcodes.
+     The carousel's __gutter side padding is what caused the
+     misalignment: zero it so slides run flush with the content edges. */
+  .user-items-list-carousel__gutter {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
 
   .list-item {
@@ -717,13 +723,11 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     align-items: center !important;
     text-align: center !important;
     height: 100% !important;
+    /* every slide carries its divider — slides move in a carousel,
+       so there is no stable "last" column to suppress */
     border-right: 1px solid var(--black);
     padding: 12% 0;
     box-sizing: border-box;
-
-    &:last-child {
-      border-right: 0 !important;
-    }
   }
 
   /* --- Remove intermediate wrappers from layout calculation --- */
@@ -760,18 +764,31 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   }
 
   /* --- Image (Middle) --- */
-  .list-item-media {
+  /* The carousel renames the media wrapper: .list-item-media (simple
+     list) became .user-items-list-carousel__media-container. Both kept
+     for safety. */
+  .list-item-media,
+  .user-items-list-carousel__media-container {
     order: 2 !important;
     margin: 35px auto 25px auto !important;
     width: 80px !important;
+    aspect-ratio: 1 / 1;
     flex-shrink: 0;
   }
 
-  .list-item-media-inner {
+  .list-item-media-inner,
+  .user-items-list-carousel__media-inner {
     border: 1px solid var(--black) !important;
     border-radius: 50% !important;
     overflow: hidden;
     box-sizing: border-box;
+    height: 100%;
+  }
+
+  .user-items-list-carousel__media {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 
   /* --- Description (Bottom) --- */
@@ -782,40 +799,9 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
     width: 100%;
   }
 
-  /* --- Grid Layout: 3-up on desktop --- */
-  .user-items-list-item-container {
-    grid-template-columns: repeat(3, 1fr) !important;
-  }
-
-  /* --- Tablet: 2-up grid --- */
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .user-items-list-item-container {
-      grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .list-item:nth-child(3) {
-      display: none !important;
-    }
-
-    .list-item:nth-child(2) {
-      border-right: 0 !important;
-    }
-  }
-
-  /* --- Mobile: 1-up (single column) --- */
-  @media screen and (max-width: 767px) {
-    .user-items-list-item-container {
-      grid-template-columns: 1fr !important;
-    }
-
-    .list-item:nth-child(n+2) {
-      display: none !important;
-    }
-
-    .list-item:first-child {
-      border-right: 0 !important;
-    }
-  }
+  /* (No grid-template-columns hardcodes and no per-breakpoint item
+     hiding: the carousel's own 3/2/1 column settings handle layout,
+     and every testimonial stays reachable by scrolling.) */
 }
 
 
