@@ -799,7 +799,27 @@ body.view-item.collection-type-products .product-detail-section {
     
     /* Vertically align the checkmark icon nicely with the text */
     vertical-align: middle !important;
-    margin-top: -2px !important; 
+    margin-top: -2px !important;
+  }
+
+  /* ==========================================================
+     2. INVERTED BUTTON — Package card with a dark background
+     The "Done-for-you" package has its stack background enabled
+     (black), but its Learn More button keeps the site's default
+     black-on-transparent outline style — invisible on black.
+     Targeted via data-background-enabled-system_desktop="true"
+     (the actual marker Squarespace sets on the stack, confirmed
+     live), not by position, so it still works if the packages
+     are reordered or a plan is added/removed in the editor.
+  ========================================================== */
+  .sqs-stack-container[data-background-enabled-system_desktop="true"] .sqs-block-button-element {
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+  }
+
+  .sqs-stack-container[data-background-enabled-system_desktop="true"] .sqs-block-button-element:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
   }
 
 }
