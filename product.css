@@ -583,6 +583,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   #shop-gallery .user-items-list-carousel__gutter {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    border-bottom: 1px solid var(--black);
   }
 
   #shop-gallery .user-items-list-carousel__slides {
@@ -623,30 +624,61 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
     margin-bottom: 0 !important;
   }
 
-  /* --- Mobile prev/next arrows: match the summary-carousel-pager
-     look (flat icon buttons, no background/circle, no counter) ---
-     No-JS: the native "N / M" counter is left untouched/unmoved. */
+  /* --- Prev/next arrows (mobile + desktop): replace Squarespace's
+     native icon (a chevron head fused to a long horizontal shaft —
+     not a clean chevron) with the same chevron mask used for the
+     product-gallery pager, so both carousels share one arrow style.
+     No counter — this carousel's native "N of M" text is a
+     visually-hidden aria-live string, not rendered UI. Mobile and
+     desktop markup use different class prefixes but share the
+     "arrow-icon-background" / "arrow-icon-foreground" classes on the
+     native background/paths, which is what lets one rule hide both. */
   #shop-gallery .mobile-arrows {
     margin-top: 0 !important;
-    gap: 16px !important;
   }
 
-  #shop-gallery .mobile-arrow-button {
+  #shop-gallery .mobile-arrow-button,
+  #shop-gallery .user-items-list-carousel__arrow-button {
     width: 44px !important;
     height: 44px !important;
     background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  #shop-gallery .mobile-arrow-icon-background-area {
+  #shop-gallery .user-items-list-carousel__arrow-icon-background,
+  #shop-gallery .mobile-arrow-icon,
+  #shop-gallery .user-items-list-carousel__arrow-icon {
     display: none !important;
   }
 
-  #shop-gallery .mobile-arrow-icon-path {
-    stroke: var(--black) !important;
+  #shop-gallery .mobile-arrow-button::after,
+  #shop-gallery .user-items-list-carousel__arrow-button::after {
+    content: "" !important;
+    display: block !important;
+    width: 9px;
+    height: 15px;
+    background-color: var(--black);
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L1 13' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg width='8' height='14' viewBox='0 0 8 14' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L7 7L1 13' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
     transition: opacity 0.2s ease;
   }
 
-  #shop-gallery .mobile-arrow-button:hover .mobile-arrow-icon-path {
+  /* Base mask chevron points right (next); rotate for prev/left */
+  #shop-gallery .mobile-arrow-button--left::after,
+  #shop-gallery .user-items-list-carousel__arrow-button--left::after {
+    transform: rotate(180deg);
+  }
+
+  #shop-gallery .mobile-arrow-button:hover::after,
+  #shop-gallery .user-items-list-carousel__arrow-button:hover::after {
     opacity: 0.5;
   }
 
