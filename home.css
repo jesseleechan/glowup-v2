@@ -670,6 +670,13 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
       padding: 0 !important;
     }
 
+    /* Zero the native 2vmax top padding on the outer .user-items-list
+       wrapper (one level above .user-items-list-simple) so the first
+       card sits flush against the section's top edge too */
+    .user-items-list {
+      padding-top: 0 !important;
+    }
+
     .user-items-list-item-container {
       height: auto !important;
       grid-template-columns: 1fr !important;
