@@ -268,7 +268,120 @@
     custom.appendChild(industrySection.section);
     sidebar.appendChild(custom);
 
+    /* ========================================================
+       PART 1b - MOBILE FILTER DROPDOWNS
+       Below 768px the expanded sidebar is replaced (via CSS) by
+       two pill-styled native selects built from the same data.
+       Native selects give the OS picker UX on phones and need no
+       open/close or outside-click handling.
+    ======================================================== */
+
+    var optionRefs = { tags: {}, cats: {} };
+
+    function optionLabel(name, count) {
+      return count === undefined || count === null || count === '' || count === '...'
+        ? name
+        : name + ' [' + count + ']';
+    }
+
+    function buildFilterSelect(labelText, options) {
+      var holder = createElement('div', 'glowup-filter');
+      var label = createElement('span', 'glowup-filter-label', labelText);
+      var select = document.createElement('select');
+      select.setAttribute('aria-label', 'Filter by ' + labelText.toLowerCase());
+
+      options.forEach(function (option) {
+        var opt = document.createElement('option');
+        opt.value = option.href;
+        opt.textContent = optionLabel(option.label, option.count);
+        opt.selected = !!option.active;
+        select.appendChild(opt);
+
+        if (option.refType) {
+          opt.dataset.baseLabel = option.label;
+          optionRefs[option.refType][option.refKey] = opt;
+        }
+      });
+
+      select.addEventListener('change', function () {
+        if (select.value) window.location.href = select.value;
+      });
+
+      holder.appendChild(label);
+      holder.appendChild(select);
+      return holder;
+    }
+
+    function getCollectionRootUrl() {
+      try {
+        var full = window.Static.SQUARESPACE_CONTEXT.collection.fullUrl;
+        if (full) return full;
+      } catch (e) {}
+      return currentPath;
+    }
+
+    var existingMobileFilters = sidebar.querySelector('.glowup-mobile-filters');
+    if (existingMobileFilters) existingMobileFilters.remove();
+
+    var mobileFilters = createElement('div', 'glowup-mobile-filters');
+
+    var categoryOptions = [{
+      href: getCollectionRootUrl(),
+      label: 'All Templates',
+      active: !currentCat
+    }];
+    categories.forEach(function (category) {
+      categoryOptions.push({
+        href: category.href,
+        label: category.name,
+        active: currentCat === category.href,
+        count: getCachedCount(cachedCats, category.href, undefined),
+        refType: 'cats',
+        refKey: category.href
+      });
+    });
+
+    var industryOptions = [{
+      href: buildTagUrl(''),
+      label: 'All',
+      active: !currentTag,
+      count: getCachedCount(cachedTags, 'all', currentTag ? undefined : totalCount),
+      refType: 'tags',
+      refKey: 'all'
+    }];
+    tagOptions.forEach(function (tag) {
+      industryOptions.push({
+        href: buildTagUrl(tag.value),
+        label: titleCase(tag.label),
+        active: currentTag === tag.value,
+        count: getCachedCount(cachedTags, tag.value, undefined),
+        refType: 'tags',
+        refKey: tag.value
+      });
+    });
+
+    mobileFilters.appendChild(buildFilterSelect('Category', categoryOptions));
+    mobileFilters.appendChild(buildFilterSelect('Industry', industryOptions));
+    sidebar.appendChild(mobileFilters);
+
+    function applyCountsToMobileFilters() {
+      Object.keys(optionRefs.tags).forEach(function (key) {
+        if (cachedTags && cachedTags[key] !== undefined) {
+          var opt = optionRefs.tags[key];
+          opt.textContent = optionLabel(opt.dataset.baseLabel, cachedTags[key]);
+        }
+      });
+      Object.keys(optionRefs.cats).forEach(function (key) {
+        if (cachedCats && cachedCats[key] !== undefined) {
+          var opt = optionRefs.cats[key];
+          opt.textContent = optionLabel(opt.dataset.baseLabel, cachedCats[key]);
+        }
+      });
+    }
+
     function applyCountsToSidebar() {
+      applyCountsToMobileFilters();
+
       if (cachedTags) {
         if (countRefs.tags.all && cachedTags.all !== undefined) {
           countRefs.tags.all.textContent = '[' + cachedTags.all + ']';

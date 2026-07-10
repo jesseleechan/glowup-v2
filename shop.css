@@ -277,28 +277,111 @@
   }
 }
 
-/* Mobile — stacked */
+/* ==========================================================
+   9b. MOBILE FILTER DROPDOWNS (built by shop.js Part 1b)
+   Hidden on desktop/tablet where the expanded sidebar shows.
+========================================================== */
+.glowup-mobile-filters {
+  display: none;
+}
+
+/* Mobile — stacked layout, dropdown filters, 2-column grid */
 @media (max-width: 768px) {
   .product-list {
     flex-direction: column !important;
   }
+
+  /* 1. Page heading breathing room */
+  .product-list-header {
+    margin: 40px 20px !important;
+  }
+
   .product-list-nav-and-filters {
     width: 100%;
     border-right: none !important;
     border-bottom: 1px solid #1a1a1a !important;
     padding: 20px !important;
   }
+
+  /* 2. Sidebar lists -> two pill dropdowns */
+  .custom-sidebar {
+    display: none !important;
+  }
+
+  .glowup-mobile-filters {
+    display: flex;
+    gap: 8px;
+  }
+
+  .glowup-filter {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .glowup-filter-label {
+    font-family: sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #222;
+  }
+
+  .glowup-filter select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    border: 1px solid #1a1a1a;
+    border-radius: 100px;
+    background-color: transparent;
+    padding: 10px 38px 10px 16px;
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    color: #1a1a1a;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  /* 3. Grid — 2 columns (the max-1024 border pattern already handles
+     2-col edges; JS grid-edge classes refine on filter/resize) */
   .product-list-layout-container {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: repeat(2, 1fr) !important;
   }
+
   .product-list-item {
-    border-right: none !important;
+    padding: 14px !important;
   }
-  .product-list-item:nth-last-child(-n+2) {
-    border-bottom: 1px solid #1a1a1a !important;
+
+  /* Card tightening for the narrower columns */
+  .product-list-item-title {
+    font-size: 1.05rem !important;
   }
-  .product-list-item:last-child {
-    border-bottom: none !important;
+  .product-list-item-price {
+    font-size: 0.85rem !important;
+  }
+  .product-list-title-price {
+    gap: 8px !important;
+    margin-bottom: 5px !important;
+  }
+  .custom-product-excerpt {
+    font-size: 0.72rem !important;
+    margin-bottom: 12px !important;
+  }
+  .product-list-image-wrapper {
+    padding: 12px !important;
+    margin-bottom: 10px !important;
+  }
+  .custom-tag-pill {
+    font-size: 0.58rem !important;
+    padding: 0 9px !important;
   }
 }
 
