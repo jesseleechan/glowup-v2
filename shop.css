@@ -10,7 +10,7 @@
 .product-list {
   display: flex !important;
   flex-wrap: nowrap;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid var(--black);
   padding: 0 !important;
   gap: 0 !important;
 }
@@ -20,7 +20,7 @@
    2. SIDEBAR — Structure
 ========================================================== */
 .product-list-nav-and-filters {
-  border-right: 1px solid #1a1a1a !important;
+  border-right: 1px solid var(--black) !important;
   width: 250px;
   flex-shrink: 0;
   box-sizing: border-box;
@@ -55,10 +55,9 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #222;
   margin: 0 0 12px 0;
   padding-bottom: 12px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px dotted var(--black);
 }
 
 /* Link lists */
@@ -78,23 +77,23 @@
 .custom-sidebar-link {
   font-family: sans-serif;
   font-size: 0.9rem;
-  color: #666;
+
   text-decoration: none;
   transition: color 0.2s ease;
   display: inline-block;
 }
 .custom-sidebar-link:hover {
-  color: #222;
+
 }
 .custom-sidebar-link.active {
   font-weight: 700;
-  color: #222;
+
 }
 
 /* Superscript counts */
 .custom-sidebar-link sup {
   font-size: 0.6rem;
-  color: #999;
+
   font-weight: 400;
   margin-left: 2px;
 }
@@ -118,8 +117,8 @@
    4. PRODUCT ITEM — Borders & Card Layout
 ========================================================== */
 .product-list-item {
-  border-right: 1px solid #1a1a1a !important;
-  border-bottom: 1px solid #1a1a1a !important;
+  border-right: 1px solid var(--black) !important;
+  border-bottom: 1px solid var(--black) !important;
   box-sizing: border-box !important;
   margin: 0 !important;
   padding: 24px !important;
@@ -189,7 +188,7 @@
 }
 .product-list-item-title {
   font-size: 1.4rem;
-  color: #1a1a1a;
+  color: var(--black);
   margin: 0;
   white-space: nowrap;
   flex-shrink: 0;
@@ -197,7 +196,7 @@
 .product-list-item-price {
   font-family: sans-serif;
   font-size: 1.1rem;
-  color: #1a1a1a;
+  color: var(--black);
   font-weight: 400;
   white-space: nowrap;
   margin-left: auto !important; /* push price to far right */
@@ -222,7 +221,6 @@
   font-family: sans-serif;
   font-size: 0.82rem;
   line-height: 1.55;
-  color: #666;
   margin: 0 0 18px 0;
   flex-grow: 1; /* pushes tags to the bottom of the card */
 }
@@ -265,13 +263,13 @@
     grid-template-columns: repeat(2, 1fr) !important;
   }
   .product-list-item:nth-child(3n) {
-    border-right: 1px solid #1a1a1a !important;
+    border-right: 1px solid var(--black) !important;
   }
   .product-list-item:nth-child(2n) {
     border-right: none !important;
   }
   .product-list-item:nth-last-child(-n+3) {
-    border-bottom: 1px solid #1a1a1a !important;
+    border-bottom: 1px solid var(--black) !important;
   }
   .product-list-item:nth-last-child(-n+2) {
     border-bottom: none !important;
@@ -300,7 +298,7 @@
   .product-list-nav-and-filters {
     width: 100%;
     border-right: none !important;
-    border-bottom: 1px solid #1a1a1a !important;
+    border-bottom: 1px solid var(--black) !important;
     padding: 20px !important;
   }
 
@@ -335,13 +333,13 @@
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
-    border: 1px solid #1a1a1a;
+    border: 1px solid var(--black);
     border-radius: 100px;
     background-color: transparent;
     padding: 10px 38px 10px 16px;
     font-family: sans-serif;
     font-size: 0.85rem;
-    color: #1a1a1a;
+    color: var(--black);
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
@@ -394,8 +392,8 @@
    The nth-child rules above remain as a no-JS fallback.
 ========================================================== */
 .product-list-layout-container.has-js-grid-edges .product-list-item {
-  border-right: 1px solid #1a1a1a !important;
-  border-bottom: 1px solid #1a1a1a !important;
+  border-right: 1px solid var(--black) !important;
+  border-bottom: 1px solid var(--black) !important;
 }
 
 .product-list-layout-container.has-js-grid-edges .product-list-item.is-row-end {
