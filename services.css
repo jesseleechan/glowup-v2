@@ -4,60 +4,7 @@
    (alongside your existing shop.css and product.css)
 ========================================================== */
 
-/* Scope strictly to the Setup Packages section */
-#setup-packages {
 
-  /* ==========================================================
-     1. CUSTOM BULLET POINTS (Checkmark Circle SVG)
-     Overrides Squarespace's pseudo-element on list items
-  ========================================================== */
-  ul[data-rte-list] li > *:first-child::before {
-    content: "" !important; /* Clear the native bullet character */
-    display: inline-block !important;
-    height: 14px !important; /* Force height so the browser doesn't collapse it to 0px */
-    width: 40px !important;  /* Keep native Squarespace box width */
-    margin-left: -40px !important; /* Offset it back into the gutter */
-    
-    /* Inherit the text color dynamically using currentColor */
-    background-color: currentColor !important;
-    
-    /* Use CSS Masking to clip the color to the SVG checkmark shapes */
-    -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    mask-image: url("data:image/svg+xml,%3Csvg%20width%3D%2214%22%20height%3D%2214%22%20viewBox%3D%220%200%2014%2014%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M6.99984%2012.8337C10.2215%2012.8337%2012.8332%2010.222%2012.8332%207.00033C12.8332%203.77866%2010.2215%201.16699%206.99984%201.16699C3.77818%201.16699%201.1665%203.77866%201.1665%207.00033C1.1665%2010.222%203.77818%2012.8337%206.99984%2012.8337Z%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M5.25%206.99967L6.41667%208.16634L8.75%205.83301%22%20stroke%3D%22black%22%20stroke-width%3D%221.16667%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E") !important;
-    
-    -webkit-mask-repeat: no-repeat !important;
-    mask-repeat: no-repeat !important;
-    
-    /* Position the checkmark close to the text (10px spacing) */
-    -webkit-mask-position: right 10px center !important;
-    mask-position: right 10px center !important;
-    
-    -webkit-mask-size: 14px 14px !important;
-    mask-size: 14px 14px !important;
-    
-    /* Vertically align the checkmark icon nicely with the text */
-    vertical-align: middle !important;
-    margin-top: -2px !important; 
-  }
-
-  /* ==========================================================
-     2. DOCK BUTTON OVERRIDES (White Outline for Black Background)
-     Styles ONLY the button inside the second (black) Stack Component card
-     without hardcoding. Inherits colors from Squarespace theme vars.
-  ========================================================== */
-  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element {
-    color: var(--siteBackgroundColor, #ffffff) !important;
-    border-color: var(--siteBackgroundColor, #ffffff) !important;
-    background-color: transparent !important;
-    transition: background-color 0.2s ease, color 0.2s ease !important;
-  }
-
-  .fluid-engine > .fe-block:nth-child(2 of :has([data-definition-name="website.components.stack"])) .sqs-block-button-element:hover {
-    color: #000000 !important; /* Contrast color on hover */
-    background-color: var(--siteBackgroundColor, #ffffff) !important;
-  }
-
-}
 
 /* ==========================================================
    POLISH + DFY SERVICE DETAILS
