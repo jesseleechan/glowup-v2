@@ -84,11 +84,27 @@ body:not(.sqs-edit-mode-active) {
   }
 
   h3 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   h4 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
+  }
+
+  /* Paragraph scale, nudged down to match the smaller mobile headings.
+     Desktop ratios (P1 1.2x / P2 1x / P3 0.875x base) are preserved so
+     the paragraph family itself still feels consistent — only the
+     base (P2) moves, from 1rem down to 0.9375rem (15px). */
+  p:not(.sqsrte-large):not(.sqsrte-small) {
+    font-size: 0.9375rem;
+  }
+
+  .sqsrte-large {
+    font-size: 1.125rem;
+  }
+
+  .sqsrte-small {
+    font-size: 0.8125rem;
   }
 }
 
