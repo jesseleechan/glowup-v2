@@ -719,6 +719,10 @@ body.view-item.collection-type-products .product-detail-section {
     grid-gap: 0 !important;
     border-top: 1px solid var(--black);
     border-bottom: 1px solid var(--black);
+    /* Always 4-up on desktop/tablet — overrides Squarespace's responsive
+       column drop (confirmed 3-col at ~900px, orphaning item 4 onto its
+       own row). 4 items = one clean row, matching #platforms-supported. */
+    grid-template-columns: repeat(4, 1fr) !important;
   }
 
   .list-item {
@@ -737,5 +741,24 @@ body.view-item.collection-type-products .product-detail-section {
   .user-items-list-simple[data-layout-width="full"] {
     padding-left: 0vw;
     padding-right: 0vw;
+  }
+
+  /* Mobile: 2x2 grid (4 items, no orphans) */
+  @media screen and (max-width: 767px) {
+    .user-items-list-item-container {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    .list-item {
+      /* row ends: no right border on items 2 and 4 */
+      &:nth-child(2n) {
+        border-right: 0;
+      }
+
+      /* divider between the two rows */
+      &:nth-child(-n+2) {
+        border-bottom: 1px solid var(--black);
+      }
+    }
   }
 }
