@@ -152,6 +152,7 @@
 .product-list-image-wrapper {
   background-color: #eae8e3;
   padding: 20px;
+  border-radius: 8px;
   margin-bottom: 12px;
   position: relative;
   display: flex;
@@ -376,7 +377,7 @@
   }
   .product-list-image-wrapper {
     padding: 12px !important;
-    border-radius: 10px !important;
+    border-radius: 5px !important;
     margin-bottom: 10px !important;
   }
   .custom-tag-pill {

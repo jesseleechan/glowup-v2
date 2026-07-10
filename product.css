@@ -583,12 +583,12 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   #shop-gallery .user-items-list-carousel__gutter {
     padding-left: 0 !important;
     padding-right: 0 !important;
-    border-bottom: 1px solid var(--black);
   }
 
   #shop-gallery .user-items-list-carousel__slides {
     grid-auto-columns: 50% !important;
     grid-template-columns: repeat(2, 50%) !important;
+    border-bottom: 1px solid var(--black);
   }
 
   #shop-gallery .user-items-list-carousel__slide {
@@ -633,7 +633,8 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
      desktop markup use different class prefixes but share the
      "arrow-icon-background" / "arrow-icon-foreground" classes on the
      native background/paths, which is what lets one rule hide both. */
-  #shop-gallery .mobile-arrows {
+  #shop-gallery .mobile-arrows,
+  #shop-gallery .desktop-arrows {
     margin-top: 0 !important;
   }
 
@@ -681,6 +682,7 @@ body.glowup-product-previewing:not(.glowup-product-active-editing) {
   #shop-gallery .user-items-list-carousel__arrow-button:hover::after {
     opacity: 0.5;
   }
+
 
 
   /* ==========================================================
