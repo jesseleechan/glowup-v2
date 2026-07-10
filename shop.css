@@ -239,7 +239,7 @@
 .custom-tag-pill {
   border: 1px solid var(--black);
   border-radius: 30px;
-  padding: 10px 15px;
+  padding: 0px 15px;
   font-size: 0.7rem;
   font-weight: 500;
   color: var(--black);
