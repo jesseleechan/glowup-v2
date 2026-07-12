@@ -18,13 +18,24 @@
      wrapper to content height AND blocks flex align-stretch, leaving the
      shorter slides top-aligned with a page-background strip below them.
      `height: auto` re-enables stretch (all slides match the tallest);
-     the flex column centers the FE grid in any leftover space, and the
-     absolutely-positioned .section-background covers the full slide. */
+     then the content-wrapper/fluid-engine chain fills the stretched
+     slide, and the grid's minmax(X, auto) rows share the extra space
+     proportionally — full-grid image blocks reach the slide edges with
+     no leftover band above or below the grid (don't center the grid
+     instead: that leaves a visible strip on the shorter slides that
+     widens as the viewport narrows). */
   .swiper-slide {
     height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+
+    .content-wrapper {
+      flex: 1 1 auto;
+    }
+
+    .fluid-engine {
+      height: 100%;
+    }
   }
 
   .custom-nav-cluster {
