@@ -50,6 +50,15 @@
     mask-repeat: no-repeat !important;
     mask-size: 14px 14px !important;
   }
+
+  /* --- Dotted divider (hr / line blocks) --- */
+  /* Squarespace draws the line as a background-filled bar; swap it for
+     a dotted border in the theme's line color */
+  hr {
+    background-color: transparent;
+    border: none;
+    border-top: 1px dotted var(--tweak-line-block-line-color);
+  }
 }
 
 /* ==========================================================

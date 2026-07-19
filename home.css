@@ -2,12 +2,19 @@
    03. HERO SLIDER CUSTOMIZATION
 ====================================== */
 
+/* Squarespace adds --header-scrim-top-spacing padding only to the FIRST
+   section of the page (to clear the transparent header), so the other
+   slides render their content higher and the slide heights drift. Give
+   every slide section the same scrim padding instead. The attribute
+   selector covers any number of slides without listing ids, and the
+   :has() arm keeps it working in the editor / if the id ever sits on a
+   marker div inside the section rather than the section itself. */
+.page-section:is([id^="slide-"], :has([id^="slide-"])) {
+  padding-top: var(--header-scrim-top-spacing) !important;
+}
+
 .hero-slider {
   position: relative;
-
-  .page-section {
-    padding-top: 0 !important;
-  }
 
   /* EQUAL-HEIGHT SLIDES. Fluid Engine rows are minmax(Xpx, auto), so a
      matching editor row count (19) only sets a MINIMUM height — any text
@@ -42,17 +49,20 @@
     position: absolute;
     /* Fluid offsets/sizes track the Fluid Engine's vw-based grid so the
        cluster compresses in lockstep with slide content. Reference: 1440px
-       design width (48px = 3.33vw, 80px = 5.56vw, 57px = 3.96vw, 12px = 0.83vw).
+       design width (48px = 3.33vw, 80px = 5.56vw, 57px = 3.96vw).
        Design rule: keep the bottom-right area clear at 1440 in the editor
        and it stays clear at every desktop-layout width down to 768px. */
     right: clamp(16px, 3.33vw, 48px);
-    bottom: clamp(16px, 3.33vw, 48px);
+    /* Visually aligns the cluster to the slide layouts' bottom grid line:
+       one Fluid Engine row (engine width × 0.0215) + the 11px row gap,
+       derived from Squarespace's own fluid grid values. */
+    bottom: calc((min(1440px, 100vw - 3vw) * 0.0215) + 11px);
     z-index: 20;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
-    gap: clamp(6px, 0.83vw, 12px);
+    gap: 6px;
     box-sizing: border-box;
     pointer-events: auto;
 
@@ -95,7 +105,6 @@
        stay at a comfortable tap size */
     @media screen and (min-width: 768px) and (max-width: 1024px) {
       flex-direction: column;
-      gap: 8px;
 
       .nav-btn {
         width: 64px;
@@ -109,12 +118,12 @@
 
     @media screen and (max-width: 767px) {
       right: 24px;
-      bottom: 40px;
-      gap: 8px;
+      /* Mobile: 24px FE row height + 11px gap */
+      bottom: 35px;
 
       .nav-btn {
         width: 64px;
-        height: 48px;
+        height: 51.891px;
 
         svg {
           width: 24px;
@@ -137,6 +146,371 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+}
+
+
+/* ======================================
+   03b. GLOWUP REFLECTION CODE BLOCK (hero slides)
+
+   Custom Code Block that acts as a background-image effect behind the
+   text content area of a slide. The block's HTML (pasted per-slide in
+   the editor) is a .gu-reflection-card whose inline style sets
+   --gu-reflection-image to the slide's image URL; the layers below
+   build a mirrored, blurred, grain-textured "reflection" of it.
+====================================== */
+
+/* ---------- Published site: fill the entire Code Block ---------- */
+
+body:not(.sqs-edit-mode-active)
+  .sqs-block-code:has(.gu-reflection-card),
+body:not(.sqs-edit-mode-active)
+  [data-sqsp-block="code"]:has(.gu-reflection-card) {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+body:not(.sqs-edit-mode-active)
+  .sqs-block-code:has(.gu-reflection-card)
+  .sqs-block-content,
+body:not(.sqs-edit-mode-active)
+  [data-sqsp-block="code"]:has(.gu-reflection-card)
+  .sqs-block-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 !important;
+}
+
+body:not(.sqs-edit-mode-active)
+  .sqs-block-code:has(.gu-reflection-card)
+  .gu-reflection-card,
+body:not(.sqs-edit-mode-active)
+  [data-sqsp-block="code"]:has(.gu-reflection-card)
+  .gu-reflection-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+
+/* ---------- Squarespace editor: preserve vertical resizing ---------- */
+
+body.sqs-edit-mode-active
+  .sqs-block-code:has(.gu-reflection-card),
+body.sqs-edit-mode-active
+  [data-sqsp-block="code"]:has(.gu-reflection-card) {
+  position: unset !important;
+  height: auto !important;
+  min-height: 100% !important;
+  overflow: visible !important;
+}
+
+body.sqs-edit-mode-active
+  .sqs-block-code:has(.gu-reflection-card)
+  .sqs-block-content,
+body.sqs-edit-mode-active
+  [data-sqsp-block="code"]:has(.gu-reflection-card)
+  .sqs-block-content {
+  position: unset !important;
+  inset: unset !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+body.sqs-edit-mode-active
+  .sqs-block-code:has(.gu-reflection-card)
+  .gu-reflection-card,
+body.sqs-edit-mode-active
+  [data-sqsp-block="code"]:has(.gu-reflection-card)
+  .gu-reflection-card {
+  position: relative !important;
+  inset: unset !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
+}
+
+
+/* ---------- Reflection container ---------- */
+
+.gu-reflection-card,
+.gu-reflection-card * {
+  box-sizing: border-box;
+}
+
+.gu-reflection-card {
+  --gu-reflection-image: none;
+
+  /* Source-image crop positions, applied before mirroring. */
+  --gu-desktop-image-position: right center;
+  --gu-mobile-image-position: center top;
+
+  --gu-dark: #0a0a0c;
+  --gu-reflection-axis: to right;
+  --gu-reflection-image-axis: to left;
+
+  --gu-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.52'/%3E%3C/svg%3E");
+
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--gu-dark);
+}
+
+.gu-reflection-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  opacity: 0.65;
+  pointer-events: none;
+  border-left: 1px solid #ffffff33;
+}
+
+
+/* ---------- Mirrored image layers ---------- */
+
+.gu-reflection-source {
+  position: absolute;
+  top: -32px;
+  right: -32px;
+  bottom: -32px;
+  left: -32px;
+  width: auto;
+  height: auto;
+}
+
+.gu-reflection-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: var(--gu-reflection-image);
+  background-position: var(--gu-desktop-image-position);
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  transform: scaleX(-1);
+}
+
+.gu-reflection-image--base {
+  filter: saturate(0.68) brightness(0.62);
+  opacity: 0.92;
+}
+
+.gu-reflection-image--soft {
+  filter: blur(6px) saturate(0.67) brightness(0.61);
+  opacity: 0.84;
+
+  -webkit-mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    #000 40%,
+    #000 100%
+  );
+
+  mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    #000 40%,
+    #000 100%
+  );
+}
+
+.gu-reflection-image--medium {
+  filter: blur(14px) saturate(0.65) brightness(0.59);
+  opacity: 0.88;
+
+  -webkit-mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    transparent 25%,
+    #000 62%,
+    #000 100%
+  );
+
+  mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    transparent 25%,
+    #000 62%,
+    #000 100%
+  );
+}
+
+.gu-reflection-image--deep {
+  filter: blur(28px) saturate(0.62) brightness(0.56);
+  opacity: 0.92;
+
+  -webkit-mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    transparent 50%,
+    #000 100%
+  );
+
+  mask-image: linear-gradient(
+    var(--gu-reflection-image-axis),
+    transparent 0%,
+    transparent 50%,
+    #000 100%
+  );
+}
+
+
+/* ---------- Glass tint, grain, and edge fade ---------- */
+
+.gu-reflection-glass,
+.gu-reflection-grain,
+.gu-reflection-fade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.gu-reflection-glass {
+  background: linear-gradient(
+    var(--gu-reflection-axis),
+    transparent 0%,
+    rgba(8, 8, 10, 0.1) 30%,
+    rgba(8, 8, 10, 0.24) 100%
+  );
+}
+
+.gu-reflection-grain {
+  background-image: var(--gu-noise), var(--gu-noise);
+  background-position: 0 0, 43px 71px;
+  background-repeat: repeat;
+  background-size: 150px 150px, 280px 280px;
+
+  mix-blend-mode: screen;
+  filter: contrast(1.7) brightness(0.62);
+  opacity: 0.15;
+
+  -webkit-mask-image: linear-gradient(
+    var(--gu-reflection-axis),
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 32%,
+    rgba(0, 0, 0, 0.68) 64%,
+    #000 100%
+  );
+
+  mask-image: linear-gradient(
+    var(--gu-reflection-axis),
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 32%,
+    rgba(0, 0, 0, 0.68) 64%,
+    #000 100%
+  );
+
+  animation: gu-reflection-grain-drift 7s steps(6, end) infinite;
+}
+
+.gu-reflection-fade {
+  background:
+    linear-gradient(
+      to right,
+      rgba(10, 10, 12, 0.04) 0%,
+      rgba(10, 10, 12, 0.28) 48%,
+      rgba(10, 10, 12, 0.72) 78%,
+      var(--gu-dark) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 10, 12, 0.38) 0%,
+      transparent 20%,
+      transparent 72%,
+      rgba(10, 10, 12, 0.56) 100%
+    );
+}
+
+
+/* ---------- Grain animation ---------- */
+
+@keyframes gu-reflection-grain-drift {
+  0%,
+  100% {
+    background-position: 0 0, 43px 71px;
+  }
+
+  33% {
+    background-position: -17px 11px, 59px 52px;
+  }
+
+  66% {
+    background-position: 13px -19px, 31px 87px;
+  }
+}
+
+
+/* ---------- Mobile reflection ---------- */
+
+@media (max-width: 47.999rem) {
+  .gu-reflection-card {
+    --gu-reflection-axis: to bottom;
+    --gu-reflection-image-axis: to top;
+  }
+
+  .gu-reflection-image {
+    background-position: var(--gu-mobile-image-position);
+    transform: scaleY(-1);
+  }
+
+  .gu-reflection-image--soft {
+    filter: blur(5px) saturate(0.71) brightness(0.67);
+  }
+
+  .gu-reflection-image--medium {
+    filter: blur(11px) saturate(0.7) brightness(0.65);
+  }
+
+  .gu-reflection-image--deep {
+    filter: blur(22px) saturate(0.68) brightness(0.62);
+  }
+
+  .gu-reflection-grain {
+    opacity: 0.18;
+  }
+
+  .gu-reflection-fade {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(10, 10, 12, 0.02) 0%,
+        rgba(10, 10, 12, 0.22) 38%,
+        rgba(10, 10, 12, 0.76) 72%,
+        var(--gu-dark) 100%
+      ),
+      linear-gradient(
+        to right,
+        rgba(10, 10, 12, 0.72) 0%,
+        transparent 15%,
+        transparent 85%,
+        rgba(10, 10, 12, 0.72) 100%
+      );
+  }
+}
+
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .gu-reflection-grain {
+    animation: none;
+  }
 }
 
 
@@ -744,6 +1118,14 @@ body:not(.sqs-edit-mode-active) #collection-grid .summary-block {
   .user-items-list-carousel__gutter {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  /* The revealer's clip edge sat wide enough to expose the slide
+     dividers' borders at both ends — pull it in 4px so the outermost
+     borders hide just outside the visible area */
+  .user-items-list-carousel__slides-revealer {
+    margin-right: -4px !important;
+    margin-left: -4px !important;
   }
 
   /* Native prev/next arrows hidden — swipe/scroll is enough on mobile */
