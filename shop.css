@@ -126,18 +126,19 @@
   display: none !important;
 }
 
-/* Filter label styled to match .custom-sidebar-heading */
+/* Filter label styled to match .custom-sidebar-heading
+   (!important where Squarespace's own label styles otherwise win) */
 .product-list-filters .product-filter-label {
   display: block;
   width: 100%;
   font-family: sans-serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
   text-transform: uppercase;
   color: var(--black);
-  margin: 0 0 12px 0;
-  padding-bottom: 12px;
+  margin: 0 0 12px 0 !important;
+  padding: 0 0 12px 0 !important;
   border-bottom: 1px dotted var(--black);
 }
 
@@ -164,13 +165,17 @@
   overflow: hidden;
 }
 
-/* Compact solid apply button */
+/* Compact solid apply button. NOTE: Squarespace sets the button's
+   padding (and the select's border-color/font-size, and the mobile
+   drawer-open button's height) with !important inside a CSS cascade
+   layer — unbeatable from unlayered stylesheets, so shop.js mirrors
+   those exact properties as inline !important styles. */
 .product-list-filter-button {
-  font-family: sans-serif;
+  font-family: sans-serif !important;
   font-size: 0.8rem !important;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-weight: 500 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
   width: 100%;
   height: auto !important;
   min-height: 0 !important;
@@ -398,12 +403,12 @@
   }
 
   .product-list-filters-drawer-open-button {
-    font-family: sans-serif;
+    font-family: sans-serif !important;
     font-size: 0.8rem !important;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    height: 40px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    height: 40px !important; /* layer-trapped — shop.js mirrors inline */
     min-height: 0 !important;
     padding: 0 20px !important;
     border: 1px solid var(--black) !important;

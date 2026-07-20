@@ -302,6 +302,40 @@
     }
 
     /* ========================================================
+       PART 1c - NATIVE FILTER CONTROL SIZING
+       Squarespace sets these properties with !important inside a
+       CSS cascade layer, which beats unlayered stylesheets at any
+       specificity — inline !important is the only author-level
+       override that wins (same trap as the product-page cart
+       button, see product.js / shop.css section 2c).
+    ======================================================== */
+
+    function styleNativeFilterControls() {
+      function applyImportant(el, styles) {
+        Object.keys(styles).forEach(function (prop) {
+          el.style.setProperty(prop, styles[prop], 'important');
+        });
+      }
+
+      document.querySelectorAll('.product-list-filters .product-filter-dropdown-select').forEach(function (select) {
+        applyImportant(select, {
+          'border': '1px solid var(--black)',
+          'font-size': '0.85rem'
+        });
+      });
+
+      document.querySelectorAll('.product-list-filter-button').forEach(function (button) {
+        applyImportant(button, { 'padding': '12px 18px' });
+      });
+
+      document.querySelectorAll('.product-list-filters-drawer-open-button').forEach(function (button) {
+        applyImportant(button, { 'height': '40px' });
+      });
+    }
+
+    styleNativeFilterControls();
+
+    /* ========================================================
        PART 2 - PRODUCT CARD ENHANCEMENTS
     ======================================================== */
 
