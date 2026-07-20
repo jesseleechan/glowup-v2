@@ -87,6 +87,13 @@ body:not(.sqs-edit-mode-active) > .yui3-widget.sqs-modal-lightbox {
 
 body:not(.sqs-edit-mode-active) > .yui3-widget.sqs-modal-lightbox .sqs-modal-lightbox-content {
   pointer-events: auto;
+  /* YUI writes inline top = scrollY (document-coordinate centering).
+     Inside the fixed widget that double-shifts the layer, so the
+     .lightbox-background dim inside it started mid-screen whenever the
+     page was scrolled. Stylesheet !important beats a plain inline
+     style. */
+  top: 0 !important;
+  left: 0 !important;
 }
 
 /* --- Sale price (built by global.js cleanUpPrice) ---
