@@ -347,24 +347,83 @@
   }
 
   /* Append the product price to the native button label:
-     "Purchase" -> "Purchase for $375". data-original-label must match
-     because Squarespace restores the label from it after the
-     added-to-cart state animation. Reversed while editing. */
+     "Purchase" -> "Purchase for $375", or for a product on sale
+     "Purchase for $225 <s>$275</s>" (the <s> is styled by global.css
+     .glowup-original-price, same treatment as the shop cards).
+     data-original-label is kept as the PLAIN sale text ("Purchase for
+     $225") because Squarespace restores the label from that attribute
+     as plain text after the added-to-cart animation — the observer
+     below re-adds the strikethrough after such a restore. Reversed
+     while editing. */
   function updateCartButtonLabel(cartEl) {
     var btn = cartEl.querySelector('.sqs-add-to-cart-button');
     var span = btn ? btn.querySelector('.add-to-cart-text') : null;
     if (!btn || !span) return;
 
-    var current = span.textContent.trim();
-    if (!current || current.indexOf(' for ') !== -1) return;
+    var prices = getCleanProductPrices();
+    if (!prices.current) return;
 
-    var price = getCleanProductPrice();
-    if (!price) return;
+    var base = btn.getAttribute('data-glowup-base-label');
+    if (!base) {
+      base = span.textContent.trim();
+      if (!base || base.indexOf(' for ') !== -1) return;
+      btn.setAttribute('data-glowup-base-label', base);
+    }
 
-    var label = current + ' for ' + price;
-    btn.setAttribute('data-glowup-base-label', current);
-    span.textContent = label;
-    btn.setAttribute('data-original-label', label);
+    // Mid-animation states ("Added!") don't contain the base label —
+    // never stomp them
+    var currentText = span.textContent.trim();
+    if (currentText && currentText.indexOf(base) === -1) return;
+
+    renderCartButtonLabel(btn, span, base, prices);
+    observeCartLabelRestore(btn, span);
+  }
+
+  function renderCartButtonLabel(btn, span, base, prices) {
+    var plainLabel = base + ' for ' + prices.current;
+    var expectedText = plainLabel + (prices.original ? ' ' + prices.original : '');
+
+    btn.setAttribute('data-original-label', plainLabel);
+
+    var alreadyRendered =
+      span.textContent.replace(/\s+/g, ' ').trim() === expectedText &&
+      (!prices.original || !!span.querySelector('s'));
+    if (alreadyRendered) return;
+
+    span.textContent = plainLabel + (prices.original ? ' ' : '');
+    if (prices.original) {
+      var original = document.createElement('s');
+      original.className = 'glowup-original-price';
+      original.textContent = prices.original;
+      span.appendChild(original);
+    }
+  }
+
+  /* Squarespace's added-to-cart animation ends by writing
+     data-original-label back into the span as plain text, dropping the
+     strikethrough — watch for exactly that state and re-render. The
+     guard order makes it loop-safe: our own render adds the <s>, which
+     bails the callback. */
+  var cartLabelObserver = null;
+
+  function observeCartLabelRestore(btn, span) {
+    if (cartLabelObserver || !window.MutationObserver) return;
+
+    cartLabelObserver = new MutationObserver(function () {
+      if (!pillState.built) return;
+      if (span.querySelector('s')) return;
+
+      var original = btn.getAttribute('data-original-label') || '';
+      if (!original || span.textContent.trim() !== original) return;
+
+      var base = btn.getAttribute('data-glowup-base-label');
+      var prices = getCleanProductPrices();
+      if (!base || !prices.current || !prices.original) return;
+
+      renderCartButtonLabel(btn, span, base, prices);
+    });
+
+    cartLabelObserver.observe(span, { childList: true, characterData: true, subtree: true });
   }
 
   function restoreCartButtonLabel(cartEl) {
@@ -378,13 +437,28 @@
     btn.removeAttribute('data-glowup-base-label');
   }
 
-  /* "US$375.00" (or "$375.00") -> "$375". Falls back to empty string
-     (label is then left untouched) if no price element is present. */
-  function getCleanProductPrice() {
+  /* Reads the native price element. Sale products expose separate
+     .sale-price / .original-price spans (plus visually-hidden "Sale
+     Price:" label text — never parse the container's textContent
+     wholesale, that's how the button once read "Purchase for
+     SalePrice:$225"); regular products render the amount directly.
+     "US$375.00" (or "$375.00") -> "$375". Empty strings leave the
+     label untouched. */
+  function getCleanProductPrices() {
     var el = document.querySelector('.product-price');
-    if (!el) return '';
-    var text = el.textContent.replace(/\s|US/g, '');
-    var match = text.match(/[^\d.,]*[\d][\d.,]*/);
+    if (!el) return { current: '', original: '' };
+
+    var saleEl = el.querySelector('.sale-price');
+    var originalEl = el.querySelector('.original-price');
+    var current = extractPriceAmount(saleEl ? saleEl.textContent : el.textContent);
+    var original = saleEl && originalEl ? extractPriceAmount(originalEl.textContent) : '';
+
+    return { current: current, original: original };
+  }
+
+  function extractPriceAmount(text) {
+    var cleaned = String(text).replace(/\s|US/g, '');
+    var match = cleaned.match(/\$[\d][\d.,]*/);
     if (!match) return '';
     return match[0].replace(/\.00$/, '');
   }
