@@ -114,12 +114,14 @@
     }
 
     /* ========================================================
-       PART 1 - CUSTOM SIDEBAR (categories only)
-       The industry filter reverted to Squarespace's default filter
-       UI (July 2026): the native Industry dropdown + Filter button /
-       mobile drawer stay visible and untouched. Only the native
-       category link tree and the native Categories dropdown are
-       replaced (by this list + shop.css hiding).
+       PART 1 - CUSTOM SIDEBAR (desktop category list only)
+       Filtering reverted to Squarespace's default filter UI (July
+       2026): the native tag dropdown + Filter button (desktop
+       sidebar) and the consolidated Filter drawer (mobile, with
+       both Categories + Best For) stay visible and untouched. Only
+       the native category link tree is replaced by this list, and
+       the native Categories dropdown is hidden on desktop only
+       (shop.css).
     ======================================================== */
 
     var sidebar = document.querySelector('.product-list-nav-and-filters');
@@ -182,48 +184,10 @@
     sidebar.appendChild(custom);
 
     /* ========================================================
-       PART 1b - MOBILE CATEGORY DROPDOWN
-       Below 768px the expanded sidebar is replaced (via CSS) by a
-       pill-styled native select built from the same category data.
-       Industry filtering on mobile uses Squarespace's own floating
-       Filter button + drawer.
+       PART 1b - COLLECTION HELPERS & CATEGORY COUNTS
+       (Mobile has no custom filter UI anymore — the native Filter
+       button + drawer consolidates Categories + Best For.)
     ======================================================== */
-
-    var optionRefs = { cats: {} };
-
-    function optionLabel(name, count) {
-      return count === undefined || count === null || count === '' || count === '...'
-        ? name
-        : name + ' [' + count + ']';
-    }
-
-    function buildFilterSelect(labelText, options) {
-      var holder = createElement('div', 'glowup-filter');
-      var label = createElement('span', 'glowup-filter-label', labelText);
-      var select = document.createElement('select');
-      select.setAttribute('aria-label', 'Filter by ' + labelText.toLowerCase());
-
-      options.forEach(function (option) {
-        var opt = document.createElement('option');
-        opt.value = option.href;
-        opt.textContent = optionLabel(option.label, option.count);
-        opt.selected = !!option.active;
-        select.appendChild(opt);
-
-        if (option.refType) {
-          opt.dataset.baseLabel = option.label;
-          optionRefs[option.refType][option.refKey] = opt;
-        }
-      });
-
-      select.addEventListener('change', function () {
-        if (select.value) window.location.href = select.value;
-      });
-
-      holder.appendChild(label);
-      holder.appendChild(select);
-      return holder;
-    }
 
     function getCollectionRootUrl() {
       try {
@@ -233,39 +197,8 @@
       return currentPath;
     }
 
-    var existingMobileFilters = sidebar.querySelector('.glowup-mobile-filters');
-    if (existingMobileFilters) existingMobileFilters.remove();
-
-    var mobileFilters = createElement('div', 'glowup-mobile-filters');
-
-    var categoryOptions = [{
-      href: getCollectionRootUrl(),
-      label: 'All Templates',
-      active: !currentCat
-    }];
-    categories.forEach(function (category) {
-      categoryOptions.push({
-        href: category.href,
-        label: category.name,
-        active: currentCat === category.href,
-        count: getCachedCount(cachedCats, category.href, undefined),
-        refType: 'cats',
-        refKey: category.href
-      });
-    });
-
-    mobileFilters.appendChild(buildFilterSelect('Category', categoryOptions));
-    sidebar.appendChild(mobileFilters);
-
     function applyCountsToSidebar() {
       if (!cachedCats) return;
-
-      Object.keys(optionRefs.cats).forEach(function (key) {
-        if (cachedCats[key] !== undefined) {
-          var opt = optionRefs.cats[key];
-          opt.textContent = optionLabel(opt.dataset.baseLabel, cachedCats[key]);
-        }
-      });
 
       categories.forEach(function (category) {
         var countEl = countRefs.cats[category.href];

@@ -31,24 +31,29 @@
   flex-direction: column;
 }
 
-/* Hide only the native pieces the custom sidebar replaces: the
-   category link tree (custom CATEGORY list, prevents FOUC before JS
-   runs) and the native "Categories" dropdown inside the filter UI
-   (redundant next to that list). Everything else of Squarespace's
-   default filter system stays untouched — Industry dropdown + Filter
-   apply button in the sidebar on desktop, floating Filter button +
-   bottom drawer on mobile. (July 2026: custom industry links reverted
+/* Hide the native category link tree everywhere (the custom CATEGORY
+   list replaces it on desktop; the drawer's Categories dropdown covers
+   it on mobile). Everything else of Squarespace's default filter
+   system stays untouched. (July 2026: custom industry links reverted
    to this default UI.) */
-.product-list-nav,
-#product-categories-filter-dropdown {
+.product-list-nav {
   display: none !important;
+}
+
+/* Desktop/tablet only: the custom CATEGORY list makes the native
+   Categories dropdown redundant. On mobile it stays visible inside
+   the native drawer — the single Filter button consolidates
+   Categories + Best For. */
+@media (min-width: 769px) {
+  #product-categories-filter-dropdown {
+    display: none !important;
+  }
 }
 
 /* Sidebar stacking order (native filters render before our injected
    custom sidebar in the DOM) */
 .custom-sidebar { order: 1; }
 .product-list-filters { order: 2; }
-.glowup-mobile-filters { order: 3; }
 
 
 /* ==========================================================
@@ -142,7 +147,7 @@
   border-bottom: 1px dotted var(--black);
 }
 
-/* Compact pill select — same treatment as the mobile category pill */
+/* Compact pill select */
 .product-list-filters .product-filter-dropdown-select {
   appearance: none;
   -webkit-appearance: none;
@@ -371,17 +376,9 @@
   }
 }
 
-/* ==========================================================
-   9b. MOBILE CATEGORY DROPDOWN (built by shop.js Part 1b)
-   Hidden on desktop/tablet where the expanded sidebar shows.
-   Industry filtering on mobile is Squarespace's native Filter
-   button + drawer.
-========================================================== */
-.glowup-mobile-filters {
-  display: none;
-}
-
-/* Mobile — stacked layout, dropdown filters, 2-column grid */
+/* Mobile — stacked layout, native filter drawer, 2-column grid.
+   All filtering (Categories + Best For) consolidates into the native
+   Filter button + bottom drawer. */
 @media (max-width: 768px) {
   .product-list {
     flex-direction: column !important;
@@ -392,17 +389,17 @@
     margin: 40px 20px !important;
   }
 
+  /* Nothing visible left inside the sidebar block on mobile (custom
+     list hidden, drawer elements are overlays) — collapse it */
   .product-list-nav-and-filters {
     width: 100%;
     border-right: none !important;
-    /* Bottom border moves to the Filter-button band below, so the
-       category pill + native Filter button read as one toolbar */
     border-bottom: none !important;
-    padding: 20px 20px 14px !important;
+    padding: 0 !important;
   }
 
-  /* Native drawer-open button band: right-aligned pill under the
-     category bar, carrying the toolbar's bottom border */
+  /* Native drawer-open button band: right-aligned pill carrying the
+     toolbar's bottom border (the grid starts below it) */
   .product-list-filters-drawer-open-button-container {
     padding: 0 20px 16px;
     border-bottom: 1px solid var(--black);
@@ -424,51 +421,9 @@
     color: var(--black) !important;
   }
 
-  /* 2. Sidebar list -> category pill dropdown */
+  /* 2. Custom sidebar list is desktop-only */
   .custom-sidebar {
     display: none !important;
-  }
-
-  .glowup-mobile-filters {
-    display: flex;
-    gap: 8px;
-  }
-
-  .glowup-filter {
-    flex: 1 1 0;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .glowup-filter-label {
-    font-family: sans-serif;
-    font-size: 0.62rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #222;
-  }
-
-  .glowup-filter select {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 100%;
-    border: 1px solid var(--black);
-    border-radius: 100px;
-    background-color: transparent;
-    padding: 10px 38px 10px 16px;
-    font-family: sans-serif;
-    font-size: 0.85rem;
-    color: var(--black);
-    cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 16px center;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
   }
 
   /* 3. Grid — 2 columns (the max-1024 border pattern already handles
