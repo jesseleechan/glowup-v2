@@ -165,6 +165,13 @@
   overflow: hidden;
 }
 
+/* Native form-effect underline spans inside the dropdown wrapper —
+   redundant under the pill select */
+.product-list-filters .form-input-effects-border,
+.product-list-filters .form-input-effects-highlight {
+  display: none !important;
+}
+
 /* Compact solid apply button. NOTE: Squarespace sets the button's
    padding (and the select's border-color/font-size, and the mobile
    drawer-open button's height) with !important inside a CSS cascade
