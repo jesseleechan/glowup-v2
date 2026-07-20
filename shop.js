@@ -305,6 +305,68 @@
        PART 2 - PRODUCT CARD ENHANCEMENTS
     ======================================================== */
 
+    /* --- Real product excerpts ---
+       The card markup Squarespace renders has no excerpt, so pull them
+       from the collection JSON (?format=json) — one fetch for the whole
+       collection covers every category/tag-filtered view, cached per
+       session. Cards render blank until the map is ready, then fill. */
+
+    var excerptCacheKey = 'glowup_shop_excerpts';
+    var excerptMap = readJsonObject(excerptCacheKey);
+
+    function htmlToText(html) {
+      var div = document.createElement('div');
+      div.innerHTML = html;
+      return (div.textContent || '').trim();
+    }
+
+    function getExcerptFor(item) {
+      if (!excerptMap) return '';
+      var link = item.querySelector('.product-list-item-link');
+      if (!link) return '';
+      var key = normalizePath(link.getAttribute('href') || '');
+      return hasOwn(excerptMap, key) ? excerptMap[key] : '';
+    }
+
+    function applyExcerpts() {
+      document.querySelectorAll('.product-list-item').forEach(function (item) {
+        var excerptEl = item.querySelector('.custom-product-excerpt');
+        if (excerptEl) excerptEl.textContent = getExcerptFor(item);
+      });
+    }
+
+    function fetchCollectionPage(url, map, depth) {
+      return fetch(url, { credentials: 'same-origin' })
+        .then(function (response) { return response.ok ? response.json() : null; })
+        .then(function (data) {
+          if (!data) return map;
+
+          (data.items || []).forEach(function (product) {
+            if (product.fullUrl) {
+              map[normalizePath(product.fullUrl)] = htmlToText(product.excerpt || '');
+            }
+          });
+
+          var next = data.pagination && data.pagination.nextPageUrl;
+          if (next && depth < 5) {
+            return fetchCollectionPage(next + (next.indexOf('?') === -1 ? '?' : '&') + 'format=json', map, depth + 1);
+          }
+          return map;
+        });
+    }
+
+    function loadExcerpts() {
+      if (excerptMap) return;
+
+      fetchCollectionPage(getCollectionRootUrl() + '?format=json', {}, 0)
+        .then(function (map) {
+          excerptMap = map;
+          writeJsonObject(excerptCacheKey, map);
+          applyExcerpts();
+        })
+        .catch(function () {});
+    }
+
     function getProductTags(item) {
       var seen = {};
 
@@ -367,7 +429,7 @@
         if (!metaSection) return;
 
         if (!metaSection.querySelector('.custom-product-excerpt')) {
-          var descEl = createElement('p', 'custom-product-excerpt', 'Grow your brand with this modern editorial design for bold brands.');
+          var descEl = createElement('p', 'custom-product-excerpt', getExcerptFor(item));
           var statusEl = metaSection.querySelector('.product-list-item-status');
           var titlePriceRow = metaSection.querySelector('.product-list-title-price');
           var insertAfter = statusEl || titlePriceRow;
@@ -408,6 +470,7 @@
     }
 
     enhanceProductCards();
+    loadExcerpts();
 
     var gridContainer = document.querySelector('.product-list-layout-container');
     if (gridContainer) {

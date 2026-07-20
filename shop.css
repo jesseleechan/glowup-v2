@@ -115,6 +115,73 @@
 
 
 /* ==========================================================
+   2c. NATIVE FILTER UI RESTYLE (Industry dropdown + buttons)
+   Same classes serve the desktop sidebar and the mobile drawer.
+========================================================== */
+
+/* "N Results" text — a direct flex child of .product-list that pops
+   into the row when a filter applies; counts already live in the
+   sidebar links and the Filter button's applied-count badge */
+.product-list-result-count-container {
+  display: none !important;
+}
+
+/* Filter label styled to match .custom-sidebar-heading */
+.product-list-filters .product-filter-label {
+  display: block;
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--black);
+  margin: 0 0 12px 0;
+  padding-bottom: 12px;
+  border-bottom: 1px dotted var(--black);
+}
+
+/* Compact pill select — same treatment as the mobile category pill */
+.product-list-filters .product-filter-dropdown-select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  border: 1px solid var(--black) !important;
+  border-radius: 100px !important;
+  background-color: transparent !important;
+  padding: 10px 38px 10px 16px !important;
+  font-family: sans-serif;
+  font-size: 0.85rem !important;
+  color: var(--black) !important;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%231a1a1a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Compact solid apply button */
+.product-list-filter-button {
+  font-family: sans-serif;
+  font-size: 0.8rem !important;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 12px 18px !important;
+  border-radius: 100px !important;
+  background: var(--black) !important;
+  color: var(--white) !important;
+}
+
+
+/* ==========================================================
    3. PRODUCT GRID SETUP
 ========================================================== */
 .product-list-container {
@@ -316,8 +383,33 @@
   .product-list-nav-and-filters {
     width: 100%;
     border-right: none !important;
-    border-bottom: 1px solid var(--black) !important;
-    padding: 20px !important;
+    /* Bottom border moves to the Filter-button band below, so the
+       category pill + native Filter button read as one toolbar */
+    border-bottom: none !important;
+    padding: 20px 20px 14px !important;
+  }
+
+  /* Native drawer-open button band: right-aligned pill under the
+     category bar, carrying the toolbar's bottom border */
+  .product-list-filters-drawer-open-button-container {
+    padding: 0 20px 16px;
+    border-bottom: 1px solid var(--black);
+    text-align: right;
+  }
+
+  .product-list-filters-drawer-open-button {
+    font-family: sans-serif;
+    font-size: 0.8rem !important;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    height: 40px !important;
+    min-height: 0 !important;
+    padding: 0 20px !important;
+    border: 1px solid var(--black) !important;
+    border-radius: 100px !important;
+    background: transparent !important;
+    color: var(--black) !important;
   }
 
   /* 2. Sidebar list -> category pill dropdown */
