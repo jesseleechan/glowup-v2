@@ -65,6 +65,30 @@ body:not(.sqs-edit-mode-active) {
   }
 }
 
+/* --- YUI lightbox rescue (product personalization form, etc.) ---
+   Squarespace mounts .sqs-modal-lightbox widgets as direct BODY
+   children. Our body flex centering lays the widget out as a flex
+   item BESIDE the site wrapper, and every layer inside positions with
+   auto offsets from that static slot — so the overlay dimmed only
+   part of the viewport and the form box rendered off-center/clipped.
+   Pin the widget to the viewport instead. The z-index must live on
+   the widget itself: position:fixed makes it a stacking context, so
+   the content's own huge z-index no longer competes at root level.
+   pointer-events guards the (display:none anyway) closed state. */
+body:not(.sqs-edit-mode-active) > .yui3-widget.sqs-modal-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 100000000;
+  pointer-events: none;
+}
+
+body:not(.sqs-edit-mode-active) > .yui3-widget.sqs-modal-lightbox .sqs-modal-lightbox-content {
+  pointer-events: auto;
+}
+
 /* --- Sale price (built by global.js cleanUpPrice) ---
    Products on sale compact to "$X <s>$Y</s>" everywhere except the
    product detail page (native markup untouched there) */
