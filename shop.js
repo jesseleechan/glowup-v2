@@ -19,16 +19,6 @@
        UTILITIES
     ======================================================== */
 
-    function titleCase(str) {
-      return String(str)
-        .trim()
-        .split(/\s+/)
-        .map(function (word) {
-          return word.charAt(0).toUpperCase() + word.slice(1);
-        })
-        .join(' ');
-    }
-
     function normalizePath(path) {
       try {
         var pathname = new URL(path, window.location.origin).pathname;
@@ -76,27 +66,6 @@
       return params.get('tag') || '';
     }
 
-    function buildTagUrl(tagValue) {
-      var url = new URL(window.location.href);
-      if (tagValue) {
-        url.searchParams.set('tag', tagValue);
-      } else {
-        url.searchParams.delete('tag');
-      }
-      return url.pathname + url.search + url.hash;
-    }
-
-    function getTagClass(tagValue) {
-      return 'tag-' + String(tagValue).trim().toLowerCase().replace(/\s+/g, '-');
-    }
-
-    function countProductsWithTag(root, tagValue) {
-      var tagClass = getTagClass(tagValue);
-      return Array.prototype.filter.call(root.querySelectorAll('.product-list-item'), function (item) {
-        return item.classList.contains(tagClass);
-      }).length;
-    }
-
     function fetchDocument(url) {
       return fetch(url, { credentials: 'same-origin' })
         .then(function (response) {
@@ -109,17 +78,6 @@
         .catch(function () {
           return null;
         });
-    }
-
-    function findSelectByLabel(container, labelText) {
-      var dropdowns = container.querySelectorAll('.product-filter-dropdown');
-      for (var i = 0; i < dropdowns.length; i++) {
-        var label = dropdowns[i].querySelector('.product-filter-label');
-        if (label && label.textContent.trim().toLowerCase() === labelText.toLowerCase()) {
-          return dropdowns[i].querySelector('select');
-        }
-      }
-      return null;
     }
 
     function createElement(tagName, className, text) {
@@ -156,18 +114,21 @@
     }
 
     /* ========================================================
-       PART 1 - CUSTOM SIDEBAR
+       PART 1 - CUSTOM SIDEBAR (categories only)
+       The industry filter reverted to Squarespace's default filter
+       UI (July 2026): the native Industry dropdown + Filter button /
+       mobile drawer stay visible and untouched. Only the native
+       category link tree and the native Categories dropdown are
+       replaced (by this list + shop.css hiding).
     ======================================================== */
 
     var sidebar = document.querySelector('.product-list-nav-and-filters');
     if (!sidebar) return;
 
     var categoryLinksEls = Array.prototype.slice.call(sidebar.querySelectorAll('.nested-category-tree-wrapper .category-link'));
-    var industrySelect = findSelectByLabel(sidebar, 'Industry');
     var totalCount = document.querySelectorAll('.product-list-item').length;
     var currentTag = getCurrentTag();
     var currentPath = normalizePath(window.location.pathname);
-    var tagCacheKey = 'glowup_shop_tags_' + currentPath;
     var catCacheKey = 'glowup_shop_categories';
 
     var categories = categoryLinksEls
@@ -182,19 +143,6 @@
       })
       .reverse();
 
-    var tagOptions = [];
-    if (industrySelect) {
-      industrySelect.querySelectorAll('option').forEach(function (option) {
-        if (option.value) {
-          tagOptions.push({
-            value: option.value,
-            label: option.textContent.trim()
-          });
-        }
-      });
-    }
-
-    var cachedTags = readJsonObject(tagCacheKey);
     var cachedCats = readJsonObject(catCacheKey);
 
     function getCurrentCategory() {
@@ -205,25 +153,15 @@
     }
 
     var nativeNav = sidebar.querySelector('.product-list-nav');
-    var nativeFilters = sidebar.querySelector('.product-list-filters');
-    var nativeOverlay = sidebar.querySelector('.product-list-filters-drawer-overlay');
-
     if (nativeNav) nativeNav.style.display = 'none';
-    if (nativeFilters) {
-      nativeFilters.style.cssText =
-        'position:absolute!important;opacity:0!important;pointer-events:none!important;' +
-        'height:0!important;overflow:hidden!important;';
-    }
-    if (nativeOverlay) nativeOverlay.style.display = 'none';
 
     var existingCustomSidebar = sidebar.querySelector('.custom-sidebar');
     if (existingCustomSidebar) existingCustomSidebar.remove();
 
     var custom = createElement('div', 'custom-sidebar');
-    var countRefs = { tags: {}, cats: {} };
+    var countRefs = { cats: {} };
     var currentCat = getCurrentCategory();
     var categorySection = createSidebarSection('CATEGORY');
-    var industrySection = createSidebarSection('INDUSTRY');
 
     categories.forEach(function (category) {
       var isActive = currentCat === category.href;
@@ -240,43 +178,18 @@
       });
     });
 
-    appendSidebarLink(industrySection.list, {
-      href: buildTagUrl(''),
-      label: 'All',
-      active: !currentTag,
-      count: getCachedCount(cachedTags, 'all', currentTag ? '...' : totalCount),
-      countType: 'tagId',
-      countKey: 'all',
-      countRefs: countRefs.tags
-    });
-
-    tagOptions.forEach(function (tag) {
-      var fallbackCount = currentTag ? '...' : countProductsWithTag(document, tag.value);
-
-      appendSidebarLink(industrySection.list, {
-        href: buildTagUrl(tag.value),
-        label: titleCase(tag.label),
-        active: currentTag === tag.value,
-        count: getCachedCount(cachedTags, tag.value, fallbackCount),
-        countType: 'tagId',
-        countKey: tag.value,
-        countRefs: countRefs.tags
-      });
-    });
-
     custom.appendChild(categorySection.section);
-    custom.appendChild(industrySection.section);
     sidebar.appendChild(custom);
 
     /* ========================================================
-       PART 1b - MOBILE FILTER DROPDOWNS
-       Below 768px the expanded sidebar is replaced (via CSS) by
-       two pill-styled native selects built from the same data.
-       Native selects give the OS picker UX on phones and need no
-       open/close or outside-click handling.
+       PART 1b - MOBILE CATEGORY DROPDOWN
+       Below 768px the expanded sidebar is replaced (via CSS) by a
+       pill-styled native select built from the same category data.
+       Industry filtering on mobile uses Squarespace's own floating
+       Filter button + drawer.
     ======================================================== */
 
-    var optionRefs = { tags: {}, cats: {} };
+    var optionRefs = { cats: {} };
 
     function optionLabel(name, count) {
       return count === undefined || count === null || count === '' || count === '...'
@@ -341,96 +254,29 @@
       });
     });
 
-    var industryOptions = [{
-      href: buildTagUrl(''),
-      label: 'All',
-      active: !currentTag,
-      count: getCachedCount(cachedTags, 'all', currentTag ? undefined : totalCount),
-      refType: 'tags',
-      refKey: 'all'
-    }];
-    tagOptions.forEach(function (tag) {
-      industryOptions.push({
-        href: buildTagUrl(tag.value),
-        label: titleCase(tag.label),
-        active: currentTag === tag.value,
-        count: getCachedCount(cachedTags, tag.value, undefined),
-        refType: 'tags',
-        refKey: tag.value
-      });
-    });
-
     mobileFilters.appendChild(buildFilterSelect('Category', categoryOptions));
-    mobileFilters.appendChild(buildFilterSelect('Industry', industryOptions));
     sidebar.appendChild(mobileFilters);
 
-    function applyCountsToMobileFilters() {
-      Object.keys(optionRefs.tags).forEach(function (key) {
-        if (cachedTags && cachedTags[key] !== undefined) {
-          var opt = optionRefs.tags[key];
-          opt.textContent = optionLabel(opt.dataset.baseLabel, cachedTags[key]);
-        }
-      });
+    function applyCountsToSidebar() {
+      if (!cachedCats) return;
+
       Object.keys(optionRefs.cats).forEach(function (key) {
-        if (cachedCats && cachedCats[key] !== undefined) {
+        if (cachedCats[key] !== undefined) {
           var opt = optionRefs.cats[key];
           opt.textContent = optionLabel(opt.dataset.baseLabel, cachedCats[key]);
         }
       });
-    }
 
-    function applyCountsToSidebar() {
-      applyCountsToMobileFilters();
-
-      if (cachedTags) {
-        if (countRefs.tags.all && cachedTags.all !== undefined) {
-          countRefs.tags.all.textContent = '[' + cachedTags.all + ']';
+      categories.forEach(function (category) {
+        var countEl = countRefs.cats[category.href];
+        if (countEl && cachedCats[category.href] !== undefined) {
+          countEl.textContent = '[' + cachedCats[category.href] + ']';
         }
-
-        tagOptions.forEach(function (tag) {
-          var countEl = countRefs.tags[tag.value];
-          if (countEl && cachedTags[tag.value] !== undefined) {
-            countEl.textContent = '[' + cachedTags[tag.value] + ']';
-          }
-        });
-      }
-
-      if (cachedCats) {
-        categories.forEach(function (category) {
-          var countEl = countRefs.cats[category.href];
-          if (countEl && cachedCats[category.href] !== undefined) {
-            countEl.textContent = '[' + cachedCats[category.href] + ']';
-          }
-        });
-      }
+      });
     }
 
-    var saveTags = false;
     var saveCats = false;
-    cachedTags = cachedTags || {};
     cachedCats = cachedCats || {};
-
-    if (cachedTags.all === undefined) {
-      if (!currentTag) {
-        cachedTags.all = totalCount;
-        tagOptions.forEach(function (tag) {
-          cachedTags[tag.value] = countProductsWithTag(document, tag.value);
-        });
-        saveTags = true;
-      } else {
-        fetchDocument(currentPath).then(function (doc) {
-          if (!doc) return;
-
-          cachedTags.all = doc.querySelectorAll('.product-list-item').length;
-          tagOptions.forEach(function (tag) {
-            cachedTags[tag.value] = countProductsWithTag(doc, tag.value);
-          });
-
-          writeJsonObject(tagCacheKey, cachedTags);
-          applyCountsToSidebar();
-        });
-      }
-    }
 
     categories.forEach(function (category) {
       if (cachedCats[category.href] !== undefined) return;
@@ -450,9 +296,10 @@
       });
     });
 
-    if (saveTags) writeJsonObject(tagCacheKey, cachedTags);
-    if (saveCats) writeJsonObject(catCacheKey, cachedCats);
-    if (saveTags || saveCats) applyCountsToSidebar();
+    if (saveCats) {
+      writeJsonObject(catCacheKey, cachedCats);
+      applyCountsToSidebar();
+    }
 
     /* ========================================================
        PART 2 - PRODUCT CARD ENHANCEMENTS

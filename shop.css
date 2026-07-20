@@ -25,15 +25,30 @@
   flex-shrink: 0;
   box-sizing: border-box;
   padding: 30px 24px !important;
+  /* Column layout so the native filter UI can be ordered below the
+     custom category list regardless of DOM order */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Hide native filter UI to prevent FOUC before JS runs */
-.product-list-filters-drawer-open-button-container,
+/* Hide only the native pieces the custom sidebar replaces: the
+   category link tree (custom CATEGORY list, prevents FOUC before JS
+   runs) and the native "Categories" dropdown inside the filter UI
+   (redundant next to that list). Everything else of Squarespace's
+   default filter system stays untouched — Industry dropdown + Filter
+   apply button in the sidebar on desktop, floating Filter button +
+   bottom drawer on mobile. (July 2026: custom industry links reverted
+   to this default UI.) */
 .product-list-nav,
-.product-list-filters,
-.product-list-filters-drawer-overlay {
+#product-categories-filter-dropdown {
   display: none !important;
 }
+
+/* Sidebar stacking order (native filters render before our injected
+   custom sidebar in the DOM) */
+.custom-sidebar { order: 1; }
+.product-list-filters { order: 2; }
+.glowup-mobile-filters { order: 3; }
 
 
 /* ==========================================================
@@ -278,8 +293,10 @@
 }
 
 /* ==========================================================
-   9b. MOBILE FILTER DROPDOWNS (built by shop.js Part 1b)
+   9b. MOBILE CATEGORY DROPDOWN (built by shop.js Part 1b)
    Hidden on desktop/tablet where the expanded sidebar shows.
+   Industry filtering on mobile is Squarespace's native Filter
+   button + drawer.
 ========================================================== */
 .glowup-mobile-filters {
   display: none;
@@ -303,7 +320,7 @@
     padding: 20px !important;
   }
 
-  /* 2. Sidebar lists -> two pill dropdowns */
+  /* 2. Sidebar list -> category pill dropdown */
   .custom-sidebar {
     display: none !important;
   }
