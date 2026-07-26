@@ -27,8 +27,25 @@ function cleanUpPrice() {
 	});
 }
 
+function loadBlogScript() {
+	var body = document.body;
+	if (!body || !body.classList.contains("collection-type-blog-basic-grid")) return;
+	if (document.querySelector('script[data-glowup-blog-script]')) return;
+
+	var script = document.createElement("script");
+	script.src = "https://glowup-v2-eight.vercel.app/blog.js";
+	script.defer = true;
+	script.dataset.glowupBlogScript = "true";
+	document.head.appendChild(script);
+}
+
+function initGlobal() {
+	cleanUpPrice();
+	loadBlogScript();
+}
+
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", cleanUpPrice);
+  document.addEventListener("DOMContentLoaded", initGlobal);
 } else {
-  cleanUpPrice();
+  initGlobal();
 }
