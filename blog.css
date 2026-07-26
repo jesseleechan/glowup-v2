@@ -43,6 +43,12 @@ body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
       margin: 0 !important;
       padding: 0 !important;
       border: 0 !important;
+
+      &::before,
+      &::after {
+        content: none !important;
+        display: none !important;
+      }
     }
 
     .summary-thumbnail-outer-container {
