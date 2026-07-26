@@ -115,8 +115,11 @@ body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
     .summary-title {
       width: 100%;
       margin: 0 0 28px !important;
+      font-family: var(--heading-font-font-family);
       font-size: 3.4rem;
+      font-weight: var(--heading-font-font-weight, 400);
       line-height: 0.98;
+      letter-spacing: 0;
     }
 
     .summary-title-link {
