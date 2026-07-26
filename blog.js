@@ -385,7 +385,9 @@
     if (!tocState || !tocState.headings.length) return;
 
     var active = tocState.headings[0];
-    var threshold = 140;
+    var header = document.querySelector('header');
+    var headerBottom = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+    var threshold = headerBottom + 130;
 
     tocState.headings.forEach(function (heading) {
       if (heading.getBoundingClientRect().top <= threshold) {
