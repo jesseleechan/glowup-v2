@@ -614,6 +614,10 @@ body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
       margin: 0 !important;
     }
 
+    .summary-thumbnail-container {
+      padding: 0 !important;
+    }
+
     .summary-thumbnail {
       padding: 0 !important;
       overflow: hidden;
