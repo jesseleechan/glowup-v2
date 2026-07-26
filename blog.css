@@ -1,9 +1,15 @@
 /* ==========================================================
    GLOWUP ONLINE - BLOG COLLECTION
 
-   Collection-only styling for the native Squarespace Basic Grid.
-   Individual blog posts are intentionally unaffected.
+   Collection styling for the native Squarespace Basic Grid.
+   Individual posts only receive the container alignment safeguard.
 ========================================================== */
+
+/* Keep wide native blog posts aligned with the site's framed container. */
+body.collection-type-blog-basic-grid.view-item:not(.sqs-edit-mode-active) #siteWrapper {
+  width: 100%;
+  max-width: var(--sqs-site-max-width);
+}
 
 body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
 
