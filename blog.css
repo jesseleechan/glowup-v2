@@ -81,7 +81,6 @@ body.collection-type-blog-basic-grid.view-item:not(.sqs-edit-mode-active) {
       }
     }
 
-    .blog-meta-item--categories,
     .blog-meta-item--author {
       display: none !important;
     }
@@ -89,6 +88,25 @@ body.collection-type-blog-basic-grid.view-item:not(.sqs-edit-mode-active) {
     .blog-item-author-date-wrapper {
       display: block !important;
       flex: 0 0 auto;
+      order: 1;
+    }
+
+    .blog-meta-item--categories {
+      display: block !important;
+      flex: 0 0 auto;
+      order: 2;
+
+      &::before {
+        content: "\2022";
+        margin-right: 10px;
+      }
+    }
+
+    .blog-item-category {
+      color: inherit !important;
+      font: inherit;
+      letter-spacing: inherit;
+      text-decoration: none !important;
     }
 
     .blog-meta-item--date {
