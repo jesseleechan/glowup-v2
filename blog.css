@@ -181,6 +181,10 @@ body.collection-type-blog-basic-grid.view-item:not(.sqs-edit-mode-active) {
     .blog-item-content-wrapper {
       padding: 48px 20px 0;
     }
+
+    .item-pagination-link--next .item-pagination-icon {
+      padding-left: 4px;
+    }
   }
 }
 
