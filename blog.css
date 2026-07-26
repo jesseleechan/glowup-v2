@@ -7,6 +7,176 @@
 
 body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
 
+  /* Featured post Summary Block. The data attribute keeps the published
+     section styled until Squarespace exposes the intended section ID. */
+  :is(#featured-post, section[data-section-id="6a654f7c181563454ad9b432"]) {
+
+    .content-wrapper,
+    .content {
+      width: 100% !important;
+      max-width: none !important;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+    }
+
+    .fluid-engine {
+      display: block;
+      min-height: 0;
+    }
+
+    .fe-block {
+      position: static;
+    }
+
+    .sqs-block {
+      padding: 0;
+    }
+
+    .summary-block-header {
+      display: none;
+    }
+
+    .summary-item {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-height: clamp(560px, 46vw, 650px);
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+    }
+
+    .summary-thumbnail-outer-container {
+      float: none !important;
+      width: auto !important;
+      padding: 24px;
+      background: var(--accent);
+      box-sizing: border-box;
+    }
+
+    .summary-thumbnail-container,
+    .summary-thumbnail {
+      display: block !important;
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+    }
+
+    .summary-thumbnail {
+      padding: 0 !important;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .summary-thumbnail-image {
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
+
+    .summary-content {
+      display: flex !important;
+      float: none !important;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      width: auto !important;
+      padding: 56px 48px;
+      background: var(--siteBackgroundColor);
+      box-sizing: border-box;
+    }
+
+    .summary-metadata-container--above-title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      margin: 0 0 34px !important;
+      color: var(--black);
+      font-family: var(--meta-font-font-family, monospace);
+      font-size: 0.65rem;
+      font-weight: 600;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+
+      &::after {
+        content: "";
+        flex: 1;
+        border-top: 1px dotted hsla(var(--black-hsl), 0.45);
+      }
+    }
+
+    .summary-metadata-container--below-title,
+    .summary-metadata-container--below-content {
+      display: none !important;
+    }
+
+    .summary-title {
+      width: 100%;
+      margin: 0 0 28px !important;
+      font-size: 3.4rem;
+      line-height: 0.98;
+    }
+
+    .summary-title-link {
+      color: inherit !important;
+      text-decoration: none !important;
+    }
+
+    .summary-excerpt {
+      max-width: 560px;
+      margin: 0 0 54px !important;
+
+      p {
+        margin: 0 !important;
+      }
+    }
+
+    .summary-read-more-link {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 44px;
+      margin: 0 !important;
+      padding: 10px 22px !important;
+      color: var(--black) !important;
+      background: transparent;
+      border: 1px solid var(--black);
+      border-radius: 999px;
+      font-size: 0 !important;
+      line-height: 1 !important;
+      text-decoration: none !important;
+      text-transform: uppercase;
+      box-sizing: border-box;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &::before {
+        content: "Read Article";
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+      }
+
+      &::after {
+        content: "\2197";
+        display: inline-block !important;
+        width: auto !important;
+        height: auto !important;
+        background: none !important;
+        font-size: 1rem;
+        line-height: 0.7;
+        transform: none !important;
+      }
+
+      &:hover {
+        color: var(--white) !important;
+        background: var(--black);
+      }
+    }
+  }
+
   /* Remove Squarespace's internal grid inset while preserving the
      section's native top offset beneath the fixed header. */
   .page-section.collection-type-blog-basic-grid {
@@ -224,6 +394,38 @@ body.collection-type-blog-basic-grid.view-list:not(.sqs-edit-mode-active) {
   }
 
   @media screen and (max-width: 767px) {
+    :is(#featured-post, section[data-section-id="6a654f7c181563454ad9b432"]) {
+
+      .summary-item {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 0;
+      }
+
+      .summary-thumbnail-outer-container {
+        aspect-ratio: 4 / 3;
+        padding: 16px;
+      }
+
+      .summary-content {
+        padding: 38px 20px 46px;
+      }
+
+      .summary-metadata-container--above-title {
+        gap: 12px;
+        margin-bottom: 26px !important;
+      }
+
+      .summary-title {
+        margin-bottom: 20px !important;
+        font-size: 2.4rem;
+        line-height: 1;
+      }
+
+      .summary-excerpt {
+        margin-bottom: 34px !important;
+      }
+    }
+
     .blog-basic-grid.collection-content-wrapper {
       --blog-columns: 1;
       --blog-column-width: 100%;
