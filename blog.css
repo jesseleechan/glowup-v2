@@ -96,6 +96,11 @@ body.collection-type-blog-basic-grid.view-item:not(.sqs-edit-mode-active) {
       color: inherit;
       font: inherit;
       letter-spacing: inherit;
+
+      &::after {
+        content: none !important;
+        display: none !important;
+      }
     }
 
     .blog-item-title {
